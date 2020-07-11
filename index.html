@@ -13,6 +13,8 @@
     <body></body>
 	<script>
 		
+		var num_blocks = 2;
+
 		var timeline = []; // initialise timeline
 		
 		var participant_test = {
@@ -23,13 +25,13 @@
 			buffer_length: 6000,
 			wait_for_mic_approval: true,
 		}
-		timeline.push(participant_test);
+		//timeline.push(participant_test);
 
 		var stroop_task = {
 			timeline: [
 				{
 					type: 'html-keyboard-response',
-					stimulus: '+',
+					stimulus: '<div style="font-size:60px;">+</div>',
 					choices: jsPsych.NO_KEYS,
 					trial_duration: 300
 				},
@@ -44,13 +46,25 @@
 			],
 			timeline_variables: [
 				{stim_path: 'stimuli/pink-pink.png', add_data: {stimulus: 'pink-pink'}},
-				{stim_path: 'stimuli/blue-pink.png', add_data: {stimulus: 'blue-pink'}}
+				{stim_path: 'stimuli/pink-pink.png', add_data: {stimulus: 'pink-pink'}},
+				{stim_path: 'stimuli/pink-pink.png', add_data: {stimulus: 'pink-pink'}},
+				{stim_path: 'stimuli/pink-blue.png', add_data: {stimulus: 'pink-blue'}},
+				{stim_path: 'stimuli/pink-gold.png', add_data: {stimulus: 'pink-gold'}},
+				{stim_path: 'stimuli/blue-blue.png', add_data: {stimulus: 'blue-blue'}},
+				{stim_path: 'stimuli/blue-blue.png', add_data: {stimulus: 'blue-blue'}},
+				{stim_path: 'stimuli/blue-blue.png', add_data: {stimulus: 'blue-blue'}},
+				{stim_path: 'stimuli/blue-pink.png', add_data: {stimulus: 'blue-pink'}},
+				{stim_path: 'stimuli/blue-gold.png', add_data: {stimulus: 'blue-gold'}},
+				{stim_path: 'stimuli/gold-gold.png', add_data: {stimulus: 'gold-gold'}},
+				{stim_path: 'stimuli/gold-gold.png', add_data: {stimulus: 'gold-gold'}},
+				{stim_path: 'stimuli/gold-gold.png', add_data: {stimulus: 'gold-gold'}},
+				{stim_path: 'stimuli/gold-pink.png', add_data: {stimulus: 'gold-pink'}},
+				{stim_path: 'stimuli/gold-blue.png', add_data: {stimulus: 'gold-blue'}},
 			],
 			randomize_order: true,
-			repetitions: 2
+			repetitions: num_blocks
 		}
 		timeline.push(stroop_task);
-
 
 		jsPsych.init({
 			timeline: timeline,
