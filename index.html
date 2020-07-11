@@ -6,9 +6,7 @@
 		<script src="jspsych-6.1.0/plugins/jspsych-image-audio-response.js"></script>
 		<script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
 		<link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css"></link>
-		<style>
-			img { width: 300px; }
-		</style>
+		<style></style>
     </head>
     <body></body>
 	<script>
@@ -19,13 +17,13 @@
 		
 		var participant_test = {
 			type: 'image-audio-response',
-			stimulus: 'stimuli/pink-pink.png',
+			stimulus: 'stimuli/tiny-welcome.png',
 			prompt: "<p>You need to allow microphone access in your browser.<br>Now you can test it out.<br> Speak, playback, and rerecord as you like.<br>In the experiment itself, you will not be able to playback, or rerecord.</p>",
 			allow_playback: true,
 			buffer_length: 6000,
 			wait_for_mic_approval: true,
 		}
-		//timeline.push(participant_test);
+		timeline.push(participant_test);
 
 		var stroop_task = {
 			timeline: [
@@ -45,21 +43,42 @@
 				}
 			],
 			timeline_variables: [
-				{stim_path: 'stimuli/pink-pink.png', add_data: {stimulus: 'pink-pink'}},
-				{stim_path: 'stimuli/pink-pink.png', add_data: {stimulus: 'pink-pink'}},
-				{stim_path: 'stimuli/pink-pink.png', add_data: {stimulus: 'pink-pink'}},
-				{stim_path: 'stimuli/pink-blue.png', add_data: {stimulus: 'pink-blue'}},
-				{stim_path: 'stimuli/pink-gold.png', add_data: {stimulus: 'pink-gold'}},
-				{stim_path: 'stimuli/blue-blue.png', add_data: {stimulus: 'blue-blue'}},
-				{stim_path: 'stimuli/blue-blue.png', add_data: {stimulus: 'blue-blue'}},
-				{stim_path: 'stimuli/blue-blue.png', add_data: {stimulus: 'blue-blue'}},
-				{stim_path: 'stimuli/blue-pink.png', add_data: {stimulus: 'blue-pink'}},
-				{stim_path: 'stimuli/blue-gold.png', add_data: {stimulus: 'blue-gold'}},
-				{stim_path: 'stimuli/gold-gold.png', add_data: {stimulus: 'gold-gold'}},
-				{stim_path: 'stimuli/gold-gold.png', add_data: {stimulus: 'gold-gold'}},
-				{stim_path: 'stimuli/gold-gold.png', add_data: {stimulus: 'gold-gold'}},
-				{stim_path: 'stimuli/gold-pink.png', add_data: {stimulus: 'gold-pink'}},
-				{stim_path: 'stimuli/gold-blue.png', add_data: {stimulus: 'gold-blue'}},
+				{stim_path: 'stimuli/pink-pink-sm.png', add_data: {stimulus: 'pink-pink-small'}},
+				{stim_path: 'stimuli/pink-pink-sm.png', add_data: {stimulus: 'pink-pink-small'}},
+				{stim_path: 'stimuli/pink-blue-sm.png', add_data: {stimulus: 'pink-blue-small'}},
+				{stim_path: 'stimuli/pink-gold-sm.png', add_data: {stimulus: 'pink-gold-small'}},
+				{stim_path: 'stimuli/blue-blue-sm.png', add_data: {stimulus: 'blue-blue-small'}},
+				{stim_path: 'stimuli/blue-blue-sm.png', add_data: {stimulus: 'blue-blue-small'}},
+				{stim_path: 'stimuli/blue-pink-sm.png', add_data: {stimulus: 'blue-pink-small'}},
+				{stim_path: 'stimuli/blue-gold-sm.png', add_data: {stimulus: 'blue-gold-small'}},
+				{stim_path: 'stimuli/gold-gold-sm.png', add_data: {stimulus: 'gold-gold-small'}},
+				{stim_path: 'stimuli/gold-gold-sm.png', add_data: {stimulus: 'gold-gold-small'}},
+				{stim_path: 'stimuli/gold-pink-sm.png', add_data: {stimulus: 'gold-pink-small'}},
+				{stim_path: 'stimuli/gold-blue-sm.png', add_data: {stimulus: 'gold-blue-small'}},
+				{stim_path: 'stimuli/pink-pink-md.png', add_data: {stimulus: 'pink-pink-mid'}},
+				{stim_path: 'stimuli/pink-pink-md.png', add_data: {stimulus: 'pink-pink-mid'}},
+				{stim_path: 'stimuli/pink-blue-md.png', add_data: {stimulus: 'pink-blue-mid'}},
+				{stim_path: 'stimuli/pink-gold-md.png', add_data: {stimulus: 'pink-gold-mid'}},
+				{stim_path: 'stimuli/blue-blue-md.png', add_data: {stimulus: 'blue-blue-mid'}},
+				{stim_path: 'stimuli/blue-blue-md.png', add_data: {stimulus: 'blue-blue-mid'}},
+				{stim_path: 'stimuli/blue-pink-md.png', add_data: {stimulus: 'blue-pink-mid'}},
+				{stim_path: 'stimuli/blue-gold-md.png', add_data: {stimulus: 'blue-gold-mid'}},
+				{stim_path: 'stimuli/gold-gold-md.png', add_data: {stimulus: 'gold-gold-mid'}},
+				{stim_path: 'stimuli/gold-gold-md.png', add_data: {stimulus: 'gold-gold-mid'}},
+				{stim_path: 'stimuli/gold-pink-md.png', add_data: {stimulus: 'gold-pink-mid'}},
+				{stim_path: 'stimuli/gold-blue-md.png', add_data: {stimulus: 'gold-blue-mid'}},
+				{stim_path: 'stimuli/pink-pink-lg.png', add_data: {stimulus: 'pink-pink-large'}},
+				{stim_path: 'stimuli/pink-pink-lg.png', add_data: {stimulus: 'pink-pink-large'}},
+				{stim_path: 'stimuli/pink-blue-lg.png', add_data: {stimulus: 'pink-blue-large'}},
+				{stim_path: 'stimuli/pink-gold-lg.png', add_data: {stimulus: 'pink-gold-large'}},
+				{stim_path: 'stimuli/blue-blue-lg.png', add_data: {stimulus: 'blue-blue-large'}},
+				{stim_path: 'stimuli/blue-blue-lg.png', add_data: {stimulus: 'blue-blue-large'}},
+				{stim_path: 'stimuli/blue-pink-lg.png', add_data: {stimulus: 'blue-pink-large'}},
+				{stim_path: 'stimuli/blue-gold-lg.png', add_data: {stimulus: 'blue-gold-large'}},
+				{stim_path: 'stimuli/gold-gold-lg.png', add_data: {stimulus: 'gold-gold-large'}},
+				{stim_path: 'stimuli/gold-gold-lg.png', add_data: {stimulus: 'gold-gold-large'}},
+				{stim_path: 'stimuli/gold-pink-lg.png', add_data: {stimulus: 'gold-pink-large'}},
+				{stim_path: 'stimuli/gold-blue-lg.png', add_data: {stimulus: 'gold-blue-large'}},
 			],
 			randomize_order: true,
 			repetitions: num_blocks
