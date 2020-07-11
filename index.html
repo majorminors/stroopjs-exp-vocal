@@ -13,14 +13,27 @@
 	<script>
 		
 		var timeline = []; // initialise timeline
+		
+		var participant_test = {
+			type: 'image-audio-response',
+			stimulus: 'stimuli/pink-pink.png',
+			prompt: "<p>You need to allow microphone access in your browser.<br>Now you can test it out.<br> Speak, playback, and rerecord as you like.<br>In the experiment itself, you will not be able to playback, or rerecord.</p>",
+			allow_playback: true,
+			buffer_length: 6000,
+			wait_for_mic_approval: true,
+		}
+		timeline.push(participant_test);
 
 		var pink_pink_trial = {
 			type: 'image-audio-response',
-			stimulus: 'stimuli/pink-pink.png',
-			prompt: "<p>Name the colour</p>",
-			allow_playback: true,
-			buffer_length: 6000,
-			wait_for_mic_approval: true
+			//stimulus: 'stimuli/pink-pink.png',
+			allow_playback: false,
+			buffer_length: 2000,
+			wait_for_mic_approval: false,
+			timeline: [
+				{stimulus: 'stimuli/pink-pink.png', data: {stimulus: 'pink-pink'}},
+				{stimulus: 'stimuli/blue-pink.png', data: {stimulus: 'blue-pink'}}
+			],
 		}
 		timeline.push(pink_pink_trial);
 
