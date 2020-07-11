@@ -1,1 +1,4 @@
+# don't add vim temp and swp files
 *.swp
+*.swo
+*~
