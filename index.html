@@ -4,6 +4,7 @@
         <title>Stroop Control</title>
 		<script src="jspsych-6.1.0/jspsych.js"></script>
 		<script src="jspsych-6.1.0/plugins/jspsych-image-audio-response.js"></script>
+		<script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
 		<link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css"></link>
 		<style>
 			img { width: 300px; }
@@ -24,18 +25,31 @@
 		}
 		timeline.push(participant_test);
 
-		var pink_pink_trial = {
-			type: 'image-audio-response',
-			//stimulus: 'stimuli/pink-pink.png',
-			allow_playback: false,
-			buffer_length: 2000,
-			wait_for_mic_approval: false,
+		var stroop_task = {
 			timeline: [
-				{stimulus: 'stimuli/pink-pink.png', data: {stimulus: 'pink-pink'}},
-				{stimulus: 'stimuli/blue-pink.png', data: {stimulus: 'blue-pink'}}
+				{
+					type: 'html-keyboard-response',
+					stimulus: '+',
+					choices: jsPsych.NO_KEYS,
+					trial_duration: 300
+				},
+				{
+					type: 'image-audio-response',
+					stimulus: jsPsych.timelineVariable('stim_path'),
+					allow_playback: false,
+					buffer_length: 2000,
+					wait_for_mic_approval: false,
+					data: jsPsych.timelineVariable('add_data')
+				}
 			],
+			timeline_variables: [
+				{stim_path: 'stimuli/pink-pink.png', add_data: {stimulus: 'pink-pink'}},
+				{stim_path: 'stimuli/blue-pink.png', add_data: {stimulus: 'blue-pink'}}
+			],
+			randomize_order: true,
+			repetitions: 2
 		}
-		timeline.push(pink_pink_trial);
+		timeline.push(stroop_task);
 
 
 		jsPsych.init({
