@@ -3,6 +3,31 @@
     <head>
         <title>Stroop Control</title>
 		<script src="jspsych-6.1.0/jspsych.js"></script>
+		<script src="jspysch-6.1.0/plugins/jspsych-image-audio-response.js"></script>
+		<link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css"></link>
     </head>
     <body></body>
+	<script>
+		
+		var timeline = []; // initialise timeline
+
+		var pink-pink-trial = {
+			type: 'image-audio-response',
+			stimulus: 'stimuli/pink-pink.png',
+			prompt: "<p>Name the colour</p>",
+			allow_playback: true,
+			buffer_length: 6000,
+			wait_for_mic_approval: true
+		}
+		timeline.push(pink-pink-trial);
+
+
+		jsPsych.init({
+			timeline: timeline,
+			on_finish: function(){
+				jsPsych.data.displayData();
+			}
+		});
+
+	</script>
 </html>
