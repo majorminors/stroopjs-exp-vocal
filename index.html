@@ -18,10 +18,12 @@
 		var participant_test = {
 			type: 'image-audio-response',
 			stimulus: 'stimuli/tiny-welcome.png',
-			prompt: "<p>You need to allow microphone access in your browser.<br>Now you can test it out.<br> Speak, playback, and rerecord as you like.<br>In the experiment itself, you will not be able to playback, or rerecord.</p>",
+			prompt: "<p>You first must allow microphone access in your browser.<br>Once that's done, recording will start. You can see the recording indicator at the bottom right of the screen. Test it out!<br><br> This example trial records for 6 seconds. Speak, and at the end you can play it back or rerecord as you like.<br>In the experiment itself, you will not be able to playback, or rerecord.</p>",
 			allow_playback: true,
 			buffer_length: 6000,
 			wait_for_mic_approval: true,
+			recording_light: '<div style="position: fixed; bottom: 0; right: 0;">recording...</div>',
+			recording_light_off: '<div style="position: fixed; bottom: 0; right: 0;">not recording...</div>'
 		}
 		timeline.push(participant_test);
 
@@ -39,6 +41,8 @@
 					allow_playback: false,
 					buffer_length: 2000,
 					wait_for_mic_approval: false,
+					recording_light: '<div style="position: fixed; bottom: 0; right: 0;">recording...</div>',
+					recording_light_off: '<div style="position: fixed; bottom: 0; right: 0;">not recording...</div>',
 					data: jsPsych.timelineVariable('add_data')
 				}
 			],
