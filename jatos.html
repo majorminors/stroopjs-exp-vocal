@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Stroop Control</title>
+		<script src="/assets/javascripts/jatos.js"></script>
 		<script src="jspsych-6.1.0/jspsych.js"></script>
 		<script src="jspsych-6.1.0/plugins/jspsych-image-audio-response.js"></script>
 		<script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
@@ -27,7 +28,7 @@
 			recording_light_off: '<div style="position: fixed; bottom: 0; right: 0;">not recording...</div>'
 		}
 		timeline.push(participant_test);
-		
+
 		/* stroop task */
 		var stroop_task = {
 			timeline: [
@@ -91,11 +92,15 @@
 		}
 		timeline.push(stroop_task);
 
-		jsPsych.init({
-			timeline: timeline,
-			on_finish: function(){
-				jsPsych.data.displayData();
-			}
+		/* initialise experiment */
+		jatos.onLoad(function() {
+			jsPsych.init({
+				timeline: timeline,
+				on_finish: function() {
+					var resultJson = jsPsych.data.get().json();
+					jatos.submitResultData(resultJson, jatos.startNextComponent);
+				}
+			});
 		});
 
 	</script>
