@@ -12,6 +12,12 @@
 	<script>
 		
 		var num_blocks = 2;
+	
+		var stim_widths = { // stimulus width in pixels - height is auto (i.e. will maintain aspect ratio)
+			small: 100,
+			mid: 500,
+			large: 1000
+		} 
 
 		var timeline = []; // initialise timeline
 		
@@ -27,7 +33,7 @@
 			recording_light_off: '<div style="position: fixed; bottom: 0; right: 0;">not recording...</div>'
 		}
 		timeline.push(participant_test);
-		
+
 		/* stroop task */
 		var stroop_task = {
 			timeline: [
@@ -43,48 +49,49 @@
 					allow_playback: false,
 					buffer_length: 2000,
 					wait_for_mic_approval: false,
+					stimulus_width: jsPsych.timelineVariable('stim_size'),
 					recording_light: '<div style="position: fixed; bottom: 0; right: 0;">recording...</div>',
 					recording_light_off: '<div style="position: fixed; bottom: 0; right: 0;">not recording...</div>',
 					data: jsPsych.timelineVariable('add_data')
 				}
 			],
 			timeline_variables: [
-				{stim_path: 'stimuli/pink-pink-sm.png', add_data: {stimulus: 'pink-pink-small'}},
-				{stim_path: 'stimuli/pink-pink-sm.png', add_data: {stimulus: 'pink-pink-small'}},
-				{stim_path: 'stimuli/pink-blue-sm.png', add_data: {stimulus: 'pink-blue-small'}},
-				{stim_path: 'stimuli/pink-gold-sm.png', add_data: {stimulus: 'pink-gold-small'}},
-				{stim_path: 'stimuli/blue-blue-sm.png', add_data: {stimulus: 'blue-blue-small'}},
-				{stim_path: 'stimuli/blue-blue-sm.png', add_data: {stimulus: 'blue-blue-small'}},
-				{stim_path: 'stimuli/blue-pink-sm.png', add_data: {stimulus: 'blue-pink-small'}},
-				{stim_path: 'stimuli/blue-gold-sm.png', add_data: {stimulus: 'blue-gold-small'}},
-				{stim_path: 'stimuli/gold-gold-sm.png', add_data: {stimulus: 'gold-gold-small'}},
-				{stim_path: 'stimuli/gold-gold-sm.png', add_data: {stimulus: 'gold-gold-small'}},
-				{stim_path: 'stimuli/gold-pink-sm.png', add_data: {stimulus: 'gold-pink-small'}},
-				{stim_path: 'stimuli/gold-blue-sm.png', add_data: {stimulus: 'gold-blue-small'}},
-				{stim_path: 'stimuli/pink-pink-md.png', add_data: {stimulus: 'pink-pink-mid'}},
-				{stim_path: 'stimuli/pink-pink-md.png', add_data: {stimulus: 'pink-pink-mid'}},
-				{stim_path: 'stimuli/pink-blue-md.png', add_data: {stimulus: 'pink-blue-mid'}},
-				{stim_path: 'stimuli/pink-gold-md.png', add_data: {stimulus: 'pink-gold-mid'}},
-				{stim_path: 'stimuli/blue-blue-md.png', add_data: {stimulus: 'blue-blue-mid'}},
-				{stim_path: 'stimuli/blue-blue-md.png', add_data: {stimulus: 'blue-blue-mid'}},
-				{stim_path: 'stimuli/blue-pink-md.png', add_data: {stimulus: 'blue-pink-mid'}},
-				{stim_path: 'stimuli/blue-gold-md.png', add_data: {stimulus: 'blue-gold-mid'}},
-				{stim_path: 'stimuli/gold-gold-md.png', add_data: {stimulus: 'gold-gold-mid'}},
-				{stim_path: 'stimuli/gold-gold-md.png', add_data: {stimulus: 'gold-gold-mid'}},
-				{stim_path: 'stimuli/gold-pink-md.png', add_data: {stimulus: 'gold-pink-mid'}},
-				{stim_path: 'stimuli/gold-blue-md.png', add_data: {stimulus: 'gold-blue-mid'}},
-				{stim_path: 'stimuli/pink-pink-lg.png', add_data: {stimulus: 'pink-pink-large'}},
-				{stim_path: 'stimuli/pink-pink-lg.png', add_data: {stimulus: 'pink-pink-large'}},
-				{stim_path: 'stimuli/pink-blue-lg.png', add_data: {stimulus: 'pink-blue-large'}},
-				{stim_path: 'stimuli/pink-gold-lg.png', add_data: {stimulus: 'pink-gold-large'}},
-				{stim_path: 'stimuli/blue-blue-lg.png', add_data: {stimulus: 'blue-blue-large'}},
-				{stim_path: 'stimuli/blue-blue-lg.png', add_data: {stimulus: 'blue-blue-large'}},
-				{stim_path: 'stimuli/blue-pink-lg.png', add_data: {stimulus: 'blue-pink-large'}},
-				{stim_path: 'stimuli/blue-gold-lg.png', add_data: {stimulus: 'blue-gold-large'}},
-				{stim_path: 'stimuli/gold-gold-lg.png', add_data: {stimulus: 'gold-gold-large'}},
-				{stim_path: 'stimuli/gold-gold-lg.png', add_data: {stimulus: 'gold-gold-large'}},
-				{stim_path: 'stimuli/gold-pink-lg.png', add_data: {stimulus: 'gold-pink-large'}},
-				{stim_path: 'stimuli/gold-blue-lg.png', add_data: {stimulus: 'gold-blue-large'}},
+				{stim_path: 'stimuli/pink-pink.svg', stim_size: stim_widths.small, add_data: {stimulus: 'pink-pink-small'}},
+				{stim_path: 'stimuli/pink-pink.svg', stim_size: stim_widths.small, add_data: {stimulus: 'pink-pink-small'}},
+				{stim_path: 'stimuli/pink-blue.svg', stim_size: stim_widths.small, add_data: {stimulus: 'pink-blue-small'}},
+				{stim_path: 'stimuli/pink-gold.svg', stim_size: stim_widths.small, add_data: {stimulus: 'pink-gold-small'}},
+				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_widths.small, add_data: {stimulus: 'blue-blue-small'}},
+				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_widths.small, add_data: {stimulus: 'blue-blue-small'}},
+				{stim_path: 'stimuli/blue-pink.svg', stim_size: stim_widths.small, add_data: {stimulus: 'blue-pink-small'}},
+				{stim_path: 'stimuli/blue-gold.svg', stim_size: stim_widths.small, add_data: {stimulus: 'blue-gold-small'}},
+				{stim_path: 'stimuli/gold-gold.svg', stim_size: stim_widths.small, add_data: {stimulus: 'gold-gold-small'}},
+				{stim_path: 'stimuli/gold-gold.svg', stim_size: stim_widths.small, add_data: {stimulus: 'gold-gold-small'}},
+				{stim_path: 'stimuli/gold-pink.svg', stim_size: stim_widths.small, add_data: {stimulus: 'gold-pink-small'}},
+				{stim_path: 'stimuli/gold-blue.svg', stim_size: stim_widths.small, add_data: {stimulus: 'gold-blue-small'}},
+				{stim_path: 'stimuli/pink-pink.svg', stim_size: stim_widths.mid, add_data: {stimulus: 'pink-pink-mid'}},
+				{stim_path: 'stimuli/pink-pink.svg', stim_size: stim_widths.mid, add_data: {stimulus: 'pink-pink-mid'}},
+				{stim_path: 'stimuli/pink-blue.svg', stim_size: stim_widths.mid, add_data: {stimulus: 'pink-blue-mid'}},
+				{stim_path: 'stimuli/pink-gold.svg', stim_size: stim_widths.mid, add_data: {stimulus: 'pink-gold-mid'}},
+				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_widths.mid, add_data: {stimulus: 'blue-blue-mid'}},
+				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_widths.mid, add_data: {stimulus: 'blue-blue-mid'}},
+				{stim_path: 'stimuli/blue-pink.svg', stim_size: stim_widths.mid, add_data: {stimulus: 'blue-pink-mid'}},
+				{stim_path: 'stimuli/blue-gold.svg', stim_size: stim_widths.mid, add_data: {stimulus: 'blue-gold-mid'}},
+				{stim_path: 'stimuli/gold-gold.svg', stim_size: stim_widths.mid, add_data: {stimulus: 'gold-gold-mid'}},
+				{stim_path: 'stimuli/gold-gold.svg', stim_size: stim_widths.mid, add_data: {stimulus: 'gold-gold-mid'}},
+				{stim_path: 'stimuli/gold-pink.svg', stim_size: stim_widths.mid, add_data: {stimulus: 'gold-pink-mid'}},
+				{stim_path: 'stimuli/gold-blue.svg', stim_size: stim_widths.mid, add_data: {stimulus: 'gold-blue-mid'}},
+				{stim_path: 'stimuli/pink-pink.svg', stim_size: stim_widths.large, add_data: {stimulus: 'pink-pink-large'}},
+				{stim_path: 'stimuli/pink-pink.svg', stim_size: stim_widths.large, add_data: {stimulus: 'pink-pink-large'}},
+				{stim_path: 'stimuli/pink-blue.svg', stim_size: stim_widths.large, add_data: {stimulus: 'pink-blue-large'}},
+				{stim_path: 'stimuli/pink-gold.svg', stim_size: stim_widths.large, add_data: {stimulus: 'pink-gold-large'}},
+				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_widths.large, add_data: {stimulus: 'blue-blue-large'}},
+				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_widths.large, add_data: {stimulus: 'blue-blue-large'}},
+				{stim_path: 'stimuli/blue-pink.svg', stim_size: stim_widths.large, add_data: {stimulus: 'blue-pink-large'}},
+				{stim_path: 'stimuli/blue-gold.svg', stim_size: stim_widths.large, add_data: {stimulus: 'blue-gold-large'}},
+				{stim_path: 'stimuli/gold-gold.svg', stim_size: stim_widths.large, add_data: {stimulus: 'gold-gold-large'}},
+				{stim_path: 'stimuli/gold-gold.svg', stim_size: stim_widths.large, add_data: {stimulus: 'gold-gold-large'}},
+				{stim_path: 'stimuli/gold-pink.svg', stim_size: stim_widths.large, add_data: {stimulus: 'gold-pink-large'}},
+				{stim_path: 'stimuli/gold-blue.svg', stim_size: stim_widths.large, add_data: {stimulus: 'gold-blue-large'}}, 
 			],
 			randomize_order: true,
 			repetitions: num_blocks

@@ -108,6 +108,24 @@ jsPsych.plugins["image-audio-response"] = (function() {
                 default: null,
                 description: 'How long to show the stimulus.'
             },
+			stimulus_height: {
+				type: jsPsych.plugins.parameterType.INT,
+				pretty_name: 'Image height',
+				default: null,
+				description: 'Set the image height in pixels'
+			},
+			stimulus_width: {
+				type: jsPsych.plugins.parameterType.INT,
+				pretty_name: 'Image width',
+				default: null,
+				description: 'Set the image width in pixels'
+			},
+			maintain_aspect_ratio: {
+				type: jsPsych.plugins.parameterType.BOOL,
+				pretty_name: 'Maintain aspect ratio',
+				default: true,
+				description: 'Maintain the aspect ratio after setting width or height'
+			},
             margin_vertical: {
                 type: jsPsych.plugins.parameterType.STRING,
                 pretty_name: 'Margin vertical',
@@ -151,7 +169,20 @@ jsPsych.plugins["image-audio-response"] = (function() {
         let start_time = null;
 
         // add stimulus
-        let html = '<img src="'+trial.stimulus+'" id="jspsych-image-audio-response-stimulus"/>';
+		var html = '<img src="'+trial.stimulus+'" id="jspsych-image-audio-response-stimulus" style="';
+		if(trial.stimulus_height !== null){
+		  html += 'height:'+trial.stimulus_height+'px; '
+		  if(trial.stimulus_width == null && trial.maintain_aspect_ratio){
+			html += 'width: auto; ';
+		  }
+		}
+		if(trial.stimulus_width !== null){
+		  html += 'width:'+trial.stimulus_width+'px; '
+		  if(trial.stimulus_height == null && trial.maintain_aspect_ratio){
+			html += 'height: auto; ';
+		  }
+		}
+		html +='"></img>';
 
         // add prompt if there is one
         if (trial.prompt !== null) {
