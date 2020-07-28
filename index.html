@@ -139,6 +139,12 @@
 			randomize_order: true,
 			repetitions: num_blocks
 		}
+		
+		/* grab all the image paths, so we can preload them */
+		var stroop_image_paths = []; // init the variable
+		for (i = 0; i < stroop_task.timeline_variables.length; i++) {
+			stroop_image_paths[i] = stroop_task.timeline_variables[i].stim_path;
+		}
 
 		/* false font task */
 		var false_font_task = { // little placeholder
@@ -187,6 +193,7 @@
 		
 		jsPsych.init({
 			timeline: timeline,
+			preload_images: stroop_image_paths,
 			on_finish: function(){
 				jsPsych.data.displayData();
 			}
