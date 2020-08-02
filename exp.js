@@ -135,12 +135,67 @@
 		}
 
 		/* false font task */
-		var false_font_task = { // little placeholder
-			type: 'html-keyboard-response',
-			stimulus: '<p>false font task</p>',
-			choices: jsPsych.NO_KEYS,
-			trial_duration: 500
-		} 
+		var false_font_task = {
+			timeline: [
+				{
+					type: 'html-keyboard-response',
+					stimulus: '<div style="font-size:60px;">+</div>',
+					choices: jsPsych.NO_KEYS,
+					trial_duration: 300
+				},
+				{
+					type: 'image-audio-response',
+					stimulus: jsPsych.timelineVariable('stim_path'),
+					allow_playback: false,
+					buffer_length: 2000,
+					wait_for_mic_approval: false,
+					stimulus_width: jsPsych.timelineVariable('stim_size'),
+					recording_light: '<div style="position: fixed; bottom: 0; right: 0;">recording...</div>',
+					recording_light_off: '<div style="position: fixed; bottom: 0; right: 0;">not recording...</div>',
+					data: jsPsych.timelineVariable('add_data')
+				}
+			],
+			timeline_variables: [
+				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffred-red-small'}},
+				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffred-red-small'}},
+				{stim_path: 'stimuli/ffred-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffred-blue-small'}},
+				{stim_path: 'stimuli/ffred-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffred-green-small'}},
+				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffblue-blue-small'}},
+				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffblue-blue-small'}},
+				{stim_path: 'stimuli/ffblue-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffblue-red-small'}},
+				{stim_path: 'stimuli/ffblue-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffblue-green-small'}},
+				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffgreen-green-small'}},
+				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffgreen-green-small'}},
+				{stim_path: 'stimuli/ffgreen-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffgreen-red-small'}},
+				{stim_path: 'stimuli/ffgreen-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffgreen-blue-small'}},
+				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffred-red-mid'}},
+				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffred-red-mid'}},
+				{stim_path: 'stimuli/ffred-blue.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffred-blue-mid'}},
+				{stim_path: 'stimuli/ffred-green.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffred-green-mid'}},
+				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffblue-blue-mid'}},
+				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffblue-blue-mid'}},
+				{stim_path: 'stimuli/ffblue-red.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffblue-red-mid'}},
+				{stim_path: 'stimuli/ffblue-green.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffblue-green-mid'}},
+				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffgreen-green-mid'}},
+				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffgreen-green-mid'}},
+				{stim_path: 'stimuli/ffgreen-red.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffgreen-red-mid'}},
+				{stim_path: 'stimuli/ffgreen-blue.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffgreen-blue-mid'}},
+				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffred-red-large'}},
+				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffred-red-large'}},
+				{stim_path: 'stimuli/ffred-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffred-blue-large'}},
+				{stim_path: 'stimuli/ffred-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffred-green-large'}},
+				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffblue-blue-large'}},
+				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffblue-blue-large'}},
+				{stim_path: 'stimuli/ffblue-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffblue-red-large'}},
+				{stim_path: 'stimuli/ffblue-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffblue-green-large'}},
+				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffgreen-green-large'}},
+				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffgreen-green-large'}},
+				{stim_path: 'stimuli/ffgreen-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffgreen-red-large'}},
+				{stim_path: 'stimuli/ffgreen-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffgreen-blue-large'}}, 
+			],
+			randomize_order: true,
+			repetitions: num_blocks
+		}
 		/* push tasks to timeline */
 		
 		var stroop_colour_proc = [colour_instructions,stroop_task]; // precede stroop with colour instructions
