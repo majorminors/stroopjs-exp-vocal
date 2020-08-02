@@ -28,7 +28,7 @@
 		jatos.onLoad(function() {
 			jsPsych.init({
 				timeline: timeline,
-				preload_images: stroop_image_paths,
+				preload_images: [stroop_image_paths, falsefont_image_paths],
 				on_finish: function() {
 					var resultJson = jsPsych.data.get().json();
 					jatos.submitResultData(resultJson, jatos.startNextComponent);

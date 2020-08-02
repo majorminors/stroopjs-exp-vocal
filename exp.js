@@ -196,6 +196,13 @@
 			randomize_order: true,
 			repetitions: num_blocks
 		}
+
+		/* grab all the image paths, so we can preload them */
+		var falsefont_image_paths = []; // init the variable
+		for (i = 0; i < false_font_task.timeline_variables.length; i++) {
+			falsefont_image_paths[i] = false_font_task.timeline_variables[i].stim_path;
+		}
+
 		/* push tasks to timeline */
 		
 		var stroop_colour_proc = [colour_instructions,stroop_task]; // precede stroop with colour instructions
