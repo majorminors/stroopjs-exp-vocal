@@ -26,7 +26,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="11.2"
-     inkscape:cx="42.625159"
+     inkscape:cx="24.410873"
      inkscape:cy="18.741469"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
@@ -48,7 +48,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -89,13 +89,13 @@
        inkscape:connector-curvature="0" />
     <path
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       d="m 67.909038,130.88726 v 0.95963 h 0.935343 v -0.95963 z"
+       d="m 67.379871,130.88726 v 0.95963 h 0.935343 v -0.95963 z"
        id="path838-6-5-6-3"
        inkscape:connector-curvature="0" />
     <path
        inkscape:connector-curvature="0"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       d="m 66.444528,128.43728 v 0.95963 h 0.935343 v -0.95963 z"
+       d="m 66.444528,128.96645 v 0.95963 h 0.935343 v -0.95963 z"
        id="path838-6-5-6-3-7" />
     <path
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
@@ -124,7 +124,7 @@
        inkscape:connector-curvature="0" />
     <path
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       d="m 71.909182,132.19603 c -0.117578,0 -0.228337,0.009 -0.335896,0.0217 v 0.89866 c 0.155116,-0.0619 0.333769,-0.0935 0.537435,-0.0935 0.147023,0 0.284193,0.015 0.413411,0.0419 v -0.79117 c -0.190439,-0.0504 -0.394673,-0.0775 -0.61495,-0.0775 z"
+       d="m 71.140237,133.25459 c -0.117578,0 -0.228337,0.009 -0.335896,0.0217 v 0.89866 c 0.155116,-0.0619 0.333769,-0.0935 0.537435,-0.0935 0.147023,0 0.284193,0.015 0.413411,0.0419 v -0.79117 c -0.190439,-0.0504 -0.394673,-0.0775 -0.61495,-0.0775 z"
        id="path842-5-8"
        inkscape:connector-curvature="0" />
   </g>
