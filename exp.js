@@ -241,7 +241,7 @@
 			pre_training,
 			{...stroop_task, timeline: [stroop_task.timeline[0], stroop_task.timeline[1], colour_feedback], repetitions: num_tr_blocks},
 			pre_test, {...stroop_task, repetitions: num_blocks}
-		]; // precede stroop with colour instructions
+		];
 		
 		var stroop_size_proc = [
 			size_instructions,
@@ -249,7 +249,7 @@
 			{...stroop_task, timeline: [stroop_task.timeline[0], stroop_task.timeline[1], size_feedback], repetitions: num_tr_blocks},
 			pre_test,
 			{...stroop_task, repetitions: num_blocks}
-		]; // precede stroop with size instructions
+		];
 
 		var falsefont_colour_proc = [
 			colour_instructions,
@@ -257,7 +257,7 @@
 			{...false_font_task, timeline: [false_font_task.timeline[0], false_font_task.timeline[1], colour_feedback], repetitions: num_tr_blocks},
 			pre_test,
 			{...false_font_task, repetitions: num_blocks}
-		]; // precede false fonts with colour instructions
+		];
 
 		var falsefont_size_proc = [
 			size_instructions,
@@ -265,7 +265,7 @@
 			{...false_font_task, timeline: [false_font_task.timeline[0], false_font_task.timeline[1], size_feedback], repetitions: num_tr_blocks},
 			pre_test,
 			{...false_font_task, repetitions: num_blocks}
-		]; // precede false fonts with colour instructions
+		];
 		
 		var unshuffled_procedure = [stroop_colour_proc, stroop_size_proc, falsefont_colour_proc, falsefont_size_proc]; // place all into a single array
 
