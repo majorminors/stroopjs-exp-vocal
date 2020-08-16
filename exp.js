@@ -3,7 +3,7 @@
 		/* set up */
 		////////////
 
-		var instructions_on = 1; // you can turn off (0) the first few blocks of instructions if you want to test
+		var instructions_on = 0; // you can turn off (0) the first few blocks of instructions if you want to test
 
 		var num_blocks = 2; // will repeat each block of stimuli this number of times (blocked together)
 		var num_tr_blocks = 1; // number of training blocks (same principle as num_blocks)
@@ -73,7 +73,21 @@
 		/* trial blocks */
 		//////////////////
 
-		/* a feedback object we can call later when we put together the procedure */
+		/* feedback objects we can call later when we put together the procedure */
+		size_feedback = {
+			type: 'html-keyboard-response',
+			stimulus: function(){
+				var size_string = jsPsych.data.get().last(1).values()[0].size;
+				return '<p> correct answer: '+JSON.stringify(size_string)+'</p>';
+			}
+		}
+		colour_feedback = {
+			type: 'html-keyboard-response',
+			stimulus: function(){
+				var colour_string = jsPsych.data.get().last(1).values()[0].colour;
+				return '<p> correct answer: '+JSON.stringify(colour_string)+'</p>';
+			}
+		}
 
 		/* stroop task */
 		var stroop_task = {
@@ -214,9 +228,9 @@
 		}
 
 		/* push tasks to timeline */
-		var stroop_colour_proc = [colour_instructions,pre_training,{...stroop_task, repetitions: num_tr_blocks},pre_test,{...stroop_task, repetitions: num_blocks}]; // precede stroop with colour instructions
-		var stroop_size_proc = [size_instructions,pre_training,{...stroop_task, repetitions: num_tr_blocks},pre_test,{...stroop_task, repetitions: num_blocks}]; // precede stroop with size instructions
-		var falsefont_colour_proc = [colour_instructions,pre_training,{...false_font_task, repetitions: num_tr_blocks},pre_test,{...false_font_task, repetitions: num_blocks}]; // precede false fonts with colour instructions
+		var stroop_colour_proc = [colour_instructions, pre_training,{...stroop_task, timeline: {...stroop_task.timeline, colour_feedback}, repetitions: num_tr_blocks}, pre_test, {...stroop_task, repetitions: num_blocks}]; // precede stroop with colour instructions
+		var stroop_size_proc = [size_instructions, pre_training, {...stroop_task, timeline: {...stroop_task.timeline, size_feedback}, repetitions: num_tr_blocks}, pre_test, {...stroop_task, repetitions: num_blocks}]; // precede stroop with size instructions
+		var falsefont_colour_proc = [colour_instructions, pre_training, {...false_font_task, timeline: {...false_font_task.timeline, colour_feedback}, repetitions: num_tr_blocks}, pre_test, {...false_font_task, repetitions: num_blocks}]; // precede false fonts with colour instructions
 		
 		var unshuffled_procedure = [stroop_colour_proc, stroop_size_proc, falsefont_colour_proc]; // place all into a single array
 
