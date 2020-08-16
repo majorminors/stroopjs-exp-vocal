@@ -6,6 +6,7 @@
 		var instructions_on = 1; // you can turn off (0) the first few blocks of instructions if you want to test
 
 		var num_blocks = 2; // will repeat each block of stimuli this number of times (blocked together)
+		var num_tr_blocks = 1; // number of training blocks (same principle as num_blocks)
 	
 		var stim_width = { // stimulus width in pixels - height is auto (i.e. will maintain aspect ratio)
 			small: 100,
@@ -19,19 +20,16 @@
 		/* instructions */
 		//////////////////	
 
-		var instructions = {
+		var instructions_on_start = {
 			type: 'html-keyboard-response',
-			stimulus:'<p>In this experiment you will be asked to either report</p><br>'+
-				'<p>the colour of a word, or the size of a word. In both cases,</p><br>'+
-				'<p>you must ignore what the word says (i.e. try not to read the word).'+
-				"<br><p>press any key to continue</p>"
+			stimulus:'<p>In this experiment you will be verbally responding to the images on the screen.<br>There are four different tasks.<br>At the start of each task, you will be provided with instructions.<br>This will be followed by a short training. During training you will be provided with feedback after each trial informing you of the correct answer so you can check.<br>After training, you will no longer receive feedback.<br><br>When ready, press any key continue.</p>'
 		}
 
 		/* intro to the recording trial */
 		var participant_test = {
 			type: 'image-audio-response',
 			stimulus: 'stimuli/tiny-welcome.png',
-			prompt: "<p>You first must allow microphone access in your browser.<br>Once that's done, recording will start. You can see the recording indicator at the bottom right of the screen. Test it out!<br><br> This example trial records for 6 seconds. Speak, and at the end you can play it back or rerecord as you like.<br>In the experiment itself, you will not be able to playback, or rerecord.</p>",
+			prompt: "<p>You first must allow microphone access in your browser if you have not already done so.<br>Be sure to 'remember the decision' so you don't get prompted every time.<br>Once that's done, recording will start. You can see the recording indicator at the bottom right of the screen. Test it out!<br><br> This example trial records for 6 seconds. Speak, and at the end you can play it back or rerecord as you like.<br>In the experiment itself, you will not be able to playback, or rerecord.</p>",
 			allow_playback: true,
 			buffer_length: 6000,
 			wait_for_mic_approval: true,
@@ -41,7 +39,7 @@
 
 		/* push those to the timeline, if instructions are on */
 		if (instructions_on == 1) {
-			timeline.push(instructions);
+			timeline.push(instructions_on_start);
 			timeline.push(participant_test);
 		}
 
@@ -49,20 +47,26 @@
 		/* trial blocks */
 		//////////////////
 
-		/* report colour instructions */
+		/* report size instructions */
 		var size_instructions = {
 			type: 'html-keyboard-response',
-			stimulus: '<p>report size</p>',
-			choices: jsPsych.NO_KEYS,
-			trial_duration: 500
+			stimulus: '<p>In this task, you must report the <em>size</em> of the image.<br>It will be either small, medium, or large.<br><br>Press any key to continue.</p>',
 		}
 
-		/* report size instructions */
+		/* report colour instructions */
 		var colour_instructions = {
 			type: 'html-keyboard-response',
-			stimulus: '<p>report colour</p>',
-			choices: jsPsych.NO_KEYS,
-			trial_duration: 500
+			stimulus: '<p>In this task, you must report the <em>colour</em> of the image.<br>It will be either red, blue, or green.<br><br>Press any key to continue.</p>',
+		}
+
+		/* pre item instructions */
+		var pre_training = {
+			type: 'html-keyboard-response',
+			stimulus: 'We will start with a block of training, and we will give you feedback each trial.<br><br> Press any key to continue.</p>',
+		}
+		var pre_test = {
+			type: 'html-keyboard-response',
+			stimulus: 'Now we begin the test. You will no longer recieve feedback.<br><br> Press any key to continue.</p>',
 		}
 
 		/* stroop task */
@@ -125,7 +129,7 @@
 				{stim_path: 'stimuli/green-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'green-blue-large'}}, 
 			],
 			randomize_order: true,
-			repetitions: num_blocks
+			// 'repetitions:' would go here, but we will assign this more dynamically later
 		}
 		
 		/* grab all the image paths, so we can preload them */
@@ -194,7 +198,7 @@
 				{stim_path: 'stimuli/ffgreen-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffgreen-blue-large'}}, 
 			],
 			randomize_order: true,
-			repetitions: num_blocks
+			// 'repetitions:' would go here, but we will assign this more dynamically later
 		}
 
 		/* grab all the image paths, so we can preload them */
@@ -204,10 +208,9 @@
 		}
 
 		/* push tasks to timeline */
-		
-		var stroop_colour_proc = [colour_instructions,stroop_task]; // precede stroop with colour instructions
-		var stroop_size_proc = [size_instructions,stroop_task]; // precede stroop with size instructions
-		var falsefont_colour_proc = [colour_instructions,false_font_task]; // precede false fonts with colour instructions
+		var stroop_colour_proc = [colour_instructions,{...stroop_task, repetitions: num_blocks}]; // precede stroop with colour instructions
+		var stroop_size_proc = [size_instructions,{...stroop_task, repetitions: num_blocks}]; // precede stroop with size instructions
+		var falsefont_colour_proc = [colour_instructions,{...false_font_task, repetitions: num_blocks}]; // precede false fonts with colour instructions
 		
 		var unshuffled_procedure = [stroop_colour_proc, stroop_size_proc, falsefont_colour_proc]; // place all into a single array
 
