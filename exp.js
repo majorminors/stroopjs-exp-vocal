@@ -79,14 +79,18 @@
 			stimulus: function(){
 				var size_string = jsPsych.data.get().last(1).values()[0].size;
 				return '<p> correct answer: '+JSON.stringify(size_string)+'</p>';
-			}
+			},
+			choices: jsPsych.NO_KEYS,
+			trial_duration: 500,
 		}
 		colour_feedback = {
 			type: 'html-keyboard-response',
 			stimulus: function(){
 				var colour_string = jsPsych.data.get().last(1).values()[0].colour;
 				return '<p> correct answer: '+JSON.stringify(colour_string)+'</p>';
-			}
+			},
+			choices: jsPsych.NO_KEYS,
+			trial_duration: 500,
 		}
 
 		/* stroop task */
@@ -232,11 +236,38 @@
 		/* procedure creation */
 		////////////////////////
 
-		var stroop_colour_proc = [colour_instructions, pre_training,{...stroop_task, timeline: {...stroop_task.timeline, colour_feedback}, repetitions: num_tr_blocks}, pre_test, {...stroop_task, repetitions: num_blocks}]; // precede stroop with colour instructions
-		var stroop_size_proc = [size_instructions, pre_training, {...stroop_task, timeline: {...stroop_task.timeline, size_feedback}, repetitions: num_tr_blocks}, pre_test, {...stroop_task, repetitions: num_blocks}]; // precede stroop with size instructions
-		var falsefont_colour_proc = [colour_instructions, pre_training, {...false_font_task, timeline: {...false_font_task.timeline, colour_feedback}, repetitions: num_tr_blocks}, pre_test, {...false_font_task, repetitions: num_blocks}]; // precede false fonts with colour instructions
+		var stroop_colour_proc = [
+			colour_instructions,
+			pre_training,
+			{...stroop_task, timeline: [stroop_task.timeline[0], stroop_task.timeline[1], colour_feedback], repetitions: num_tr_blocks},
+			pre_test, {...stroop_task, repetitions: num_blocks}
+		]; // precede stroop with colour instructions
 		
-		var unshuffled_procedure = [stroop_colour_proc, stroop_size_proc, falsefont_colour_proc]; // place all into a single array
+		var stroop_size_proc = [
+			size_instructions,
+			pre_training,
+			{...stroop_task, timeline: [stroop_task.timeline[0], stroop_task.timeline[1], size_feedback], repetitions: num_tr_blocks},
+			pre_test,
+			{...stroop_task, repetitions: num_blocks}
+		]; // precede stroop with size instructions
+
+		var falsefont_colour_proc = [
+			colour_instructions,
+			pre_training,
+			{...false_font_task, timeline: [false_font_task.timeline[0], false_font_task.timeline[1], colour_feedback], repetitions: num_tr_blocks},
+			pre_test,
+			{...false_font_task, repetitions: num_blocks}
+		]; // precede false fonts with colour instructions
+
+		var falsefont_size_proc = [
+			size_instructions,
+			pre_training,
+			{...false_font_task, timeline: [false_font_task.timeline[0], false_font_task.timeline[1], size_feedback], repetitions: num_tr_blocks},
+			pre_test,
+			{...false_font_task, repetitions: num_blocks}
+		]; // precede false fonts with colour instructions
+		
+		var unshuffled_procedure = [stroop_colour_proc, stroop_size_proc, falsefont_colour_proc, falsefont_size_proc]; // place all into a single array
 
 		function shuffle(array) { // fisher-yates shuffler function
 			var m = array.length, t, i;
