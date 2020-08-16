@@ -151,12 +151,6 @@
 			randomize_order: true,
 			// 'repetitions:' would go here, but we will assign this more dynamically later
 		}
-		
-		/* grab all the image paths, so we can preload them */
-		var stroop_image_paths = []; // init the variable
-		for (i = 0; i < stroop_task.timeline_variables.length; i++) {
-			stroop_image_paths[i] = stroop_task.timeline_variables[i].stim_path;
-		}
 
 		/* false font task */
 		var false_font_task = {
@@ -221,13 +215,23 @@
 			// 'repetitions:' would go here, but we will assign this more dynamically later
 		}
 
+		//////////////////////////////////////////////////////
 		/* grab all the image paths, so we can preload them */
+		//////////////////////////////////////////////////////
+
+		var stroop_image_paths = []; // init the variable
+		for (i = 0; i < stroop_task.timeline_variables.length; i++) {
+			stroop_image_paths[i] = stroop_task.timeline_variables[i].stim_path;
+		}
 		var falsefont_image_paths = []; // init the variable
 		for (i = 0; i < false_font_task.timeline_variables.length; i++) {
 			falsefont_image_paths[i] = false_font_task.timeline_variables[i].stim_path;
 		}
 
-		/* push tasks to timeline */
+		////////////////////////
+		/* procedure creation */
+		////////////////////////
+
 		var stroop_colour_proc = [colour_instructions, pre_training,{...stroop_task, timeline: {...stroop_task.timeline, colour_feedback}, repetitions: num_tr_blocks}, pre_test, {...stroop_task, repetitions: num_blocks}]; // precede stroop with colour instructions
 		var stroop_size_proc = [size_instructions, pre_training, {...stroop_task, timeline: {...stroop_task.timeline, size_feedback}, repetitions: num_tr_blocks}, pre_test, {...stroop_task, repetitions: num_blocks}]; // precede stroop with size instructions
 		var falsefont_colour_proc = [colour_instructions, pre_training, {...false_font_task, timeline: {...false_font_task.timeline, colour_feedback}, repetitions: num_tr_blocks}, pre_test, {...false_font_task, repetitions: num_blocks}]; // precede false fonts with colour instructions
