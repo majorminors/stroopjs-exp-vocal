@@ -10,7 +10,7 @@
 	
 		var stim_width = { // stimulus width in pixels - height is auto (i.e. will maintain aspect ratio)
 			small: 100,
-			mid: 500,
+			medium: 500,
 			large: 1000
 		} 
 
@@ -43,9 +43,9 @@
 			timeline.push(participant_test);
 		}
 
-		//////////////////
-		/* trial blocks */
-		//////////////////
+		//////////////////////
+		/* instruction bits */
+		//////////////////////
 
 		/* report size instructions */
 		var size_instructions = {
@@ -69,6 +69,12 @@
 			stimulus: 'Now we begin the test. You will no longer recieve feedback.<br><br> Press any key to continue.</p>',
 		}
 
+		//////////////////
+		/* trial blocks */
+		//////////////////
+
+		/* a feedback object we can call later when we put together the procedure */
+
 		/* stroop task */
 		var stroop_task = {
 			timeline: [
@@ -91,42 +97,42 @@
 				}
 			],
 			timeline_variables: [
-				{stim_path: 'stimuli/red-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'red-red-small'}},
-				{stim_path: 'stimuli/red-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'red-red-small'}},
-				{stim_path: 'stimuli/red-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'red-blue-small'}},
-				{stim_path: 'stimuli/red-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'red-green-small'}},
-				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'blue-blue-small'}},
-				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'blue-blue-small'}},
-				{stim_path: 'stimuli/blue-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'blue-red-small'}},
-				{stim_path: 'stimuli/blue-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'blue-green-small'}},
-				{stim_path: 'stimuli/green-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'green-green-small'}},
-				{stim_path: 'stimuli/green-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'green-green-small'}},
-				{stim_path: 'stimuli/green-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'green-red-small'}},
-				{stim_path: 'stimuli/green-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'green-blue-small'}},
-				{stim_path: 'stimuli/red-red.svg', stim_size: stim_width.mid, add_data: {stimulus: 'red-red-mid'}},
-				{stim_path: 'stimuli/red-red.svg', stim_size: stim_width.mid, add_data: {stimulus: 'red-red-mid'}},
-				{stim_path: 'stimuli/red-blue.svg', stim_size: stim_width.mid, add_data: {stimulus: 'red-blue-mid'}},
-				{stim_path: 'stimuli/red-green.svg', stim_size: stim_width.mid, add_data: {stimulus: 'red-green-mid'}},
-				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_width.mid, add_data: {stimulus: 'blue-blue-mid'}},
-				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_width.mid, add_data: {stimulus: 'blue-blue-mid'}},
-				{stim_path: 'stimuli/blue-red.svg', stim_size: stim_width.mid, add_data: {stimulus: 'blue-red-mid'}},
-				{stim_path: 'stimuli/blue-green.svg', stim_size: stim_width.mid, add_data: {stimulus: 'blue-green-mid'}},
-				{stim_path: 'stimuli/green-green.svg', stim_size: stim_width.mid, add_data: {stimulus: 'green-green-mid'}},
-				{stim_path: 'stimuli/green-green.svg', stim_size: stim_width.mid, add_data: {stimulus: 'green-green-mid'}},
-				{stim_path: 'stimuli/green-red.svg', stim_size: stim_width.mid, add_data: {stimulus: 'green-red-mid'}},
-				{stim_path: 'stimuli/green-blue.svg', stim_size: stim_width.mid, add_data: {stimulus: 'green-blue-mid'}},
-				{stim_path: 'stimuli/red-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'red-red-large'}},
-				{stim_path: 'stimuli/red-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'red-red-large'}},
-				{stim_path: 'stimuli/red-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'red-blue-large'}},
-				{stim_path: 'stimuli/red-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'red-green-large'}},
-				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'blue-blue-large'}},
-				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'blue-blue-large'}},
-				{stim_path: 'stimuli/blue-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'blue-red-large'}},
-				{stim_path: 'stimuli/blue-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'blue-green-large'}},
-				{stim_path: 'stimuli/green-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'green-green-large'}},
-				{stim_path: 'stimuli/green-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'green-green-large'}},
-				{stim_path: 'stimuli/green-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'green-red-large'}},
-				{stim_path: 'stimuli/green-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'green-blue-large'}}, 
+				{stim_path: 'stimuli/red-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'red-red-small', size: 'small', colour: 'red'}},
+				{stim_path: 'stimuli/red-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'red-red-small', size: 'small', colour: 'red'}},
+				{stim_path: 'stimuli/red-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'red-blue-small', size: 'small', colour: 'blue'}},
+				{stim_path: 'stimuli/red-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'red-green-small', size: 'small', colour: 'green'}},
+				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'blue-blue-small', size: 'small', colour: 'blue'}},
+				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'blue-blue-small', size: 'small', colour: 'blue'}},
+				{stim_path: 'stimuli/blue-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'blue-red-small', size: 'small', colour: 'red'}},
+				{stim_path: 'stimuli/blue-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'blue-green-small', size: 'small', colour: 'green'}},
+				{stim_path: 'stimuli/green-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'green-green-small', size: 'small', colour: 'green'}},
+				{stim_path: 'stimuli/green-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'green-green-small', size: 'small', colour: 'green'}},
+				{stim_path: 'stimuli/green-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'green-red-small', size: 'small', colour: 'red'}},
+				{stim_path: 'stimuli/green-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'green-blue-small', size: 'small', colour: 'blue'}},
+				{stim_path: 'stimuli/red-red.svg', stim_size: stim_width.medium, add_data: {stimulus: 'red-red-medium', size: 'medium', colour: 'red'}},
+				{stim_path: 'stimuli/red-red.svg', stim_size: stim_width.medium, add_data: {stimulus: 'red-red-medium', size: 'medium', colour: 'red'}},
+				{stim_path: 'stimuli/red-blue.svg', stim_size: stim_width.medium, add_data: {stimulus: 'red-blue-medium', size: 'medium', colour: 'blue'}},
+				{stim_path: 'stimuli/red-green.svg', stim_size: stim_width.medium, add_data: {stimulus: 'red-green-medium', size: 'medium', colour: 'green'}},
+				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_width.medium, add_data: {stimulus: 'blue-blue-medium', size: 'medium', colour: 'blue'}},
+				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_width.medium, add_data: {stimulus: 'blue-blue-medium', size: 'medium', colour: 'blue'}},
+				{stim_path: 'stimuli/blue-red.svg', stim_size: stim_width.medium, add_data: {stimulus: 'blue-red-medium', size: 'medium', colour: 'red'}},
+				{stim_path: 'stimuli/blue-green.svg', stim_size: stim_width.medium, add_data: {stimulus: 'blue-green-medium', size: 'medium', colour: 'green'}},
+				{stim_path: 'stimuli/green-green.svg', stim_size: stim_width.medium, add_data: {stimulus: 'green-green-medium', size: 'medium', colour: 'green'}},
+				{stim_path: 'stimuli/green-green.svg', stim_size: stim_width.medium, add_data: {stimulus: 'green-green-medium', size: 'medium', colour: 'green'}},
+				{stim_path: 'stimuli/green-red.svg', stim_size: stim_width.medium, add_data: {stimulus: 'green-red-medium', size: 'medium', colour: 'red'}},
+				{stim_path: 'stimuli/green-blue.svg', stim_size: stim_width.medium, add_data: {stimulus: 'green-blue-medium', size: 'medium', colour: 'blue'}},
+				{stim_path: 'stimuli/red-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'red-red-large', size: 'large', colour: 'red'}},
+				{stim_path: 'stimuli/red-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'red-red-large', size: 'large', colour: 'red'}},
+				{stim_path: 'stimuli/red-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'red-blue-large', size: 'large', colour: 'blue'}},
+				{stim_path: 'stimuli/red-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'red-green-large', size: 'large', colour: 'green'}},
+				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'blue-blue-large', size: 'large', colour: 'blue'}},
+				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'blue-blue-large', size: 'large', colour: 'blue'}},
+				{stim_path: 'stimuli/blue-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'blue-red-large', size: 'large', colour: 'red'}},
+				{stim_path: 'stimuli/blue-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'blue-green-large', size: 'large', colour: 'green'}},
+				{stim_path: 'stimuli/green-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'green-green-large', size: 'large', colour: 'green'}},
+				{stim_path: 'stimuli/green-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'green-green-large', size: 'large', colour: 'green'}},
+				{stim_path: 'stimuli/green-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'green-red-large', size: 'large', colour: 'red'}},
+				{stim_path: 'stimuli/green-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'green-blue-large', size: 'large', colour: 'blue'}}, 
 			],
 			randomize_order: true,
 			// 'repetitions:' would go here, but we will assign this more dynamically later
@@ -160,42 +166,42 @@
 				}
 			],
 			timeline_variables: [
-				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffred-red-small'}},
-				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffred-red-small'}},
-				{stim_path: 'stimuli/ffred-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffred-blue-small'}},
-				{stim_path: 'stimuli/ffred-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffred-green-small'}},
-				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffblue-blue-small'}},
-				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffblue-blue-small'}},
-				{stim_path: 'stimuli/ffblue-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffblue-red-small'}},
-				{stim_path: 'stimuli/ffblue-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffblue-green-small'}},
-				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffgreen-green-small'}},
-				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffgreen-green-small'}},
-				{stim_path: 'stimuli/ffgreen-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffgreen-red-small'}},
-				{stim_path: 'stimuli/ffgreen-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffgreen-blue-small'}},
-				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffred-red-mid'}},
-				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffred-red-mid'}},
-				{stim_path: 'stimuli/ffred-blue.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffred-blue-mid'}},
-				{stim_path: 'stimuli/ffred-green.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffred-green-mid'}},
-				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffblue-blue-mid'}},
-				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffblue-blue-mid'}},
-				{stim_path: 'stimuli/ffblue-red.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffblue-red-mid'}},
-				{stim_path: 'stimuli/ffblue-green.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffblue-green-mid'}},
-				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffgreen-green-mid'}},
-				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffgreen-green-mid'}},
-				{stim_path: 'stimuli/ffgreen-red.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffgreen-red-mid'}},
-				{stim_path: 'stimuli/ffgreen-blue.svg', stim_size: stim_width.mid, add_data: {stimulus: 'ffgreen-blue-mid'}},
-				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffred-red-large'}},
-				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffred-red-large'}},
-				{stim_path: 'stimuli/ffred-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffred-blue-large'}},
-				{stim_path: 'stimuli/ffred-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffred-green-large'}},
-				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffblue-blue-large'}},
-				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffblue-blue-large'}},
-				{stim_path: 'stimuli/ffblue-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffblue-red-large'}},
-				{stim_path: 'stimuli/ffblue-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffblue-green-large'}},
-				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffgreen-green-large'}},
-				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffgreen-green-large'}},
-				{stim_path: 'stimuli/ffgreen-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffgreen-red-large'}},
-				{stim_path: 'stimuli/ffgreen-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffgreen-blue-large'}}, 
+				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffred-red-small', size: 'small', colour: 'red'}},
+				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffred-red-small', size: 'small', colour: 'red'}},
+				{stim_path: 'stimuli/ffred-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffred-blue-small', size: 'small', colour: 'blue'}},
+				{stim_path: 'stimuli/ffred-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffred-green-small', size: 'small', colour: 'green'}},
+				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffblue-blue-small', size: 'small', colour: 'blue'}},
+				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffblue-blue-small', size: 'small', colour: 'blue'}},
+				{stim_path: 'stimuli/ffblue-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffblue-red-small', size: 'small', colour: 'red'}},
+				{stim_path: 'stimuli/ffblue-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffblue-green-small', size: 'small', colour: 'green'}},
+				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffgreen-green-small', size: 'small', colour: 'green'}},
+				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffgreen-green-small', size: 'small', colour: 'green'}},
+				{stim_path: 'stimuli/ffgreen-red.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffgreen-red-small', size: 'small', colour: 'red'}},
+				{stim_path: 'stimuli/ffgreen-blue.svg', stim_size: stim_width.small, add_data: {stimulus: 'ffgreen-blue-small', size: 'small', colour: 'blue'}},
+				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_width.medium, add_data: {stimulus: 'ffred-red-medium', size: 'medium', colour: 'red'}},
+				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_width.medium, add_data: {stimulus: 'ffred-red-medium', size: 'medium', colour: 'red'}},
+				{stim_path: 'stimuli/ffred-blue.svg', stim_size: stim_width.medium, add_data: {stimulus: 'ffred-blue-medium', size: 'medium', colour: 'blue'}},
+				{stim_path: 'stimuli/ffred-green.svg', stim_size: stim_width.medium, add_data: {stimulus: 'ffred-green-medium', size: 'medium', colour: 'green'}},
+				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_width.medium, add_data: {stimulus: 'ffblue-blue-medium', size: 'medium', colour: 'blue'}},
+				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_width.medium, add_data: {stimulus: 'ffblue-blue-medium', size: 'medium', colour: 'blue'}},
+				{stim_path: 'stimuli/ffblue-red.svg', stim_size: stim_width.medium, add_data: {stimulus: 'ffblue-red-medium', size: 'medium', colour: 'red'}},
+				{stim_path: 'stimuli/ffblue-green.svg', stim_size: stim_width.medium, add_data: {stimulus: 'ffblue-green-medium', size: 'medium', colour: 'green'}},
+				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_width.medium, add_data: {stimulus: 'ffgreen-green-medium', size: 'medium', colour: 'green'}},
+				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_width.medium, add_data: {stimulus: 'ffgreen-green-medium', size: 'medium', colour: 'green'}},
+				{stim_path: 'stimuli/ffgreen-red.svg', stim_size: stim_width.medium, add_data: {stimulus: 'ffgreen-red-medium', size: 'medium', colour: 'red'}},
+				{stim_path: 'stimuli/ffgreen-blue.svg', stim_size: stim_width.medium, add_data: {stimulus: 'ffgreen-blue-medium', size: 'medium', colour: 'blue'}},
+				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffred-red-large', size: 'large', colour: 'red'}},
+				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffred-red-large', size: 'large', colour: 'red'}},
+				{stim_path: 'stimuli/ffred-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffred-blue-large', size: 'large', colour: 'blue'}},
+				{stim_path: 'stimuli/ffred-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffred-green-large', size: 'large', colour: 'green'}},
+				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffblue-blue-large', size: 'large', colour: 'blue'}},
+				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffblue-blue-large', size: 'large', colour: 'blue'}},
+				{stim_path: 'stimuli/ffblue-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffblue-red-large', size: 'large', colour: 'red'}},
+				{stim_path: 'stimuli/ffblue-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffblue-green-large', size: 'large', colour: 'green'}},
+				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffgreen-green-large', size: 'large', colour: 'green'}},
+				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffgreen-green-large', size: 'large', colour: 'green'}},
+				{stim_path: 'stimuli/ffgreen-red.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffgreen-red-large', size: 'large', colour: 'red'}},
+				{stim_path: 'stimuli/ffgreen-blue.svg', stim_size: stim_width.large, add_data: {stimulus: 'ffgreen-blue-large', size: 'large', colour: 'blue'}},
 			],
 			randomize_order: true,
 			// 'repetitions:' would go here, but we will assign this more dynamically later
@@ -208,9 +214,9 @@
 		}
 
 		/* push tasks to timeline */
-		var stroop_colour_proc = [colour_instructions,{...stroop_task, repetitions: num_blocks}]; // precede stroop with colour instructions
-		var stroop_size_proc = [size_instructions,{...stroop_task, repetitions: num_blocks}]; // precede stroop with size instructions
-		var falsefont_colour_proc = [colour_instructions,{...false_font_task, repetitions: num_blocks}]; // precede false fonts with colour instructions
+		var stroop_colour_proc = [colour_instructions,pre_training,{...stroop_task, repetitions: num_tr_blocks},pre_test,{...stroop_task, repetitions: num_blocks}]; // precede stroop with colour instructions
+		var stroop_size_proc = [size_instructions,pre_training,{...stroop_task, repetitions: num_tr_blocks},pre_test,{...stroop_task, repetitions: num_blocks}]; // precede stroop with size instructions
+		var falsefont_colour_proc = [colour_instructions,pre_training,{...false_font_task, repetitions: num_tr_blocks},pre_test,{...false_font_task, repetitions: num_blocks}]; // precede false fonts with colour instructions
 		
 		var unshuffled_procedure = [stroop_colour_proc, stroop_size_proc, falsefont_colour_proc]; // place all into a single array
 
