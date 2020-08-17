@@ -239,8 +239,11 @@
 		var stroop_colour_proc = [
 			colour_instructions,
 			pre_training,
+			// now we spread (shallow copy) the block object, and add to the keys inside - we need to be careful here, because it will only shallow copy: editing too deep will permanently alter the block object
 			{...stroop_task, timeline: [stroop_task.timeline[0], stroop_task.timeline[1], colour_feedback], repetitions: num_tr_blocks},
-			pre_test, {...stroop_task, repetitions: num_blocks}
+			pre_test,
+			// same again - spread the block object and add to the keys inside
+			{...stroop_task, repetitions: num_blocks}
 		];
 		
 		var stroop_size_proc = [
