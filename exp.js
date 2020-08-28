@@ -9,9 +9,9 @@
 		var num_tr_blocks = 1; // number of training blocks (same principle as num_blocks)
 	
 		var stim_height = { // stimulus height in pixels - height is auto (i.e. will maintain aspect ratio)
-			small: 100,
-			medium: 500,
-			large: 1000
+			small: 50,
+			medium: 200,
+			large: 500
 		} 
 
 		var timeline = []; // initialise timeline
