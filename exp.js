@@ -9,8 +9,8 @@
 		var num_tr_blocks = 1; // number of training blocks (same principle as num_blocks)
 	
 		var stim_height = { // stimulus height in pixels - height is auto (i.e. will maintain aspect ratio)
-			small: 50,
-			medium: 200,
+			small: 100,
+			medium: 250,
 			large: 500
 		} 
 
@@ -22,7 +22,7 @@
 
 		var instructions_on_start = {
 			type: 'html-keyboard-response',
-			stimulus:"<p>In this experiment you'll see images on the screen and response by speaking aloud.<br>You'll need to allow microphone access in your browser if you haven't already.<br>Be sure to 'remember the decision' so you don't get prompted every time.<br>There are four different task in this experiment.<br>Each one is slightly different, although all are similar.<br>At the start of each task, you'll get some instructions.<br>Then there will be a short 'training' period during which we'll tell you the correct answer after each trial.<br>Then you'll start the block properly and you won't get and feedback until the next block.<br><br>When ready, press any key continue.</p>"
+			stimulus:"<p>In this experiment you'll see images on the screen and respond by speaking aloud.<br>You'll need to allow microphone access in your browser if you haven't already.<br>Be sure to 'remember the decision' so you don't get prompted every time.<br>There are four different task in this experiment.<br>Each one is slightly different, although all are similar.<br>At the start of each task, you'll get some instructions.<br>Then there will be a short 'training' period during which we'll tell you the correct answer after each trial.<br>Then you'll start the block properly and you won't get and feedback until the next block.<br><br>When ready, press any key continue.</p>"
 		}
 
 		/* intro to the recording trial */
