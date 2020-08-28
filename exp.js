@@ -22,14 +22,14 @@
 
 		var instructions_on_start = {
 			type: 'html-keyboard-response',
-			stimulus:'<p>In this experiment you will be verbally responding to the images on the screen.<br>There are four different tasks.<br>At the start of each task, you will be provided with instructions.<br>This will be followed by a short training. During training you will be provided with feedback after each trial informing you of the correct answer so you can check.<br>After training, you will no longer receive feedback.<br><br>When ready, press any key continue.</p>'
+			stimulus:"<p>In this experiment you'll see images on the screen and response by speaking aloud.<br>You'll need to allow microphone access in your browser if you haven't already.<br>Be sure to 'remember the decision' so you don't get prompted every time.<br>There are four different task in this experiment.<br>Each one is slightly different, although all are similar.<br>At the start of each task, you'll get some instructions.<br>Then there will be a short 'training' period during which we'll tell you the correct answer after each trial.<br>Then you'll start the block properly and you won't get and feedback until the next block.<br><br>When ready, press any key continue.</p>"
 		}
 
 		/* intro to the recording trial */
 		var participant_test = {
 			type: 'image-audio-response',
-			stimulus: 'stimuli/tiny-welcome.png',
-			prompt: "<p>You first must allow microphone access in your browser if you have not already done so.<br>Be sure to 'remember the decision' so you don't get prompted every time.<br>Once that's done, recording will start. You can see the recording indicator at the bottom right of the screen. Test it out!<br><br> This example trial records for 6 seconds. Speak, and at the end you can play it back or rerecord as you like.<br>In the experiment itself, you will not be able to playback, or rerecord.</p>",
+			stimulus: 'stimuli/tiny-welcome.png', // an invisible img that takes up no space on the screen
+			prompt: "<p>Recording has started. Speak!<br>This trial just let's you test things out.<br>You can see the recording indicator at the bottom right of the screen.<br>This example trial records for 6 seconds and at the end you can play it back or rerecord as you like.<br>In the experiment itself, you will not be able to playback, or rerecord.</p>",
 			allow_playback: true,
 			buffer_length: 6000,
 			wait_for_mic_approval: true,
@@ -50,13 +50,13 @@
 		/* report size instructions */
 		var size_instructions = {
 			type: 'html-keyboard-response',
-			stimulus: '<p>In this task, you must report the <em>size</em> of the image.<br>It will be either small, medium, or large.<br><br>Press any key to continue.</p>',
+			stimulus: '<p>In this version of the task, you must report the <em>size</em> of the image.<br>It will be either small, medium, or large.<br><br>Press any key to continue.</p>',
 		}
 
 		/* report colour instructions */
 		var colour_instructions = {
 			type: 'html-keyboard-response',
-			stimulus: '<p>In this task, you must report the <em>colour</em> of the image.<br>It will be either red, blue, or green.<br><br>Press any key to continue.</p>',
+			stimulus: '<p>In this version of the task, you must report the <em>colour</em> of the image.<br>It will be either red, blue, or green.<br><br>Press any key to continue.</p>',
 		}
 
 		/* pre item instructions */
@@ -67,6 +67,12 @@
 		var pre_test = {
 			type: 'html-keyboard-response',
 			stimulus: 'Now we begin the test. You will no longer recieve feedback.<br><br> Press any key to continue.</p>',
+		}
+
+		/* finished task instructions */
+		var finished_task = {
+			type: 'html-keyboard-response',
+			stimulus: "You've finished this version of the task. Well done.<br><br>Press any key to continue.</p>",
 		}
 
 		//////////////////
@@ -243,7 +249,8 @@
 			{...stroop_task, timeline: [stroop_task.timeline[0], stroop_task.timeline[1], colour_feedback], repetitions: num_tr_blocks},
 			pre_test,
 			// same again - spread the block object and add to the keys inside
-			{...stroop_task, repetitions: num_blocks}
+			{...stroop_task, repetitions: num_blocks},
+			finished_task
 		];
 		
 		var stroop_size_proc = [
@@ -251,7 +258,8 @@
 			pre_training,
 			{...stroop_task, timeline: [stroop_task.timeline[0], stroop_task.timeline[1], size_feedback], repetitions: num_tr_blocks},
 			pre_test,
-			{...stroop_task, repetitions: num_blocks}
+			{...stroop_task, repetitions: num_blocks},
+			finished_task
 		];
 
 		var falsefont_colour_proc = [
@@ -259,7 +267,8 @@
 			pre_training,
 			{...false_font_task, timeline: [false_font_task.timeline[0], false_font_task.timeline[1], colour_feedback], repetitions: num_tr_blocks},
 			pre_test,
-			{...false_font_task, repetitions: num_blocks}
+			{...false_font_task, repetitions: num_blocks},
+			finished_task
 		];
 
 		var falsefont_size_proc = [
@@ -267,7 +276,8 @@
 			pre_training,
 			{...false_font_task, timeline: [false_font_task.timeline[0], false_font_task.timeline[1], size_feedback], repetitions: num_tr_blocks},
 			pre_test,
-			{...false_font_task, repetitions: num_blocks}
+			{...false_font_task, repetitions: num_blocks},
+			finished_task
 		];
 		
 		var unshuffled_procedure = [stroop_colour_proc, stroop_size_proc, falsefont_colour_proc, falsefont_size_proc]; // place all into a single array
