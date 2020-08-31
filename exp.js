@@ -305,9 +305,3 @@
 		for (i = 0; i < shuffled_procedure.length; i++) { // loop through the shuffled and flattened procedure array, and push each jsPsych trial block to the timeline
 			timeline.push(shuffled_procedure[i]);
 		}
-
-		/* individual blocks for testing */ 
-		//timeline.push(size_instructions);
-		//timeline.push(colour_instructions);
-		//timeline.push(stroop_task);
-		//timeline.push(false_font_task);
