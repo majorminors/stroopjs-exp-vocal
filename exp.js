@@ -22,7 +22,7 @@
 
 		var instructions_on_start = {
 			type: 'html-keyboard-response',
-			stimulus:"<p>In this experiment you'll see images on the screen and respond by speaking aloud.<br>You'll need to allow microphone access in your browser if you haven't already.<br>Be sure to 'remember the decision' so you don't get prompted every time.<br>There are four different task in this experiment.<br>Each one is slightly different, although all are similar.<br>At the start of each task, you'll get some instructions.<br>Then there will be a short 'training' period during which we'll tell you the correct answer after each trial.<br>Then you'll start the block properly and you won't get and feedback until the next block.<br><br>When ready, press any key continue.</p>"
+			stimulus:"<p>In this experiment you'll see images on the screen and respond by speaking aloud.<br>You'll need to allow microphone access in your browser if you haven't already.<br>Be sure to 'remember the decision' so you don't get prompted every time.<br>There are four different task in this experiment.<br>Each one is slightly different, although all are similar.<br>At the start of each task, you'll get some instructions.<br>Then there will be a short 'training' period during which we'll tell you the correct answer after each trial.<br>Then you'll start the block properly and you won't get any feedback until the next block.<br><br>When ready, press any key continue.</p>"
 		}
 
 		/* intro to the recording trial */
@@ -50,13 +50,13 @@
 		/* report size instructions */
 		var size_instructions = {
 			type: 'html-keyboard-response',
-			stimulus: '<p>In this version of the task, you must report the <em>size</em> of the image.<br>It will be either small, medium, or large.<br><br>Press any key to continue.</p>',
+			stimulus: '<p>In this version of the task, you must report the <em>size</em> of the image by speaking aloud.<br>It will be either small, medium, or large.<br>Please watch the centre of the screen between images!<br><br>Press any key to continue.</p>',
 		}
 
 		/* report colour instructions */
 		var colour_instructions = {
 			type: 'html-keyboard-response',
-			stimulus: '<p>In this version of the task, you must report the <em>colour</em> of the image.<br>It will be either red, blue, or green.<br><br>Press any key to continue.</p>',
+			stimulus: '<p>In this version of the task, you must report the <em>colour</em> of the image by speaking aloud.<br>It will be either red, blue, or green.<br>Please watch the centre of the screen between images!<br><br>Press any key to continue.</p>',
 		}
 
 		/* pre item instructions */
@@ -66,7 +66,7 @@
 		}
 		var pre_test = {
 			type: 'html-keyboard-response',
-			stimulus: 'Now we begin the test. You will no longer recieve feedback.<br><br> Press any key to continue.</p>',
+			stimulus: 'Now we begin the test. You will no longer recieve feedback.<br>Please answer as fast and as accurately as possible.<br><br> Press any key to continue.</p>',
 		}
 
 		/* finished task instructions */
@@ -87,7 +87,7 @@
 				return '<p> correct answer: '+JSON.stringify(size_string)+'</p>';
 			},
 			choices: jsPsych.NO_KEYS,
-			trial_duration: 500,
+			trial_duration: 600,
 		}
 		colour_feedback = {
 			type: 'html-keyboard-response',
@@ -96,7 +96,7 @@
 				return '<p> correct answer: '+JSON.stringify(colour_string)+'</p>';
 			},
 			choices: jsPsych.NO_KEYS,
-			trial_duration: 500,
+			trial_duration: 600,
 		}
 
 		/* stroop task */
