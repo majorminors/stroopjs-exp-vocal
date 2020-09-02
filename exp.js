@@ -33,8 +33,7 @@
 			allow_playback: true,
 			buffer_length: 6000,
 			wait_for_mic_approval: true,
-			recording_light: '<div style="position: absolute; bottom: 0; right: 0;">recording...</div>',
-			recording_light_off: '<div style="position: absolute; bottom: 0; right: 0;">not recording...</div>'
+			recording_indicator: 2
 		}
 
 		/* push those to the timeline, if instructions are on */
@@ -115,8 +114,7 @@
 					buffer_length: 2000,
 					wait_for_mic_approval: false,
 					stimulus_height: jsPsych.timelineVariable('stim_size'),
-					recording_light: '<div style="position: fixed; bottom: 0; right: 0;">recording...</div>',
-					recording_light_off: '<div style="position: fixed; bottom: 0; right: 0;">not recording...</div>',
+					recording_indicator: 2,
 					data: jsPsych.timelineVariable('add_data')
 				}
 			],
@@ -178,8 +176,7 @@
 					buffer_length: 2000,
 					wait_for_mic_approval: false,
 					stimulus_height: jsPsych.timelineVariable('stim_size'),
-					recording_light: '<div style="position: fixed; bottom: 0; right: 0;">recording...</div>',
-					recording_light_off: '<div style="position: fixed; bottom: 0; right: 0;">not recording...</div>',
+					recording_indicator: 2,
 					data: jsPsych.timelineVariable('add_data')
 				}
 			],
