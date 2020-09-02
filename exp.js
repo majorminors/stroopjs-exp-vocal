@@ -3,7 +3,7 @@
 		/* set up */
 		////////////
 
-		var instructions_on = 1; // you can turn off (0) the first two instructions screens if you want to test (since the participant recording test takes a bit)
+		var instructions_on = 0; // you can turn off (0) the first two instructions screens if you want to test (since the participant recording test takes a bit)
 
 		var num_blocks = 2; // will repeat each block of stimuli this number of times (blocked together)
 		var num_tr_blocks = 1; // number of training blocks (same principle as num_blocks)
@@ -33,8 +33,8 @@
 			allow_playback: true,
 			buffer_length: 6000,
 			wait_for_mic_approval: true,
-			recording_light: '<div style="position: fixed; bottom: 0; right: 0;">recording...</div>',
-			recording_light_off: '<div style="position: fixed; bottom: 0; right: 0;">not recording...</div>'
+			recording_light: '<div style="position: absolute; bottom: 0; right: 0;">recording...</div>',
+			recording_light_off: '<div style="position: absolute; bottom: 0; right: 0;">not recording...</div>'
 		}
 
 		/* push those to the timeline, if instructions are on */

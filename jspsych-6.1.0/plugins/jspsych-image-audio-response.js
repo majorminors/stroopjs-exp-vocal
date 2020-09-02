@@ -169,7 +169,7 @@ jsPsych.plugins["image-audio-response"] = (function() {
         let start_time = null;
 
         // add stimulus
-		var html = '<img src="'+trial.stimulus+'" id="jspsych-image-audio-response-stimulus" style="';
+		var html = '<img src="'+trial.stimulus+'" id="jspsych-image-audio-response-stimulus" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);';
 		if(trial.stimulus_height !== null){
 		  html += 'height:'+trial.stimulus_height+'px; '
 		  if(trial.stimulus_width == null && trial.maintain_aspect_ratio){
