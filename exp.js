@@ -7,11 +7,11 @@
 
 		var num_blocks = 2; // will repeat each block of stimuli this number of times (blocked together)
 		var num_tr_blocks = 1; // number of training blocks (same principle as num_blocks)
-	
+		var window_height = window.innerHeight; // get the window height in pixels	
 		var stim_height = { // stimulus height in pixels - height is auto (i.e. will maintain aspect ratio)
-			small: 100,
-			medium: 250,
-			large: 500
+			small: window_height*0.1,
+			medium: window_height*0.3,
+			large: window_height*0.5
 		} 
 
 		var timeline = []; // initialise timeline
