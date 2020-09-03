@@ -23,6 +23,13 @@ jsPsych.plugins["image-audio-response"] = (function() {
                 default: undefined,
                 description: 'The image to be displayed'
             },
+            additional_stimulus: {
+                type: jsPsych.plugins.parameterType.HTML_STRING,
+                pretty_name: 'Additional Stimulus HTML',
+                default: null,
+                description: 'HTML to be displayed in tandem with Stimulus '+
+                '(e.g. to display button mapping)'
+            },
             buffer_length: {
                 type: jsPsych.plugins.parameterType.INT,
                 pretty_name: 'Buffer length',
@@ -195,7 +202,12 @@ jsPsych.plugins["image-audio-response"] = (function() {
 			html += 'height: auto; ';
 		  }
 		}
-		html +='"></img>';
+        html +='"></img>';
+        
+        // add additional stimulus, if specified
+        if(trial.additional_stimulus !== null) {
+            html += trial.additional_stimulus;
+        }
 
         // add prompt if there is one
         if (trial.prompt !== null) {
