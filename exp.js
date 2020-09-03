@@ -8,11 +8,34 @@
 		var num_blocks = 2; // will repeat each block of stimuli this number of times (blocked together)
 		var num_tr_blocks = 1; // number of training blocks (same principle as num_blocks)
 		var window_height = window.innerHeight; // get the window height in pixels	
-		var stim_height = { // stimulus height in pixels - height is auto (i.e. will maintain aspect ratio)
+        
+        var stim_height = { // stimulus height in pixels - width is auto (i.e. will maintain aspect ratio)
 			small: window_height*0.1,
 			medium: window_height*0.3,
 			large: window_height*0.5
 		} 
+
+        // little stimulus factory we'll use later when constructing the trials
+        function stimulusFactory(colour, print, size){
+            var stim_path = `stimuli/${print}-${colour}.svg`;
+            var stim_size = stim_height[size];
+            var congruency;
+            if (print.includes(colour)) {
+                congruency = 'congruent';
+            } else {
+                congruency = 'incongruent';
+            }
+            return {
+                stim_path,
+                stim_size,
+                add_data: {
+                    colour,
+                    print,
+                    size,
+                    congruency,
+                }
+            }
+        }
 
 		var timeline = []; // initialise timeline
 		
@@ -119,42 +142,42 @@
 				}
 			],
 			timeline_variables: [
-				{stim_path: 'stimuli/red-red.svg', stim_size: stim_height.small, add_data: {stimulus: 'red-red-small', size: 'small', colour: 'red', congruency: 'congruent'}},
-				{stim_path: 'stimuli/red-red.svg', stim_size: stim_height.small, add_data: {stimulus: 'red-red-small', size: 'small', colour: 'red', congruency: 'congruent'}},
-				{stim_path: 'stimuli/red-blue.svg', stim_size: stim_height.small, add_data: {stimulus: 'red-blue-small', size: 'small', colour: 'blue', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/red-green.svg', stim_size: stim_height.small, add_data: {stimulus: 'red-green-small', size: 'small', colour: 'green', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_height.small, add_data: {stimulus: 'blue-blue-small', size: 'small', colour: 'blue', congruency: 'congruent'}},
-				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_height.small, add_data: {stimulus: 'blue-blue-small', size: 'small', colour: 'blue', congruency: 'congruent'}},
-				{stim_path: 'stimuli/blue-red.svg', stim_size: stim_height.small, add_data: {stimulus: 'blue-red-small', size: 'small', colour: 'red', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/blue-green.svg', stim_size: stim_height.small, add_data: {stimulus: 'blue-green-small', size: 'small', colour: 'green', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/green-green.svg', stim_size: stim_height.small, add_data: {stimulus: 'green-green-small', size: 'small', colour: 'green', congruency: 'congruent'}},
-				{stim_path: 'stimuli/green-green.svg', stim_size: stim_height.small, add_data: {stimulus: 'green-green-small', size: 'small', colour: 'green', congruency: 'congruent'}},
-				{stim_path: 'stimuli/green-red.svg', stim_size: stim_height.small, add_data: {stimulus: 'green-red-small', size: 'small', colour: 'red', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/green-blue.svg', stim_size: stim_height.small, add_data: {stimulus: 'green-blue-small', size: 'small', colour: 'blue', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/red-red.svg', stim_size: stim_height.medium, add_data: {stimulus: 'red-red-medium', size: 'medium', colour: 'red', congruency: 'congruent'}},
-				{stim_path: 'stimuli/red-red.svg', stim_size: stim_height.medium, add_data: {stimulus: 'red-red-medium', size: 'medium', colour: 'red', congruency: 'congruent'}},
-				{stim_path: 'stimuli/red-blue.svg', stim_size: stim_height.medium, add_data: {stimulus: 'red-blue-medium', size: 'medium', colour: 'blue', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/red-green.svg', stim_size: stim_height.medium, add_data: {stimulus: 'red-green-medium', size: 'medium', colour: 'green', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_height.medium, add_data: {stimulus: 'blue-blue-medium', size: 'medium', colour: 'blue', congruency: 'congruent'}},
-				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_height.medium, add_data: {stimulus: 'blue-blue-medium', size: 'medium', colour: 'blue', congruency: 'congruent'}},
-				{stim_path: 'stimuli/blue-red.svg', stim_size: stim_height.medium, add_data: {stimulus: 'blue-red-medium', size: 'medium', colour: 'red', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/blue-green.svg', stim_size: stim_height.medium, add_data: {stimulus: 'blue-green-medium', size: 'medium', colour: 'green', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/green-green.svg', stim_size: stim_height.medium, add_data: {stimulus: 'green-green-medium', size: 'medium', colour: 'green', congruency: 'congruent'}},
-				{stim_path: 'stimuli/green-green.svg', stim_size: stim_height.medium, add_data: {stimulus: 'green-green-medium', size: 'medium', colour: 'green', congruency: 'congruent'}},
-				{stim_path: 'stimuli/green-red.svg', stim_size: stim_height.medium, add_data: {stimulus: 'green-red-medium', size: 'medium', colour: 'red', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/green-blue.svg', stim_size: stim_height.medium, add_data: {stimulus: 'green-blue-medium', size: 'medium', colour: 'blue', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/red-red.svg', stim_size: stim_height.large, add_data: {stimulus: 'red-red-large', size: 'large', colour: 'red', congruency: 'congruent'}},
-				{stim_path: 'stimuli/red-red.svg', stim_size: stim_height.large, add_data: {stimulus: 'red-red-large', size: 'large', colour: 'red', congruency: 'congruent'}},
-				{stim_path: 'stimuli/red-blue.svg', stim_size: stim_height.large, add_data: {stimulus: 'red-blue-large', size: 'large', colour: 'blue', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/red-green.svg', stim_size: stim_height.large, add_data: {stimulus: 'red-green-large', size: 'large', colour: 'green', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_height.large, add_data: {stimulus: 'blue-blue-large', size: 'large', colour: 'blue', congruency: 'congruent'}},
-				{stim_path: 'stimuli/blue-blue.svg', stim_size: stim_height.large, add_data: {stimulus: 'blue-blue-large', size: 'large', colour: 'blue', congruency: 'congruent'}},
-				{stim_path: 'stimuli/blue-red.svg', stim_size: stim_height.large, add_data: {stimulus: 'blue-red-large', size: 'large', colour: 'red', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/blue-green.svg', stim_size: stim_height.large, add_data: {stimulus: 'blue-green-large', size: 'large', colour: 'green', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/green-green.svg', stim_size: stim_height.large, add_data: {stimulus: 'green-green-large', size: 'large', colour: 'green', congruency: 'congruent'}},
-				{stim_path: 'stimuli/green-green.svg', stim_size: stim_height.large, add_data: {stimulus: 'green-green-large', size: 'large', colour: 'green', congruency: 'congruent'}},
-				{stim_path: 'stimuli/green-red.svg', stim_size: stim_height.large, add_data: {stimulus: 'green-red-large', size: 'large', colour: 'red', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/green-blue.svg', stim_size: stim_height.large, add_data: {stimulus: 'green-blue-large', size: 'large', colour: 'blue', congruency: 'incongruent'}}, 
+                stimulusFactory('red','red','small'),
+                stimulusFactory('red','red','small'),
+                stimulusFactory('red','blue','small'),
+                stimulusFactory('red','green','small'),
+                stimulusFactory('red','red','medium'),
+                stimulusFactory('red','red','medium'),
+                stimulusFactory('red','blue','medium'),
+                stimulusFactory('red','green','medium'),
+                stimulusFactory('red','red','large'),
+                stimulusFactory('red','red','large'),
+                stimulusFactory('red','blue','large'),
+                stimulusFactory('red','green','large'),
+                stimulusFactory('blue','blue','small'),
+                stimulusFactory('blue','blue','small'),
+                stimulusFactory('blue','red','small'),
+                stimulusFactory('blue','green','small'),
+                stimulusFactory('blue','blue','medium'),
+                stimulusFactory('blue','blue','medium'),
+                stimulusFactory('blue','red','medium'),
+                stimulusFactory('blue','green','medium'),
+                stimulusFactory('blue','blue','large'),
+                stimulusFactory('blue','blue','large'),
+                stimulusFactory('blue','red','large'),
+                stimulusFactory('blue','green','large'),
+                stimulusFactory('green','green','small'),
+                stimulusFactory('green','green','small'),
+                stimulusFactory('green','blue','small'),
+                stimulusFactory('green','red','small'),
+                stimulusFactory('green','green','medium'),
+                stimulusFactory('green','green','medium'),
+                stimulusFactory('green','blue','medium'),
+                stimulusFactory('green','red','medium'),
+                stimulusFactory('green','green','large'),
+                stimulusFactory('green','green','large'),
+                stimulusFactory('green','blue','large'),
+                stimulusFactory('green','red','large'),
 			],
 			randomize_order: true,
 			// 'repetitions:' would go here, but we will assign this more dynamically later
@@ -179,48 +202,48 @@
 					recording_indicator: 2,
 					data: jsPsych.timelineVariable('add_data')
 				}
-			],
+            ],
 			timeline_variables: [
-				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_height.small, add_data: {stimulus: 'ffred-red-small', size: 'small', colour: 'red', congruency: 'congruent'}},
-				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_height.small, add_data: {stimulus: 'ffred-red-small', size: 'small', colour: 'red', congruency: 'congruent'}},
-				{stim_path: 'stimuli/ffred-blue.svg', stim_size: stim_height.small, add_data: {stimulus: 'ffred-blue-small', size: 'small', colour: 'blue', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/ffred-green.svg', stim_size: stim_height.small, add_data: {stimulus: 'ffred-green-small', size: 'small', colour: 'green', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_height.small, add_data: {stimulus: 'ffblue-blue-small', size: 'small', colour: 'blue', congruency: 'congruent'}},
-				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_height.small, add_data: {stimulus: 'ffblue-blue-small', size: 'small', colour: 'blue', congruency: 'congruent'}},
-				{stim_path: 'stimuli/ffblue-red.svg', stim_size: stim_height.small, add_data: {stimulus: 'ffblue-red-small', size: 'small', colour: 'red', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/ffblue-green.svg', stim_size: stim_height.small, add_data: {stimulus: 'ffblue-green-small', size: 'small', colour: 'green', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_height.small, add_data: {stimulus: 'ffgreen-green-small', size: 'small', colour: 'green', congruency: 'congruent'}},
-				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_height.small, add_data: {stimulus: 'ffgreen-green-small', size: 'small', colour: 'green', congruency: 'congruent'}},
-				{stim_path: 'stimuli/ffgreen-red.svg', stim_size: stim_height.small, add_data: {stimulus: 'ffgreen-red-small', size: 'small', colour: 'red', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/ffgreen-blue.svg', stim_size: stim_height.small, add_data: {stimulus: 'ffgreen-blue-small', size: 'small', colour: 'blue', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_height.medium, add_data: {stimulus: 'ffred-red-medium', size: 'medium', colour: 'red', congruency: 'congruent'}},
-				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_height.medium, add_data: {stimulus: 'ffred-red-medium', size: 'medium', colour: 'red', congruency: 'congruent'}},
-				{stim_path: 'stimuli/ffred-blue.svg', stim_size: stim_height.medium, add_data: {stimulus: 'ffred-blue-medium', size: 'medium', colour: 'blue', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/ffred-green.svg', stim_size: stim_height.medium, add_data: {stimulus: 'ffred-green-medium', size: 'medium', colour: 'green', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_height.medium, add_data: {stimulus: 'ffblue-blue-medium', size: 'medium', colour: 'blue', congruency: 'congruent'}},
-				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_height.medium, add_data: {stimulus: 'ffblue-blue-medium', size: 'medium', colour: 'blue', congruency: 'congruent'}},
-				{stim_path: 'stimuli/ffblue-red.svg', stim_size: stim_height.medium, add_data: {stimulus: 'ffblue-red-medium', size: 'medium', colour: 'red', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/ffblue-green.svg', stim_size: stim_height.medium, add_data: {stimulus: 'ffblue-green-medium', size: 'medium', colour: 'green', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_height.medium, add_data: {stimulus: 'ffgreen-green-medium', size: 'medium', colour: 'green', congruency: 'congruent'}},
-				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_height.medium, add_data: {stimulus: 'ffgreen-green-medium', size: 'medium', colour: 'green', congruency: 'congruent'}},
-				{stim_path: 'stimuli/ffgreen-red.svg', stim_size: stim_height.medium, add_data: {stimulus: 'ffgreen-red-medium', size: 'medium', colour: 'red', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/ffgreen-blue.svg', stim_size: stim_height.medium, add_data: {stimulus: 'ffgreen-blue-medium', size: 'medium', colour: 'blue', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_height.large, add_data: {stimulus: 'ffred-red-large', size: 'large', colour: 'red', congruency: 'congruent'}},
-				{stim_path: 'stimuli/ffred-red.svg', stim_size: stim_height.large, add_data: {stimulus: 'ffred-red-large', size: 'large', colour: 'red', congruency: 'congruent'}},
-				{stim_path: 'stimuli/ffred-blue.svg', stim_size: stim_height.large, add_data: {stimulus: 'ffred-blue-large', size: 'large', colour: 'blue', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/ffred-green.svg', stim_size: stim_height.large, add_data: {stimulus: 'ffred-green-large', size: 'large', colour: 'green', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_height.large, add_data: {stimulus: 'ffblue-blue-large', size: 'large', colour: 'blue', congruency: 'congruent'}},
-				{stim_path: 'stimuli/ffblue-blue.svg', stim_size: stim_height.large, add_data: {stimulus: 'ffblue-blue-large', size: 'large', colour: 'blue', congruency: 'congruent'}},
-				{stim_path: 'stimuli/ffblue-red.svg', stim_size: stim_height.large, add_data: {stimulus: 'ffblue-red-large', size: 'large', colour: 'red', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/ffblue-green.svg', stim_size: stim_height.large, add_data: {stimulus: 'ffblue-green-large', size: 'large', colour: 'green', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_height.large, add_data: {stimulus: 'ffgreen-green-large', size: 'large', colour: 'green', congruency: 'congruent'}},
-				{stim_path: 'stimuli/ffgreen-green.svg', stim_size: stim_height.large, add_data: {stimulus: 'ffgreen-green-large', size: 'large', colour: 'green', congruency: 'congruent'}},
-				{stim_path: 'stimuli/ffgreen-red.svg', stim_size: stim_height.large, add_data: {stimulus: 'ffgreen-red-large', size: 'large', colour: 'red', congruency: 'incongruent'}},
-				{stim_path: 'stimuli/ffgreen-blue.svg', stim_size: stim_height.large, add_data: {stimulus: 'ffgreen-blue-large', size: 'large', colour: 'blue', congruency: 'incongruent'}},
+                stimulusFactory('red','ffred','small'),
+                stimulusFactory('red','ffred','small'),
+                stimulusFactory('red','ffblue','small'),
+                stimulusFactory('red','ffgreen','small'),
+                stimulusFactory('red','ffred','medium'),
+                stimulusFactory('red','ffred','medium'),
+                stimulusFactory('red','ffblue','medium'),
+                stimulusFactory('red','ffgreen','medium'),
+                stimulusFactory('red','ffred','large'),
+                stimulusFactory('red','ffred','large'),
+                stimulusFactory('red','ffblue','large'),
+                stimulusFactory('red','ffgreen','large'),
+                stimulusFactory('blue','ffblue','small'),
+                stimulusFactory('blue','ffblue','small'),
+                stimulusFactory('blue','ffred','small'),
+                stimulusFactory('blue','ffgreen','small'),
+                stimulusFactory('blue','ffblue','medium'),
+                stimulusFactory('blue','ffblue','medium'),
+                stimulusFactory('blue','ffred','medium'),
+                stimulusFactory('blue','ffgreen','medium'),
+                stimulusFactory('blue','ffblue','large'),
+                stimulusFactory('blue','ffblue','large'),
+                stimulusFactory('blue','ffred','large'),
+                stimulusFactory('blue','ffgreen','large'),
+                stimulusFactory('green','ffgreen','small'),
+                stimulusFactory('green','ffgreen','small'),
+                stimulusFactory('green','ffblue','small'),
+                stimulusFactory('green','ffred','small'),
+                stimulusFactory('green','ffgreen','medium'),
+                stimulusFactory('green','ffgreen','medium'),
+                stimulusFactory('green','ffblue','medium'),
+                stimulusFactory('green','ffred','medium'),
+                stimulusFactory('green','ffgreen','large'),
+                stimulusFactory('green','ffgreen','large'),
+                stimulusFactory('green','ffblue','large'),
+                stimulusFactory('green','ffred','large'),
 			],
 			randomize_order: true,
 			// 'repetitions:' would go here, but we will assign this more dynamically later
-		}
+        }
 
 		//////////////////////////////////////////////////////
 		/* grab all the image paths, so we can preload them */
