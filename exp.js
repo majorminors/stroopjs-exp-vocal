@@ -3,19 +3,26 @@
 		/* set up */
 		////////////
 
-		var instructions_on = 1; // you can turn off (0) the first two instructions screens if you want to test (since the participant recording test takes a bit)
+		var instructions_on = 0; // you can turn off (0) the first two instructions screens if you want to test (since the participant recording test takes a bit)
 
 		var num_blocks = 2; // will repeat each block of stimuli this number of times (blocked together)
 		var num_tr_blocks = 1; // number of training blocks (same principle as num_blocks)
 		var window_height = window.innerHeight; // get the window height in pixels	
-        
+       
+        //////////////////////
+        /* stimuli creation */
+        //////////////////////
+
         var stim_height = { // stimulus height in pixels - width is auto (i.e. will maintain aspect ratio)
 			small: window_height*0.1,
 			medium: window_height*0.3,
 			large: window_height*0.5
-		} 
+        } 
+        
+        var colours = ["red", "blue", "green"];
 
         // little stimulus factory we'll use later when constructing the trials
+        // produces a complete stimulus object that can be indexed into by a trial variablec as a timeline variable.
         function stimulusFactory(colour, print, size){
             var stim_path = `stimuli/${print}-${colour}.svg`;
             var stim_size = stim_height[size];
@@ -36,6 +43,48 @@
                 }
             }
         }
+
+        // create a little factory to put together a stimulus list for the timeline variable
+        // will produce a list of calls to the stimulusFactory
+        // don't have to use this--can just call stimulus factory directly however many times like:
+        //          timeline_variables: [
+        //              stimulusFactory("green", "red", "small"),
+        //              stimulusFactory("green", "blue", "small"),
+        //              ...
+        //          ]
+        function stimListFactory(colours, doFalseFont, sizes) {
+            let stimulus_list = [];
+        
+            let printed_words = [...colours]
+            // in this case, the print is the same as the colours (or based off the colours in the case of the false fonts)
+            // with different printed words, just replace 'doFalseFont' with prints and delete the doFalseFont line in the function
+        
+            colours.forEach(colour => {
+                // console.log('Ink colour: ' + colour)
+        
+                sizes.forEach(size => {
+                    // console.log('Size: ' + size)
+        
+                    printed_words.forEach(print => {
+                        // console.log('Print Colour: ' + print)
+        
+                        let final_print = doFalseFont ? ('ff' + print) : print
+                        // if doFalseFont is true, append 'ff' to print, else just pass print
+        
+                        if(colour === print) {
+                            // produce calls to create two of any congruent stimuli
+                            stimulus_list.push(stimulusFactory(colour, final_print, size))
+                            stimulus_list.push(stimulusFactory(colour, final_print, size))
+                        } else {
+                            // produce calls to create one of each incongruent stimulus type
+                            stimulus_list.push(stimulusFactory(colour, final_print, size))
+                        }
+                    });
+                });
+            });
+        
+            return stimulus_list;
+        } 
 
 		var timeline = []; // initialise timeline
 		
@@ -141,49 +190,13 @@
 					data: jsPsych.timelineVariable('add_data')
 				}
 			],
-			timeline_variables: [
-                stimulusFactory('red','red','small'),
-                stimulusFactory('red','red','small'),
-                stimulusFactory('red','blue','small'),
-                stimulusFactory('red','green','small'),
-                stimulusFactory('red','red','medium'),
-                stimulusFactory('red','red','medium'),
-                stimulusFactory('red','blue','medium'),
-                stimulusFactory('red','green','medium'),
-                stimulusFactory('red','red','large'),
-                stimulusFactory('red','red','large'),
-                stimulusFactory('red','blue','large'),
-                stimulusFactory('red','green','large'),
-                stimulusFactory('blue','blue','small'),
-                stimulusFactory('blue','blue','small'),
-                stimulusFactory('blue','red','small'),
-                stimulusFactory('blue','green','small'),
-                stimulusFactory('blue','blue','medium'),
-                stimulusFactory('blue','blue','medium'),
-                stimulusFactory('blue','red','medium'),
-                stimulusFactory('blue','green','medium'),
-                stimulusFactory('blue','blue','large'),
-                stimulusFactory('blue','blue','large'),
-                stimulusFactory('blue','red','large'),
-                stimulusFactory('blue','green','large'),
-                stimulusFactory('green','green','small'),
-                stimulusFactory('green','green','small'),
-                stimulusFactory('green','blue','small'),
-                stimulusFactory('green','red','small'),
-                stimulusFactory('green','green','medium'),
-                stimulusFactory('green','green','medium'),
-                stimulusFactory('green','blue','medium'),
-                stimulusFactory('green','red','medium'),
-                stimulusFactory('green','green','large'),
-                stimulusFactory('green','green','large'),
-                stimulusFactory('green','blue','large'),
-                stimulusFactory('green','red','large'),
-			],
+            timeline_variables: stimListFactory(colours, false, Object.keys(stim_height)),
 			randomize_order: true,
 			// 'repetitions:' would go here, but we will assign this more dynamically later
 		}
-
-		/* false font task */
+        console.log(stroop_task.timeline_variables);
+        
+        /* false font task */
 		var false_font_task = {
 			timeline: [
 				{
@@ -203,47 +216,11 @@
 					data: jsPsych.timelineVariable('add_data')
 				}
             ],
-			timeline_variables: [
-                stimulusFactory('red','ffred','small'),
-                stimulusFactory('red','ffred','small'),
-                stimulusFactory('red','ffblue','small'),
-                stimulusFactory('red','ffgreen','small'),
-                stimulusFactory('red','ffred','medium'),
-                stimulusFactory('red','ffred','medium'),
-                stimulusFactory('red','ffblue','medium'),
-                stimulusFactory('red','ffgreen','medium'),
-                stimulusFactory('red','ffred','large'),
-                stimulusFactory('red','ffred','large'),
-                stimulusFactory('red','ffblue','large'),
-                stimulusFactory('red','ffgreen','large'),
-                stimulusFactory('blue','ffblue','small'),
-                stimulusFactory('blue','ffblue','small'),
-                stimulusFactory('blue','ffred','small'),
-                stimulusFactory('blue','ffgreen','small'),
-                stimulusFactory('blue','ffblue','medium'),
-                stimulusFactory('blue','ffblue','medium'),
-                stimulusFactory('blue','ffred','medium'),
-                stimulusFactory('blue','ffgreen','medium'),
-                stimulusFactory('blue','ffblue','large'),
-                stimulusFactory('blue','ffblue','large'),
-                stimulusFactory('blue','ffred','large'),
-                stimulusFactory('blue','ffgreen','large'),
-                stimulusFactory('green','ffgreen','small'),
-                stimulusFactory('green','ffgreen','small'),
-                stimulusFactory('green','ffblue','small'),
-                stimulusFactory('green','ffred','small'),
-                stimulusFactory('green','ffgreen','medium'),
-                stimulusFactory('green','ffgreen','medium'),
-                stimulusFactory('green','ffblue','medium'),
-                stimulusFactory('green','ffred','medium'),
-                stimulusFactory('green','ffgreen','large'),
-                stimulusFactory('green','ffgreen','large'),
-                stimulusFactory('green','ffblue','large'),
-                stimulusFactory('green','ffred','large'),
-			],
+            timeline_variables: stimListFactory(colours, true, Object.keys(stim_height)),
 			randomize_order: true,
 			// 'repetitions:' would go here, but we will assign this more dynamically later
         }
+        console.log(false_font_task.timeline_variables);
 
 		//////////////////////////////////////////////////////
 		/* grab all the image paths, so we can preload them */
