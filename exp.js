@@ -13,13 +13,13 @@
         /* stimuli creation */
         //////////////////////
 
+        var colours = ["red", "blue", "green"];
+
         var stim_height = { // stimulus height in pixels - width is auto (i.e. will maintain aspect ratio)
 			small: window_height*0.1,
 			medium: window_height*0.3,
 			large: window_height*0.5
         } 
-        
-        var colours = ["red", "blue", "green"];
 
         // little stimulus factory we'll use later when constructing the trials
         // produces a complete stimulus object that can be indexed into by a trial variablec as a timeline variable.
@@ -177,9 +177,38 @@
 					type: 'html-keyboard-response',
 					stimulus: '<div style="font-size:60px;">+</div>',
 					choices: jsPsych.NO_KEYS,
-					trial_duration: 300
+                    trial_duration: 300,
+                    data: jsPsych.timelineVariable('add_data') // pull this in so we can access it in a subsequent trial
 				},
-				{
+				{ // training block, colour: shows correct response for colour -- stroop_task.timeline[1]
+					type: 'image-audio-response',
+                    stimulus: jsPsych.timelineVariable('stim_path'),
+                    additional_stimulus: function(){
+                        var colour_string = jsPsych.data.get().last(1).values()[0].colour;
+                        return '<div style="position: absolute; top: 0px; right: 0px; margin-top: 20px; margin-right: 20px;"><p> correct answer: '+JSON.stringify(colour_string)+'</p></div>';
+                    },
+					allow_playback: false,
+					buffer_length: 2000,
+					wait_for_mic_approval: false,
+					stimulus_height: jsPsych.timelineVariable('stim_size'),
+					recording_indicator: 2,
+					data: jsPsych.timelineVariable('add_data')
+				},
+				{ // training block, size: shows correct response for size -- stroop_task.timeline[2]
+					type: 'image-audio-response',
+                    stimulus: jsPsych.timelineVariable('stim_path'),
+                    additional_stimulus: function(){
+                        var size_string = jsPsych.data.get().last(1).values()[0].size;
+                        return '<div style="position: absolute; top: 0px; right: 0px; margin-top: 20px; margin-right: 20px;"><p> correct answer: '+JSON.stringify(size_string)+'</p></div>';
+                    },
+					allow_playback: false,
+					buffer_length: 2000,
+					wait_for_mic_approval: false,
+					stimulus_height: jsPsych.timelineVariable('stim_size'),
+					recording_indicator: 2,
+					data: jsPsych.timelineVariable('add_data')
+				},
+				{ // testing block: does not show correct response - stroop_task.timeline[3]
 					type: 'image-audio-response',
 					stimulus: jsPsych.timelineVariable('stim_path'),
 					allow_playback: false,
@@ -203,9 +232,38 @@
 					type: 'html-keyboard-response',
 					stimulus: '<div style="font-size:60px;">+</div>',
 					choices: jsPsych.NO_KEYS,
-					trial_duration: 300
+					trial_duration: 300,
+                    data: jsPsych.timelineVariable('add_data') // pull this in so we can access it in a subsequent trial
 				},
-				{
+				{ // training block, colour: shows correct response for colour -- false_font_task.timeline[1]
+					type: 'image-audio-response',
+                    stimulus: jsPsych.timelineVariable('stim_path'),
+                    additional_stimulus: function(){
+                        var colour_string = jsPsych.data.get().last(1).values()[0].colour;
+                        return '<div style="position: absolute; top: 0px; right: 0px; margin-top: 20px; margin-right: 20px;"><p> correct answer: '+JSON.stringify(colour_string)+'</p></div>';
+                    },
+					allow_playback: false,
+					buffer_length: 2000,
+					wait_for_mic_approval: false,
+					stimulus_height: jsPsych.timelineVariable('stim_size'),
+					recording_indicator: 2,
+					data: jsPsych.timelineVariable('add_data')
+				},
+				{ // training block, size: shows correct response for size -- false_font_task.timeline[2]
+					type: 'image-audio-response',
+                    stimulus: jsPsych.timelineVariable('stim_path'),
+                    additional_stimulus: function(){
+                        var size_string = jsPsych.data.get().last(1).values()[0].size;
+                        return '<div style="position: absolute; top: 0px; right: 0px; margin-top: 20px; margin-right: 20px;"><p> correct answer: '+JSON.stringify(size_string)+'</p></div>';
+                    },
+					allow_playback: false,
+					buffer_length: 2000,
+					wait_for_mic_approval: false,
+					stimulus_height: jsPsych.timelineVariable('stim_size'),
+					recording_indicator: 2,
+					data: jsPsych.timelineVariable('add_data')
+				},
+				{ // testing block: does not show correct response -- false_font_task.timeline[3]
 					type: 'image-audio-response',
 					stimulus: jsPsych.timelineVariable('stim_path'),
 					allow_playback: false,
@@ -246,16 +304,16 @@
 			{...stroop_task, timeline: [stroop_task.timeline[0], stroop_task.timeline[1], colour_feedback], repetitions: num_tr_blocks},
 			pre_test,
 			// same again - spread the block object and add to the keys inside
-			{...stroop_task, repetitions: num_blocks},
+			{...stroop_task, timeline: [stroop_task.timeline[0], stroop_task.timeline[3]], repetitions: num_blocks},
 			finished_task
 		];
 		
 		var stroop_size_proc = [
 			size_instructions,
 			pre_training,
-			{...stroop_task, timeline: [stroop_task.timeline[0], stroop_task.timeline[1], size_feedback], repetitions: num_tr_blocks},
+			{...stroop_task, timeline: [stroop_task.timeline[0], stroop_task.timeline[2], size_feedback], repetitions: num_tr_blocks},
 			pre_test,
-			{...stroop_task, repetitions: num_blocks},
+			{...stroop_task, timeline: [stroop_task.timeline[0], stroop_task.timeline[3]], repetitions: num_blocks},
 			finished_task
 		];
 
@@ -264,16 +322,16 @@
 			pre_training,
 			{...false_font_task, timeline: [false_font_task.timeline[0], false_font_task.timeline[1], colour_feedback], repetitions: num_tr_blocks},
 			pre_test,
-			{...false_font_task, repetitions: num_blocks},
+			{...false_font_task, timeline: [false_font_task.timeline[0], false_font_task.timeline[3]], repetitions: num_blocks},
 			finished_task
 		];
 
 		var falsefont_size_proc = [
 			size_instructions,
 			pre_training,
-			{...false_font_task, timeline: [false_font_task.timeline[0], false_font_task.timeline[1], size_feedback], repetitions: num_tr_blocks},
+			{...false_font_task, timeline: [false_font_task.timeline[0], false_font_task.timeline[2], size_feedback], repetitions: num_tr_blocks},
 			pre_test,
-			{...false_font_task, repetitions: num_blocks},
+			{...false_font_task, timeline: [false_font_task.timeline[0], false_font_task.timeline[3]], repetitions: num_blocks},
 			finished_task
 		];
 		
