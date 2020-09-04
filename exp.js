@@ -121,7 +121,7 @@
 		/* report size instructions */
 		var size_instructions = {
 			type: 'html-keyboard-response',
-			stimulus: '<p>In this version of the task, you must report the <em>size</em> of the image by speaking aloud.<br>It will be either small, medium, or large.<br>Please watch the centre of the screen between images!<br><br>Press any key to continue.</p>',
+			stimulus: '<p>In this version of the task, you must report the <em>size</em> of the image by speaking aloud.<br>The size of these symbols differ in <strong>height</strong>. They will be either small, medium, or large.<br>Please watch the centre of the screen between images!<br><br>Press any key to continue.</p>',
 		}
 
 		/* report colour instructions */
