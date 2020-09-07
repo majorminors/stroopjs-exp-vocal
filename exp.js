@@ -392,6 +392,3 @@
             timeline.push(flattened_procedure[i]);
         }
 
-        jsPsych.data.addProperties({ // push the condition info to the data object so you can double check stuff
-          condition_info: shuffled_procedure
-        });
