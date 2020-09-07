@@ -182,7 +182,7 @@
                     trial_duration: 300,
                     data: {
                         ...jsPsych.timelineVariable('add_data'), // pull this in so we can access it in a subsequent trial
-                        trial_type: "fixation",
+                        exp_part: "fixation",
                     }
                 },
                 { // training block, colour: shows correct response for colour -- stroop_task.timeline[1]
@@ -199,7 +199,7 @@
                     recording_indicator: 2,
                     data: {
                         ...jsPsych.timelineVariable('add_data'),
-                        trial_type: "training",
+                        exp_part: "training",
                         test_type: "colour"
                     }
                 },
@@ -217,7 +217,7 @@
                     recording_indicator: 2,
                     data: {
                         ...jsPsych.timelineVariable('add_data'),
-                        trial_type: "training",
+                        exp_part: "training",
                         test_type: "size"
                     }
                 },
@@ -231,7 +231,7 @@
                     recording_indicator: 2,
                     data: {
                         ...jsPsych.timelineVariable('add_data'),
-                        trial_type: "testing",
+                        exp_part: "testing",
                     }
                 }
             ],
@@ -251,7 +251,7 @@
                     trial_duration: 300,
                     data: {
                         ...jsPsych.timelineVariable('add_data'), // pull this in so we can access it in a subsequent trial
-                        trial_type: "fixation",
+                        exp_part: "fixation",
                     }
                 },
                 { // training block, colour: shows correct response for colour -- false_font_task.timeline[1]
@@ -268,7 +268,7 @@
                     recording_indicator: 2,
                     data: {
                         ...jsPsych.timelineVariable('add_data'),
-                        trial_type: "training",
+                        exp_part: "training",
                         test_type: "colour",
                     }
                 },
@@ -286,7 +286,7 @@
                     recording_indicator: 2,
                     data: {
                         ...jsPsych.timelineVariable('add_data'),
-                        trial_type: "training",
+                        exp_part: "training",
                         test_type: "size"
                     }
                 },
@@ -300,7 +300,7 @@
                     recording_indicator: 2,
                     data: {
                         ...jsPsych.timelineVariable('add_data'),
-                        trial_type: "testing",
+                        exp_part: "testing",
                     }
                 }
             ],
