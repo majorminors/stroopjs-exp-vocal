@@ -2,34 +2,34 @@
 <html>
     <head>
         <title>Stroop Control</title>
-		<!-- pull in the jsPsych libraries we need -->
-		<script src="jspsych-6.1.0/jspsych.js"></script>
-		<script src="jspsych-6.1.0/plugins/jspsych-image-audio-response.js"></script>
-		<script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
-		<!-- pull in the actual experiment -->
-		<script src="exp.js"></script>
-		<!-- pull in the styling -->
-		<link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css"></link>
-		<style></style>
+        <!-- pull in the jsPsych libraries we need -->
+        <script src="jspsych-6.1.0/jspsych.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-image-audio-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
+        <!-- pull in the actual experiment -->
+        <script src="exp.js"></script>
+        <!-- pull in the styling -->
+        <link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css"></link>
+        <style></style>
     </head>
     <body></body>
-	<script>
+    <script>
 
-		/* 
-		 * the experiment script in exp.js produces the variables
-		 * jsPsych needs to run the experiment
-		 * we do this so we don't have to maintain it twice for JATOS
-		 * (jatos.html) and non-JATOS (index.html) versions
-		*/
+        /* 
+         * the experiment script in exp.js produces the variables
+         * jsPsych needs to run the experiment
+         * we do this so we don't have to maintain it twice for JATOS
+         * (jatos.html) and non-JATOS (index.html) versions
+        */
 
-		/* initialise experiment */
-		jsPsych.init({
-			timeline: timeline,
-			preload_images: [stroop_image_paths, falsefont_image_paths],
-			on_finish: function(){
-				jsPsych.data.displayData();
-			}
-		});
+        /* initialise experiment */
+        jsPsych.init({
+            timeline: timeline,
+            preload_images: [stroop_image_paths, falsefont_image_paths],
+            on_finish: function(){
+                jsPsych.data.displayData();
+            }
+        });
 
-	</script>
+    </script>
 </html>
