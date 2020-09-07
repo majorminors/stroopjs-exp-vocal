@@ -156,8 +156,8 @@
         size_feedback = {
             type: 'html-keyboard-response',
             stimulus: function(){
-                var size_string = jsPsych.data.get().last(1).values()[0].size;
-                return '<p> correct answer: '+JSON.stringify(size_string)+'</p>';
+                var size_string = jsPsych.data.get().last(1).values()[0].stim_data.size;
+                return '<p>correct answer: <span style="font-size: 40px;">'+JSON.stringify(size_string)+'</span></p>';
             },
             choices: jsPsych.NO_KEYS,
             trial_duration: 600,
@@ -165,8 +165,8 @@
         colour_feedback = {
             type: 'html-keyboard-response',
             stimulus: function(){
-                var colour_string = jsPsych.data.get().last(1).values()[0].colour;
-                return '<p> correct answer: '+JSON.stringify(colour_string)+'</p>';
+                var colour_string = jsPsych.data.get().last(1).values()[0].stim_data.colour;
+                return '<p> correct answer: <span style="font-size: 40px;">'+JSON.stringify(colour_string)+'</span></p>';
             },
             choices: jsPsych.NO_KEYS,
             trial_duration: 600,
@@ -181,7 +181,7 @@
                     choices: jsPsych.NO_KEYS,
                     trial_duration: 300,
                     data: {
-                        ...jsPsych.timelineVariable('add_data'), // pull this in so we can access it in a subsequent trial
+                        stim_data: jsPsych.timelineVariable('add_data'), // pull this in so we can access it in a subsequent trial
                         exp_part: "fixation",
                     }
                 },
@@ -189,8 +189,8 @@
                     type: 'image-audio-response',
                     stimulus: jsPsych.timelineVariable('stim_path'),
                     additional_stimulus: function(){
-                        var colour_string = jsPsych.data.get().last(1).values()[0].colour;
-                        return '<div style="position: absolute; top: 0px; right: 0px; margin-top: 20px; margin-right: 20px;"><p> correct answer: '+JSON.stringify(colour_string)+'</p></div>';
+                        var colour_string = jspsych.data.get().last(1).values()[0].stim_data.colour;
+                        return '<div style="position: absolute; top: 0px; right: 0px; margin-top: 20px; margin-right: 20px"><p> correct answer: <span style="font-size: 40px;">'+json.stringify(colour_string)+'</span></p>';
                     },
                     allow_playback: false,
                     buffer_length: 2000,
@@ -198,7 +198,7 @@
                     stimulus_height: jsPsych.timelineVariable('stim_size'),
                     recording_indicator: 2,
                     data: {
-                        ...jsPsych.timelineVariable('add_data'),
+                        stim_data: jsPsych.timelineVariable('add_data'),
                         exp_part: "training",
                         test_type: "colour"
                     }
@@ -207,8 +207,8 @@
                     type: 'image-audio-response',
                     stimulus: jsPsych.timelineVariable('stim_path'),
                     additional_stimulus: function(){
-                        var size_string = jsPsych.data.get().last(1).values()[0].size;
-                        return '<div style="position: absolute; top: 0px; right: 0px; margin-top: 20px; margin-right: 20px;"><p> correct answer: '+JSON.stringify(size_string)+'</p></div>';
+                        var size_string = jsPsych.data.get().last(1).values()[0].stim_data.size;
+                        return '<div style="position: absolute; top: 0px; right: 0px; margin-top: 20px; margin-right: 20px"><p> correct answer: <span style="font-size: 40px;">'+JSON.stringify(size_string)+'</span></p>';
                     },
                     allow_playback: false,
                     buffer_length: 2000,
@@ -216,7 +216,7 @@
                     stimulus_height: jsPsych.timelineVariable('stim_size'),
                     recording_indicator: 2,
                     data: {
-                        ...jsPsych.timelineVariable('add_data'),
+                        stim_data: jsPsych.timelineVariable('add_data'),
                         exp_part: "training",
                         test_type: "size"
                     }
@@ -230,7 +230,7 @@
                     stimulus_height: jsPsych.timelineVariable('stim_size'),
                     recording_indicator: 2,
                     data: {
-                        ...jsPsych.timelineVariable('add_data'),
+                        stim_data: jsPsych.timelineVariable('add_data'),
                         exp_part: "testing",
                     }
                 }
@@ -250,7 +250,7 @@
                     choices: jsPsych.NO_KEYS,
                     trial_duration: 300,
                     data: {
-                        ...jsPsych.timelineVariable('add_data'), // pull this in so we can access it in a subsequent trial
+                        stim_data: jsPsych.timelineVariable('add_data'), // pull this in so we can access it in a subsequent trial
                         exp_part: "fixation",
                     }
                 },
@@ -258,8 +258,8 @@
                     type: 'image-audio-response',
                     stimulus: jsPsych.timelineVariable('stim_path'),
                     additional_stimulus: function(){
-                        var colour_string = jsPsych.data.get().last(1).values()[0].colour;
-                        return '<div style="position: absolute; top: 0px; right: 0px; margin-top: 20px; margin-right: 20px;"><p> correct answer: '+JSON.stringify(colour_string)+'</p></div>';
+                        var colour_string = jsPsych.data.get().last(1).values()[0].stim_data.colour;
+                        return '<div style="position: absolute; top: 0px; right: 0px; margin-top: 20px; margin-right: 20px"><p> correct answer: <span style="font-size: 40px;">'+JSON.stringify(colour_string)+'</span></p>';
                     },
                     allow_playback: false,
                     buffer_length: 2000,
@@ -267,7 +267,7 @@
                     stimulus_height: jsPsych.timelineVariable('stim_size'),
                     recording_indicator: 2,
                     data: {
-                        ...jsPsych.timelineVariable('add_data'),
+                        stim_data: jsPsych.timelineVariable('add_data'),
                         exp_part: "training",
                         test_type: "colour",
                     }
@@ -276,8 +276,8 @@
                     type: 'image-audio-response',
                     stimulus: jsPsych.timelineVariable('stim_path'),
                     additional_stimulus: function(){
-                        var size_string = jsPsych.data.get().last(1).values()[0].size;
-                        return '<div style="position: absolute; top: 0px; right: 0px; margin-top: 20px; margin-right: 20px;"><p> correct answer: '+JSON.stringify(size_string)+'</p></div>';
+                        var size_string = jsPsych.data.get().last(1).values()[0].stim_data.size;
+                        return '<div style="position: absolute; top: 0px; right: 0px; margin-top: 20px; margin-right: 20px"><p> correct answer: <span style="font-size: 40px;">'+JSON.stringify(size_string)+'</span></p>';
                     },
                     allow_playback: false,
                     buffer_length: 2000,
@@ -285,7 +285,7 @@
                     stimulus_height: jsPsych.timelineVariable('stim_size'),
                     recording_indicator: 2,
                     data: {
-                        ...jsPsych.timelineVariable('add_data'),
+                        stim_data: jsPsych.timelineVariable('add_data'),
                         exp_part: "training",
                         test_type: "size"
                     }
@@ -299,7 +299,7 @@
                     stimulus_height: jsPsych.timelineVariable('stim_size'),
                     recording_indicator: 2,
                     data: {
-                        ...jsPsych.timelineVariable('add_data'),
+                        stim_data: jsPsych.timelineVariable('add_data'),
                         exp_part: "testing",
                     }
                 }
