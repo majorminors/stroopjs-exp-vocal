@@ -388,7 +388,7 @@
         var shuffled_procedure = shuffle(unshuffled_procedure); // shuffle the procedure
         var flattened_procedure = shuffled_procedure.flat(); // flatten it into one layer
         
-        for (i = 0; i < shuffled_procedure.length; i++) { // loop through the shuffled and flattened procedure array, and push each jsPsych trial block to the timeline
+        for (i = 0; i < flattened_procedure.length; i++) { // loop through the shuffled and flattened procedure array, and push each jsPsych trial block to the timeline
             timeline.push(flattened_procedure[i]);
         }
 
