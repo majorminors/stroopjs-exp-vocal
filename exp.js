@@ -153,7 +153,7 @@
         //////////////////
 
         /* feedback objects we can call later when we put together the procedure */
-        size_feedback = {
+        var size_feedback = {
             type: 'html-keyboard-response',
             stimulus: function(){
                 var size_string = jsPsych.data.get().last(1).values()[0].stim_data.size;
@@ -162,7 +162,7 @@
             choices: jsPsych.NO_KEYS,
             trial_duration: 600,
         }
-        colour_feedback = {
+        var colour_feedback = {
             type: 'html-keyboard-response',
             stimulus: function(){
                 var colour_string = jsPsych.data.get().last(1).values()[0].stim_data.colour;
