@@ -201,8 +201,6 @@
                     recording_indicator: 2,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
-                        exp_part: "training",
-                        test_type: "size_only"
                     }
                 },
                 { // colour only training block
@@ -215,8 +213,6 @@
                     recording_indicator: 2,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
-                        exp_part: "training",
-                        test_type: "colour_only"
                     }
                 },
                 { // stimulus block
@@ -261,8 +257,6 @@
                     recording_indicator: 2,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
-                        exp_part: "training",
-                        test_type: "size_only"
                     }
                 },
                 { // colour only training block
@@ -275,8 +269,6 @@
                     recording_indicator: 2,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
-                        exp_part: "training",
-                        test_type: "colour_only"
                     }
                 },
                 { // stimulus block
@@ -310,6 +302,11 @@
         for (i = 0; i < false_font_task.timeline_variables.length; i++) {
             falsefont_image_paths[i] = false_font_task.timeline_variables[i].stim_path;
         }
+        var oned_image_paths = []; // init the variable
+        oned_image_paths[colours.length] = "stimuli/line.svg";
+        for (i = 0; i < colours.length; i++) {
+           oned_image_paths[i] = `stimuli/${colours[i]}.svg`;
+        }
 
         ////////////////////////
         /* procedure creation */
@@ -319,7 +316,7 @@
             colour_instructions, // precede stroop with colour instructions
             pre_1d_training,
             // now we spread (shallow copy) the block object, and add to the keys inside - we need to be careful here, because it will only shallow copy: editing too deep will permanently alter the block object
-            {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[2], data: {...stroop_task.timeline[2].data, exp_part: "training"}}, colour_feedback], repetitions: num_tr_blocks}, // append feedback to the stroop and add repetitions
+            {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[2], data: {...stroop_task.timeline[2].data, exp_part: "training", test_type: "colour_only"}}, colour_feedback], repetitions: num_tr_blocks}, // append feedback to the stroop and add repetitions
             pre_training, // pre task instructions
             // same again - spread the block object and add to the keys inside
             {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[3], data: {...stroop_task.timeline[3].data, exp_part: "training", test_type: "colour"}}, colour_feedback], repetitions: num_tr_blocks},
@@ -332,7 +329,7 @@
         var stroop_size_proc = [
             size_instructions,
             pre_1d_training,
-            {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[1], data: {...stroop_task.timeline[1].data, exp_part: "training"}}, size_feedback], repetitions: num_tr_blocks},
+            {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[1], data: {...stroop_task.timeline[1].data, exp_part: "training", test_type: "size_only"}}, size_feedback], repetitions: num_tr_blocks},
             pre_training,
             {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[3], data: {...stroop_task.timeline[3].data, exp_part: "training", test_type: "size"}}, size_feedback], repetitions: num_tr_blocks},
             pre_test,
@@ -343,7 +340,7 @@
         var falsefont_colour_proc = [
             colour_instructions,
             pre_1d_training,
-            {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[2], data: {...false_font_task.timeline[2].data, exp_part: "training"}}, colour_feedback], repetitions: num_tr_blocks},
+            {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[2], data: {...false_font_task.timeline[2].data, exp_part: "training", test_type: "colour_only"}}, colour_feedback], repetitions: num_tr_blocks},
             pre_training,
             {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[3], data: {...false_font_task.timeline[3].data, exp_part: "training", test_type: "colour"}}, colour_feedback], repetitions: num_tr_blocks},
             pre_test,
@@ -354,7 +351,7 @@
         var falsefont_size_proc = [
             size_instructions,
             pre_1d_training,
-            {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[1], data: {...false_font_task.timeline[1].data, exp_part: "training"}}, size_feedback], repetitions: num_tr_blocks},
+            {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[1], data: {...false_font_task.timeline[1].data, exp_part: "training", test_type: "size_only"}}, size_feedback], repetitions: num_tr_blocks},
             pre_training,
             {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[3], data: {...false_font_task.timeline[3].data, exp_part: "training", test_type: "size"}}, size_feedback], repetitions: num_tr_blocks},
             pre_test,
