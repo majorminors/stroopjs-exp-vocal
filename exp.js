@@ -128,14 +128,14 @@
         timeline.push(screen_dimensions);
 
         // standardise the screen size
-        var screen_sizer = {
-            type: 'resize',
-            item_width: 3 + 3/8, // I think this is in inches
-            item_height: 2 + 1/8,
-            prompt: "<p>Click and drag the lower right corner of the box until the box is the same size as a credit card held up to the screen.</p>",
-            pixels_per_unit: 150
-        }
-        timeline.push(screen_sizer);
+        // var screen_sizer = {
+        //     type: 'resize',
+        //     item_width: 3 + 3/8, // I think this is in inches
+        //     item_height: 2 + 1/8,
+        //     prompt: "<p>Click and drag the lower right corner of the box until the box is the same size as a credit card held up to the screen.</p>",
+        //     pixels_per_unit: 150
+        // }
+        // timeline.push(screen_sizer);
 
         //////////////////////
         /* instruction bits */
