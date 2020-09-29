@@ -174,9 +174,7 @@
         }
         var size_instruction_reminder = {
             type: 'html-keyboard-response',
-            stimulus: '<p>Remember, you must report the <em>height</em> of the image which will be either short, medium, or tall.</p>'
-                '<p>Please keep your eyes on the centre of the screen throughout.</p><br>'+
-                '<br><p>Press any key to continue.</p>',
+            stimulus: '<p>Remember, you must report the <em>height</em> of the image by speaking aloud.<br>It will be either short, medium, or tall.<br>Please keep your eyes on the centre of the screen throughout.<br><br>Press any key to continue.</p>',
         }
 
         /* report colour instructions */
@@ -186,9 +184,7 @@
         }
         var colour_instruction_reminder = {
             type: 'html-keyboard-response',
-            stimulus: '<p>Remember, you must report the <em>colour</em> of the image which will be either red, blue, or green.</p>'
-                '<p>Please keep your eyes on the centre of the screen throughout.</p><br>'+
-                '<br><p>Press any key to continue.</p>',
+            stimulus: '<p>Remember, you must report the <em>colour</em> of the image by speaking aloud.<br>It will be either red, blue, or green.<br>Please keep your eyes on the centre of the screen throughout.<br><br>Press any key to continue.</p>',
         }
 
         /* pre item instructions */
