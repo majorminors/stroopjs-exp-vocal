@@ -7,6 +7,9 @@
 
         var num_blocks = 2; // will repeat each block of stimuli this number of times (blocked together)
         var num_tr_blocks = 1; // number of training blocks (same principle as num_blocks)
+        var feedback_time = 800; // ms
+        var fixation_time = 500; // ms
+        var trial_time = 2000; // ms
 
         var participant_id = jsPsych.randomization.randomID(15); // generate a string for participant ID
         jsPsych.data.addProperties({ // push that to the data object
@@ -21,9 +24,9 @@
 
         var window_height = window.innerHeight; // get the window height in pixels	
         var stim_height = { // stimulus height in pixels - width is auto (i.e. will maintain aspect ratio)
-            small: window_height*0.1,
+            short: window_height*0.1,
             medium: window_height*0.3,
-            large: window_height*0.5
+            tall: window_height*0.5
         }
 
         // little stimulus factory we'll use later when constructing the trials
@@ -55,8 +58,8 @@
         // will produce a list of calls to the stimulusFactory
         // don't have to use this--can just call stimulus factory directly however many times like:
         //          timeline_variables: [
-        //              stimulusFactory("green", "red", "small"),
-        //              stimulusFactory("green", "blue", "small"),
+        //              stimulusFactory("green", "red", "short"),
+        //              stimulusFactory("green", "blue", "short"),
         //              ...
         //          ]
         function stimListFactory(colours, doFalseFont, sizes) {
@@ -94,7 +97,7 @@
         } 
 
         var timeline = []; // initialise timeline
-        
+
         //////////////////////////////////
         /* do window and viewport stuff */
         //////////////////////////////////
@@ -167,13 +170,25 @@
         /* report size instructions */
         var size_instructions = {
             type: 'html-keyboard-response',
-            stimulus: '<p>In this version of the task, you must report the <em>size</em> of the image by speaking aloud.<br>The size of these symbols differ in <strong>height</strong>. They will be either small, medium, or large.<br>Please watch the centre of the screen between images!<br><br>Press any key to continue.</p>',
+            stimulus: '<p>In this version of the task, you must report the <em>height</em> of the image by speaking aloud.<br>They will be either short, medium, or tall.<br>Please keep your eyes on the centre of the screen throughout.<br><br>Press any key to continue.</p>',
+        }
+        var size_instruction_reminder = {
+            type: 'html-keyboard-response',
+            stimulus: '<p>Remember, you must report the <em>height</em> of the image which will be either short, medium, or tall.</p>'
+                '<p>Please keep your eyes on the centre of the screen throughout.</p><br>'+
+                '<br><p>Press any key to continue.</p>',
         }
 
         /* report colour instructions */
         var colour_instructions = {
             type: 'html-keyboard-response',
-            stimulus: '<p>In this version of the task, you must report the <em>colour</em> of the image by speaking aloud.<br>It will be either red, blue, or green.<br>Please watch the centre of the screen between images!<br><br>Press any key to continue.</p>',
+            stimulus: '<p>In this version of the task, you must report the <em>colour</em> of the image by speaking aloud.<br>It will be either red, blue, or green.<br>Please keep your eyes on the centre of the screen throughout.<br><br>Press any key to continue.</p>',
+        }
+        var colour_instruction_reminder = {
+            type: 'html-keyboard-response',
+            stimulus: '<p>Remember, you must report the <em>colour</em> of the image which will be either red, blue, or green.</p>'
+                '<p>Please keep your eyes on the centre of the screen throughout.</p><br>'+
+                '<br><p>Press any key to continue.</p>',
         }
 
         /* pre item instructions */
@@ -183,7 +198,7 @@
         }
         var pre_training = {
             type: 'html-keyboard-response',
-            stimulus: 'Now another block of training with a more complicated stimulus. We will give you feedback each trial.<br><br> Press any key to continue.</p>',
+            stimulus: 'Now another block of training with a different stimulus. We will give you feedback each trial.<br><br> Press any key to continue.</p>',
         }
         var pre_test = {
             type: 'html-keyboard-response',
@@ -208,7 +223,7 @@
                 return '<p>correct answer: <span style="font-size: 40px;">'+JSON.stringify(size_string)+'</span></p>';
             },
             choices: jsPsych.NO_KEYS,
-            trial_duration: 600,
+            trial_duration: feedback_time,
         }
         var colour_feedback = {
             type: 'html-keyboard-response',
@@ -217,7 +232,7 @@
                 return '<p> correct answer: <span style="font-size: 40px;">'+JSON.stringify(colour_string)+'</span></p>';
             },
             choices: jsPsych.NO_KEYS,
-            trial_duration: 600,
+            trial_duration: feedback_time,
         }
 
         /* stroop task */
@@ -227,7 +242,7 @@
                     type: 'html-keyboard-response',
                     stimulus: '<div style="font-size:60px;">+</div>',
                     choices: jsPsych.NO_KEYS,
-                    trial_duration: 300,
+                    trial_duration: fixation_time,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'), // pull this in so we can access it in a subsequent trial
                         exp_part: "fixation",
@@ -237,7 +252,7 @@
                     type: 'image-audio-response',
                     stimulus: 'stimuli/line.svg',
                     allow_playback: false,
-                    buffer_length: 2000,
+                    buffer_length: trial_time,
                     wait_for_mic_approval: false,
                     stimulus_height: jsPsych.timelineVariable('stim_size'),
                     recording_indicator: 2,
@@ -249,7 +264,7 @@
                     type: 'image-audio-response',
                     stimulus: jsPsych.timelineVariable('trn_stim'),
                     allow_playback: false,
-                    buffer_length: 2000,
+                    buffer_length: trial_time,
                     wait_for_mic_approval: false,
                     stimulus_height: stim_height.medium,
                     recording_indicator: 2,
@@ -261,7 +276,7 @@
                     type: 'image-audio-response',
                     stimulus: jsPsych.timelineVariable('stim_path'),
                     allow_playback: false,
-                    buffer_length: 2000,
+                    buffer_length: trial_time,
                     wait_for_mic_approval: false,
                     stimulus_height: jsPsych.timelineVariable('stim_size'),
                     recording_indicator: 2,
@@ -283,7 +298,7 @@
                     type: 'html-keyboard-response',
                     stimulus: '<div style="font-size:60px;">+</div>',
                     choices: jsPsych.NO_KEYS,
-                    trial_duration: 300,
+                    trial_duration: fixation_time,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'), // pull this in so we can access it in a subsequent trial
                         exp_part: "fixation",
@@ -293,7 +308,7 @@
                     type: 'image-audio-response',
                     stimulus: 'stimuli/line.svg',
                     allow_playback: false,
-                    buffer_length: 2000,
+                    buffer_length: trial_time,
                     wait_for_mic_approval: false,
                     stimulus_height: jsPsych.timelineVariable('stim_size'),
                     recording_indicator: 2,
@@ -305,7 +320,7 @@
                     type: 'image-audio-response',
                     stimulus: jsPsych.timelineVariable('trn_stim'),
                     allow_playback: false,
-                    buffer_length: 2000,
+                    buffer_length: trial_time,
                     wait_for_mic_approval: false,
                     stimulus_height: stim_height.medium,
                     recording_indicator: 2,
@@ -317,7 +332,7 @@
                     type: 'image-audio-response',
                     stimulus: jsPsych.timelineVariable('stim_path'),
                     allow_playback: false,
-                    buffer_length: 2000,
+                    buffer_length: trial_time,
                     wait_for_mic_approval: false,
                     stimulus_height: jsPsych.timelineVariable('stim_size'),
                     recording_indicator: 2,
@@ -354,12 +369,21 @@
         /* procedure creation */
         ////////////////////////
 
+        // we'll create something to remove items from these arrays
+        // since we only want the extra training for the first two procedures
+        function proc_editor(x){
+            x.splice(1,2); // remove 1d stuff
+            x.splice(2,1); // remove instruction reminder (position AFTER previous splice)
+            return x;
+        }
+
         var stroop_colour_proc = [
             colour_instructions, // precede stroop with colour instructions
             pre_1d_training,
             // now we spread (shallow copy) the block object, and add to the keys inside - we need to be careful here, because it will only shallow copy: editing too deep will permanently alter the block object
             {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[2], data: {...stroop_task.timeline[2].data, exp_part: "training", test_type: "colour_only"}}, colour_feedback], repetitions: num_tr_blocks}, // append feedback to the stroop and add repetitions
             pre_training, // pre task instructions
+            colour_instruction_reminder, // precede the task with the reminder of the task
             // same again - spread the block object and add to the keys inside
             {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[3], data: {...stroop_task.timeline[3].data, exp_part: "training", test_type: "colour"}}, colour_feedback], repetitions: num_tr_blocks},
             pre_test,
@@ -373,6 +397,7 @@
             pre_1d_training,
             {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[1], data: {...stroop_task.timeline[1].data, exp_part: "training", test_type: "size_only"}}, size_feedback], repetitions: num_tr_blocks},
             pre_training,
+            size_instruction_reminder,
             {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[3], data: {...stroop_task.timeline[3].data, exp_part: "training", test_type: "size"}}, size_feedback], repetitions: num_tr_blocks},
             pre_test,
             {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[3], data: {...stroop_task.timeline[3].data, exp_part: "testing", test_type: "size"}}], repetitions: num_blocks},
@@ -384,6 +409,7 @@
             pre_1d_training,
             {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[2], data: {...false_font_task.timeline[2].data, exp_part: "training", test_type: "colour_only"}}, colour_feedback], repetitions: num_tr_blocks},
             pre_training,
+            colour_instruction_reminder,
             {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[3], data: {...false_font_task.timeline[3].data, exp_part: "training", test_type: "colour"}}, colour_feedback], repetitions: num_tr_blocks},
             pre_test,
             {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[3], data: {...false_font_task.timeline[3].data, exp_part: "testing", test_type: "colour"}}], repetitions: num_blocks},
@@ -395,6 +421,7 @@
             pre_1d_training,
             {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[1], data: {...false_font_task.timeline[1].data, exp_part: "training", test_type: "size_only"}}, size_feedback], repetitions: num_tr_blocks},
             pre_training,
+            size_instruction_reminder,
             {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[3], data: {...false_font_task.timeline[3].data, exp_part: "training", test_type: "size"}}, size_feedback], repetitions: num_tr_blocks},
             pre_test,
             {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[3], data: {...false_font_task.timeline[3].data, exp_part: "testing", test_type: "size"}}], repetitions: num_blocks},
@@ -422,6 +449,9 @@
         }
 
         var shuffled_procedure = shuffle(unshuffled_procedure); // shuffle the procedure
+        proc_editor(shuffled_procedure[2]);
+        proc_editor(shuffled_procedure[3]);
+
         var flattened_procedure = shuffled_procedure.flat(); // flatten it into one layer
         
         for (i = 0; i < flattened_procedure.length; i++) { // loop through the shuffled and flattened procedure array, and push each jsPsych trial block to the timeline
