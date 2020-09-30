@@ -3,7 +3,7 @@
         /* set up */
         ////////////
 
-        var instructions_on = 0; // you can turn off (0) the first two instructions screens if you want to test (since the participant recording test takes a bit)
+        var instructions_on = 1; // you can turn off (0) the first two instructions screens if you want to test (since the participant recording test takes a bit)
 
         var num_blocks = 2; // will repeat each block of stimuli this number of times (blocked together)
         var num_tr_blocks = 1; // number of training blocks (same principle as num_blocks)
