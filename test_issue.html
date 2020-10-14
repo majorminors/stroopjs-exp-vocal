@@ -8,9 +8,6 @@
         <script src="jspsych-6.1.0/plugins/jspsych-resize.js"></script>
         <script src="jspsych-6.1.0/plugins/jspsych-image-audio-response.js"></script>
         <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
-        <!-- pull in the actual experiment -->
-        <script src="exp.js"></script>
-        <!-- pull in the styling -->
         <link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css"></link>
         <style></style>
     </head>
@@ -67,7 +64,6 @@
         /* initialise experiment */
         jsPsych.init({
             timeline: timeline,
-            preload_images: [stroop_image_paths, falsefont_image_paths,oned_image_paths],
             on_finish: function(){
                 jsPsych.data.displayData();
             }
