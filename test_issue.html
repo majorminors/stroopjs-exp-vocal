@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Stroop Control</title>
+        <!-- pull in the jsPsych libraries we need -->
+        <script src="jspsych-6.1.0/jspsych.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-call-function.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-resize.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-image-audio-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
+        <!-- pull in the actual experiment -->
+        <script src="exp.js"></script>
+        <!-- pull in the styling -->
+        <link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css"></link>
+        <style></style>
+    </head>
+    <body></body>
+    <script>
+        
+        var window_height = window.innerHeight;
+        var stim_size = window_height*0.3
+        var timeline = []; // initialise timeline
+
+        var text_screen_one = {
+            type: 'html-keyboard-response',
+            stimulus:"<p>First, without resizing, note the recording indicator at the bottom right of the next trial screen. It has a fixed position, bottom-0 right-0. Press any key to continue.</p>"
+        }
+        timeline.push(text_screen_one);
+
+        var recording_screen_one = {
+            type: 'image-audio-response',
+            stimulus: 'stimuli/red.svg', // an invisible img that takes up no space on the screen
+            stimulus_height: stim_size,
+            allow_playback: false,
+            buffer_length: 10000,
+            wait_for_mic_approval: true,
+            recording_indicator: 2
+        }
+        timeline.push(recording_screen_one);
+
+        var screen_sizer = {
+            type: 'resize',
+            item_width: 3 + 3/8, // I think this is in inches
+            item_height: 2 + 1/8,
+            prompt: "<p>Now we'll resize. This is just copy-pasted from the jsPsych plugin, so it's intended to be sized to a bank card, but any resizing will do for the purpose of illustration. Just click and drag.</p>",
+            pixels_per_unit: 150
+        }
+        timeline.push(screen_sizer);
+
+        var text_screen_two = {
+            type: 'html-keyboard-response',
+            stimulus:"<p>Now, after resizing, note the position of the recording indicator on the next trial screen. No change in positioning, but it is no longer pinned to the edges of the viewport as one would expect with a fixed position. Press any key to continue.</p>"
+        }
+        timeline.push(text_screen_two);
+
+        var recording_screen_two= {
+            type: 'image-audio-response',
+            stimulus: 'stimuli/red.svg', // an invisible img that takes up no space on the screen
+            stimulus_height: stim_size,
+            allow_playback: false,
+            buffer_length: 10000,
+            wait_for_mic_approval: true,
+            recording_indicator: 2
+        }
+        timeline.push(recording_screen_two);
+
+        /* initialise experiment */
+        jsPsych.init({
+            timeline: timeline,
+            preload_images: [stroop_image_paths, falsefont_image_paths,oned_image_paths],
+            on_finish: function(){
+                jsPsych.data.displayData();
+            }
+        });
+
+    </script>
+</html>
