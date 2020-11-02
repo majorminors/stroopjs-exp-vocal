@@ -27,6 +27,10 @@
         /* initialise experiment */
         jsPsych.init({
             timeline: timeline,
+            exclusions: {
+                min_width: 800,
+                min_height: 600
+            },
             preload_images: [stroop_image_paths, falsefont_image_paths,oned_image_paths],
             on_finish: function(){
                 jsPsych.data.displayData();

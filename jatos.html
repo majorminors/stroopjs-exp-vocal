@@ -31,6 +31,10 @@
             jsPsych.init({
                 timeline: timeline,
                 preload_images: [stroop_image_paths, falsefont_image_paths,oned_image_paths],
+                exclusions: {
+                    min_width: 800,
+                    min_height: 600
+                },
                 on_finish: function() {
                     var resultJson = jsPsych.data.get().json();
                     jatos.submitResultData(resultJson, jatos.startNextComponent);
