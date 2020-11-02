@@ -153,7 +153,7 @@
         var participant_test = {
             type: 'image-audio-response',
             stimulus: 'stimuli/tiny-welcome.png', // an invisible img that takes up no space on the screen
-            prompt: "<p>Recording has started. Speak!<br>This trial just let's you test things out.<br>You can see the recording indicator at the bottom right of the screen.<br>This example trial records for 6 seconds and at the end you can play it back or rerecord as you like.<br>In the experiment itself, you will not be able to playback, or rerecord.</p>",
+            prompt: "<p>Recording has started. Speak!<br>This trial just let's you test things out.<br>This example trial records for 6 seconds and at the end you can play it back or rerecord as you like.<br>In the experiment itself, you will not be able to playback, or rerecord.</p>",
             allow_playback: true,
             buffer_length: 6000,
             wait_for_mic_approval: true,
@@ -251,7 +251,7 @@
                     buffer_length: trial_time,
                     wait_for_mic_approval: false,
                     stimulus_height: jsPsych.timelineVariable('stim_size'),
-                    recording_indicator: 2,
+                    recording_indicator: 4,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
                     }
@@ -263,7 +263,7 @@
                     buffer_length: trial_time,
                     wait_for_mic_approval: false,
                     stimulus_height: stim_height.medium,
-                    recording_indicator: 2,
+                    recording_indicator: 4,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
                     }
@@ -275,7 +275,7 @@
                     buffer_length: trial_time,
                     wait_for_mic_approval: false,
                     stimulus_height: jsPsych.timelineVariable('stim_size'),
-                    recording_indicator: 2,
+                    recording_indicator: 4,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
                     }
@@ -307,7 +307,7 @@
                     buffer_length: trial_time,
                     wait_for_mic_approval: false,
                     stimulus_height: jsPsych.timelineVariable('stim_size'),
-                    recording_indicator: 2,
+                    recording_indicator: 4,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
                     }
@@ -319,7 +319,7 @@
                     buffer_length: trial_time,
                     wait_for_mic_approval: false,
                     stimulus_height: stim_height.medium,
-                    recording_indicator: 2,
+                    recording_indicator: 4,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
                     }
@@ -331,7 +331,7 @@
                     buffer_length: trial_time,
                     wait_for_mic_approval: false,
                     stimulus_height: jsPsych.timelineVariable('stim_size'),
-                    recording_indicator: 2,
+                    recording_indicator: 4,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
                     }
