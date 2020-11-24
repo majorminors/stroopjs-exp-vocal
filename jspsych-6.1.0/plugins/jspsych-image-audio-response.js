@@ -192,6 +192,8 @@ jsPsych.plugins["image-audio-response"] = (function() {
         };
         let recorder = null;
         let start_time = null;
+        var frame_time_estimate = null;
+        var last_frame_time = null;
         var mic = false;
 
         // check if device has a mic, and if browser is compatible
@@ -292,21 +294,48 @@ jsPsych.plugins["image-audio-response"] = (function() {
                 html += '<div id="jspsych-image-audio-response-buttons"><button id="jspsych-image-audio-response-okay" class="jspsych-audio-response-button jspsych-btn" style="display: inline-block; margin:'+trial.margin_vertical+' '+trial.margin_horizontal+'; visibility:hidden;">Okay</button><button id="jspsych-image-audio-response-rerecord" class="jspsych-audio-response-button jspsych-btn" style="display: inline-block; margin:'+trial.margin_vertical+' '+trial.margin_horizontal+'; visibility:hidden;">Rerecord</button></div>';
 
                 function start_trial() {
-                    display_element.innerHTML = html;
-                    document.querySelector('#jspsych-image-audio-response-okay').addEventListener('click', end_trial);
-                    document.querySelector('#jspsych-image-audio-response-rerecord').addEventListener('click', start_recording);
-                    // Add visual indicators to let people know we're recording
-                    document.querySelector('#jspsych-image-audio-response-recording-container').innerHTML = trial.recording_on_indicator;
-                    // trial start time
-                    start_time = performance.now();
-                    // set timer to hide image if stimulus duration is set
-                    if (trial.stimulus_duration !== null) {
-                        jsPsych.pluginAPI.setTimeout(function() {
-                            display_element.querySelector('#jspsych-image-audio-response-stimulus').style.visibility = 'hidden';
-                        }, trial.stimulus_duration);
-                    }
-                    if (!trial.wait_for_mic_approval) {
-                        start_recording();
+                    window.requestAnimationFrame(function(){
+                        window.requestAnimationFrame(function(timestamp) {
+                            display_element.innerHTML = html;
+                            document.querySelector('#jspsych-image-audio-response-okay').addEventListener('click', end_trial);
+                            document.querySelector('#jspsych-image-audio-response-rerecord').addEventListener('click', start_recording);
+                            // Add visual indicators to let people know we're recording
+                            document.querySelector('#jspsych-image-audio-response-recording-container').innerHTML = trial.recording_on_indicator;
+                            // trial start time
+                            //start_time = performance.now();
+                            // set timer to hide image if stimulus duration is set
+                            if (trial.stimulus_duration !== null) {
+                                jsPsych.pluginAPI.setTimeout(function() {
+                                    display_element.querySelector('#jspsych-image-audio-response-stimulus').style.visibility = 'hidden';
+                                }, trial.stimulus_duration);
+                            }
+                            if (!trial.wait_for_mic_approval) {
+                                start_recording();
+                            }
+                            // record the start time 
+                            start_time = timestamp;
+                            // reset the frame time estimate
+                            frame_time_estimate = null;
+                            last_frame_time = start_time;
+                            // setup the next rAF call to check for timeouts.
+                            window.requestAnimationFrame(checkForTimeout);
+                        });
+                    });
+                }
+
+                function checkForTimeout(timestamp) {
+                  // get the estimated length of a single frame
+                    var frame_time_estimate = timestamp - last_frame_time;
+                    // calculate an estimate of how long the stimulus has been on the screen
+                    var curr_duration = timestamp - start_time;
+                    // check if the current duration is at least as long as the intended duration
+                    // minus half the estimated frame time. this helps avoid displaying the stimulus
+                    // for one too many frames.
+                    if (curr_duration >= trial.stimulus_duration - frame_time_estimate/2) {
+                        end_trial();
+                    } else {
+                        last_frame_time = timestamp;
+                        window.requestAnimationFrame(checkForTimeout);
                     }
                 }
 
