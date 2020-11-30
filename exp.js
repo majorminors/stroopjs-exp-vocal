@@ -437,7 +437,7 @@ function make_experiment (PID,return_what) {
         // so now we want to bin PIDs evenly into permutations
         function permutation_selector (id, permutations) {
             length = permutations.length;
-            if (id > length) { // if id is larger than the number of permutations
+            if (id >= length) { // if id is larger than the number of permutations
                 reduced_id = id % length; // divide id by # of permutations and make the new id the remainder
                 return reduced_id;
             } else {

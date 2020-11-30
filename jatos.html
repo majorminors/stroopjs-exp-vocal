@@ -28,8 +28,16 @@
 
         /* initialise experiment */
         jatos.onLoad(function() {
-            // need to generate PIDs from batch session data
-            var PID = 1;
+
+            // to test, just set the PID yourself (0-23, although if you go 1-24 it will set 24 to 0, and above that will use the modulus after remainder)
+            // var PID = 1;
+            var num_conditions = 24;
+            var num_condition_repeats = 1;
+            // despite the fail condition in the code from the documentation,
+            // you have to run this once and have it crash before the conditions
+            // are generated. it works after that
+            initBatchConditions(num_conditions,num_condition_repeats);
+            var PID = getNextCondition();
 
             jsPsych.init({
                 timeline: make_experiment(PID),
@@ -44,6 +52,45 @@
                 }
             });
         });
+
+        function initBatchConditions(num_conditions,conditionCounts) {
+            // Check if 'conditions' are not already in the batch session
+            if (!jatos.batchSession.defined("/conditions")) {
+                // Get the count of each condition
+                var conditions = [];
+                // Fill the array with conditions according to the counters
+                for (this_cond = 0; this_cond < num_conditions; this_cond++) {
+                    fillArrayWithValues(conditions, this_cond, conditionCounts)
+                }
+                // Put the conditions in the batch session
+                jatos.batchSession.set("conditions", conditions)
+                    .fail(initBatchConditions); // If it fails: try again
+            }
+        }
+        function fillArrayWithValues(array, value, count) {
+            for (var i = 0; i < count; i++) {
+                array.push(value);
+            }
+        }
+        function getNextCondition() {
+            // Get the still available conditions from the Batch Session
+            var conditions = jatos.batchSession.get("conditions");
+            // If no more conditions throw an error
+            if (conditions.length == 0) {
+                throw "Max number of workers reached";
+            }
+            // Get a random condition
+            var randomIndex = Math.floor(Math.random() * conditions.length);
+            var randomCondition = conditions[randomIndex];
+            // Delete the choosen condition from the array
+            conditions.splice(randomIndex, 1);
+            // Set the changed conditions array in the Batch Session.
+            jatos.batchSession.set("conditions", conditions).fail(function () {
+                randomCondition = getNextCondition(); // If it fails: try again
+            });
+            return randomCondition;
+        }
+
 
     </script>
 </html>
