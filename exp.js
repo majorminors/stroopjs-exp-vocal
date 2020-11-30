@@ -1,3 +1,7 @@
+function make_experiment (PID,return_what) {
+
+    // requires PID for task permutation
+    // if return_what == "images", will return image paths (for preloading)
 
         ////////////
         /* set up */
@@ -11,10 +15,13 @@
         var fixation_time = 500; // ms
         var trial_time = 2000; // ms
 
-        var participant_id = jsPsych.randomization.randomID(15); // generate a string for participant ID
+        var unique_id = jsPsych.randomization.randomID(15); // generate a unique string for participant ID
         jsPsych.data.addProperties({ // push that to the data object
-          participant: participant_id
+          participant_id: PID,
+          unique_id: unique_id
+          // we'll also add the id bin and permutation of procedures
         });
+        console.log("participant id: ", PID);
 
         //////////////////////
         /* stimuli creation */
@@ -343,35 +350,9 @@
         }
         console.log(false_font_task.timeline_variables);
 
-        //////////////////////////////////////////////////////
-        /* grab all the image paths, so we can preload them */
-        //////////////////////////////////////////////////////
-
-        var stroop_image_paths = []; // init the variable
-        for (i = 0; i < stroop_task.timeline_variables.length; i++) {
-            stroop_image_paths[i] = stroop_task.timeline_variables[i].stim_path;
-        }
-        var falsefont_image_paths = []; // init the variable
-        for (i = 0; i < false_font_task.timeline_variables.length; i++) {
-            falsefont_image_paths[i] = false_font_task.timeline_variables[i].stim_path;
-        }
-        var oned_image_paths = []; // init the variable
-        oned_image_paths[colours.length] = "stimuli/line.svg";
-        for (i = 0; i < colours.length; i++) {
-           oned_image_paths[i] = `stimuli/${colours[i]}.svg`;
-        }
-
         ////////////////////////
         /* procedure creation */
         ////////////////////////
-
-        // we'll create something to remove items from these arrays
-        // since we only want the extra training for the first two procedures
-        function proc_editor(x){
-            x.splice(1,2); // remove 1d stuff
-            x.splice(2,1); // remove instruction reminder (position AFTER previous splice)
-            return x;
-        }
 
         var stroop_colour_proc = [
             colour_instructions, // precede stroop with colour instructions
@@ -426,30 +407,113 @@
         
         var unshuffled_procedure = [stroop_colour_proc, stroop_size_proc, falsefont_colour_proc, falsefont_size_proc]; // place all into a single array
 
-        function shuffle(array) { // fisher-yates shuffler function
-            var m = array.length, t, i;
+        // create a function to get all permutations of an array
+        // little long, but the fastest
+        function permute(permutation) {
+          var length = permutation.length,
+              result = [permutation.slice()],
+              c = new Array(length).fill(0),
+              i = 1, k, p;
 
-            // While there remain elements to shuffle…
-            while (m) {
-
-                // Pick a remaining element…
-                i = Math.floor(Math.random() * m--);
-
-                // And swap it with the current element.
-                t = array[m];
-                array[m] = array[i];
-                array[i] = t;
+          while (i < length) {
+            if (c[i] < i) {
+              k = i % 2 && c[i];
+              p = permutation[i];
+              permutation[i] = permutation[k];
+              permutation[k] = p;
+              ++c[i];
+              i = 1;
+              result.push(permutation.slice());
+            } else {
+              c[i] = 0;
+              ++i;
             }
-
-            return array;
+          }
+          return result;
         }
+        // now permute the procedures
+        var permutations = permute(unshuffled_procedure);
 
-        var shuffled_procedure = shuffle(unshuffled_procedure); // shuffle the procedure
-        proc_editor(shuffled_procedure[2]);
-        proc_editor(shuffled_procedure[3]);
-
-        var flattened_procedure = shuffled_procedure.flat(); // flatten it into one layer
+        // so now we want to bin PIDs evenly into permutations
+        function permutation_selector (id, permutations) {
+            length = permutations.length;
+            if (id > length) { // if id is larger than the number of permutations
+                reduced_id = id % length; // divide id by # of permutations and make the new id the remainder
+                return reduced_id;
+            } else {
+                return id;
+            }
+        }
+        // this is where we'd chose a permutation based on the PID of the subject
+        id_bin = permutation_selector(PID, permutations);
+        thispermutation = permutations[id_bin];
+        console.log("id bin: ", id_bin);
         
+        jsPsych.data.addProperties({ // push those to the data object
+            id_bin: id_bin,
+        });
+
+        // now we're going to edit this permutation of the procedures, cutting the training from the second occurrence of each task type
+        // create an editor function to edit easy training from procedure
+        function proc_editor (x) {
+            x.splice(1,2); // remove 1d stuff
+            x.splice(2,1); // remove instruction reminder (position AFTER previous splice)
+            return x;
+        }
+        // init counters
+        hCount = 0;
+        cCount = 0;
+        thispermutation.forEach(procedure => {
+           if (procedure[0].stimulus.includes("height")) {
+               hCount++;
+               if (hCount == 2) { // if second time occurring, then cut easy training out
+                    proc_editor(procedure);
+               }
+           }
+           if (procedure[0].stimulus.includes("colour")) {
+               cCount++;
+               if (cCount == 2) { // if second time occurring, then cut easy training out
+                    proc_editor(procedure);
+               }
+           }
+        });
+        console.log("permutation of procedures: ", thispermutation);
+        jsPsych.data.addProperties({ // push those to the data object
+            procedure: thispermutation
+        });
+        var flattened_procedure = thispermutation.flat(); // flatten into one layer
+
         for (i = 0; i < flattened_procedure.length; i++) { // loop through the shuffled and flattened procedure array, and push each jsPsych trial block to the timeline
             timeline.push(flattened_procedure[i]);
         }
+
+        //////////////////////////////////////////////////////
+        /* grab all the image paths, so we can preload them */
+        //////////////////////////////////////////////////////
+
+        var stroop_image_paths = []; // init the variable
+        for (i = 0; i < stroop_task.timeline_variables.length; i++) {
+            stroop_image_paths[i] = stroop_task.timeline_variables[i].stim_path;
+        }
+        var falsefont_image_paths = []; // init the variable
+        for (i = 0; i < false_font_task.timeline_variables.length; i++) {
+            falsefont_image_paths[i] = false_font_task.timeline_variables[i].stim_path;
+        }
+        var oned_image_paths = []; // init the variable
+        oned_image_paths[colours.length] = "stimuli/line.svg";
+        for (i = 0; i < colours.length; i++) {
+           oned_image_paths[i] = `stimuli/${colours[i]}.svg`;
+        }
+
+        var image_paths = [stroop_image_paths, falsefont_image_paths,oned_image_paths];
+
+        ///////////////////////////
+        /* package everything up */
+        ///////////////////////////
+
+        if (return_what == "images") {
+            return image_paths;
+        } else {
+            return timeline;
+        }
+}

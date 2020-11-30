@@ -8,7 +8,7 @@
         <script src="jspsych-6.1.0/plugins/jspsych-resize.js"></script>
         <script src="jspsych-6.1.0/plugins/jspsych-image-audio-response.js"></script>
         <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
-        <!-- pull in the actual experiment -->
+        <!-- pull in the experiment maker function -->
         <script src="exp.js"></script>
         <!-- pull in the styling -->
         <link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css"></link>
@@ -24,14 +24,16 @@
          * (jatos.html) and non-JATOS (index.html) versions
         */
 
+        var PID = 1;
+
         /* initialise experiment */
         jsPsych.init({
-            timeline: timeline,
+            timeline: make_experiment(PID),
+            preload_images: make_experiment(PID,"images"),
             exclusions: {
                 min_width: 800,
                 min_height: 600
             },
-            preload_images: [stroop_image_paths, falsefont_image_paths,oned_image_paths],
             on_finish: function(){
                 jsPsych.data.displayData();
             }
