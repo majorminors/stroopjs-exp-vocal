@@ -1,6 +1,6 @@
-function make_experiment (PID,return_what) {
+function make_experiment (id_number,return_what) {
 
-    // requires PID for task permutation
+    // requires id_number for task permutation
     // if return_what == "images", will return image paths (for preloading)
 
         ////////////
@@ -17,11 +17,11 @@ function make_experiment (PID,return_what) {
 
         var unique_id = jsPsych.randomization.randomID(15); // generate a unique string for participant ID
         jsPsych.data.addProperties({ // push that to the data object
-          participant_id: PID,
+          id_number: id_number,
           unique_id: unique_id
           // we'll also add the id bin and permutation of procedures
         });
-        console.log("participant id: ", PID);
+        console.log("id number: ", id_number);
 
         //////////////////////
         /* stimuli creation */
@@ -434,7 +434,7 @@ function make_experiment (PID,return_what) {
         // now permute the procedures
         var permutations = permute(unshuffled_procedure);
 
-        // so now we want to bin PIDs evenly into permutations
+        // a function to bin id_numbers evenly into permutations (in case we're passing in a participant ID for example)
         function permutation_selector (id, permutations) {
             length = permutations.length;
             if (id >= length) { // if id is larger than the number of permutations
@@ -444,13 +444,13 @@ function make_experiment (PID,return_what) {
                 return id;
             }
         }
-        // this is where we'd chose a permutation based on the PID of the subject
-        id_bin = permutation_selector(PID, permutations);
-        thispermutation = permutations[id_bin];
-        console.log("id bin: ", id_bin);
+        // this is where we'd chose a permutation based on the id_number of the subject
+        condition_bin = permutation_selector(id_number, permutations);
+        thispermutation = permutations[condition_bin];
+        console.log("condition bin: ", condition_bin);
         
         jsPsych.data.addProperties({ // push those to the data object
-            id_bin: id_bin,
+            condition_bin: condition_bin,
         });
 
         // now we're going to edit this permutation of the procedures, cutting the training from the second occurrence of each task type

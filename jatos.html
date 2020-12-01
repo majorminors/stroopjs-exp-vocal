@@ -29,19 +29,19 @@
         /* initialise experiment */
         jatos.onLoad(function() {
 
-            // to test, just set the PID yourself (0-23, although if you go 1-24 it will set 24 to 0, and above that will use the modulus after remainder)
-            // var PID = 1;
+            // to test, just set the id_number yourself (0-23, although if you go 1-24 it will set 24 to 0, and above that will use the modulus after remainder - allows you to use this variable as a participant ID if you like)
+            // var id_number = 1;
             var num_conditions = 24;
             var num_condition_repeats = 1;
             // despite the fail condition in the code from the documentation,
             // you have to run this once and have it crash before the conditions
             // are generated. it works after that
             initBatchConditions(num_conditions,num_condition_repeats);
-            var PID = getNextCondition();
+            var id_number = getNextCondition();
 
             jsPsych.init({
-                timeline: make_experiment(PID),
-                preload_images: make_experiment(PID,"images"),
+                timeline: make_experiment(id_number),
+                preload_images: make_experiment(id_number,"images"),
                 exclusions: {
                     min_width: 800,
                     min_height: 600

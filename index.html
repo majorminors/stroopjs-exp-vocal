@@ -24,13 +24,13 @@
          * (jatos.html) and non-JATOS (index.html) versions
         */
 
-        // set the PID (0-23, although if you go 1-24 it will set 24 to 0, and above that will use the modulus after remainder)
-        var PID = 24;
+        // set the id_number (0-23, although if you go 1-24 it will set 24 to 0, and above that will use the modulus after remainder - allows you to use this variable as a participant ID if you like)
+        var id_number = 24;
 
         /* initialise experiment */
         jsPsych.init({
-            timeline: make_experiment(PID),
-            preload_images: make_experiment(PID,"images"),
+            timeline: make_experiment(id_number),
+            preload_images: make_experiment(id_number,"images"),
             exclusions: {
                 min_width: 800,
                 min_height: 600
