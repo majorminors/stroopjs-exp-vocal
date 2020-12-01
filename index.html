@@ -8,7 +8,7 @@
         <script src="jspsych-6.1.0/plugins/jspsych-resize.js"></script>
         <script src="jspsych-6.1.0/plugins/jspsych-image-audio-response.js"></script>
         <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
-        <!-- pull in the experiment maker function -->
+        <!-- pull in the experiment maker function 'make_experiment' -->
         <script src="exp.js"></script>
         <!-- pull in the styling -->
         <link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css"></link>
@@ -17,11 +17,11 @@
     <body></body>
     <script>
 
-        /* 
-         * the experiment script in exp.js produces the variables
-         * jsPsych needs to run the experiment
-         * we do this so we don't have to maintain it twice for JATOS
-         * (jatos.html) and non-JATOS (index.html) versions
+        /*
+         * the experiment script is in exp.js (called in the head)
+         * this is so we don't need to maintain it twice for index.html and jatos.html
+         * the experiment script is wrapped in a function 'make_experiment', which we call in jsPsych.init to get the timeline and image paths
+         * this is my messy solution to working with JATOS batch session data to manage the conditions, although the JATOS stuff is not in this document
         */
 
         // set the id_number (0-23, although if you go 1-24 it will set 24 to 0, and above that will use the modulus after remainder - allows you to use this variable as a participant ID if you like)

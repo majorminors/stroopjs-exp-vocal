@@ -10,7 +10,7 @@
         <script src="jspsych-6.1.0/plugins/jspsych-resize.js"></script>
         <script src="jspsych-6.1.0/plugins/jspsych-image-audio-response.js"></script>
         <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
-        <!-- pull in the experiment maker function -->
+        <!-- pull in the experiment maker function 'make_experiment' -->
         <script src="exp.js"></script>
         <!-- pull in the styling -->
         <link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css"></link>
@@ -19,11 +19,11 @@
     <body></body>
     <script>
         
-        /* 
-         * the experiment script in exp.js produces the variables
-         * jsPsych needs to run the experiment
-         * we do this so we don't have to maintain it twice for JATOS
-         * (jatos.html) and non-JATOS (index.html) versions
+        /*
+         * the experiment script is in exp.js (called in the head)
+         * this is so we don't need to maintain it twice for index.html and jatos.html
+         * the experiment script is wrapped in a function 'make_experiment', which we call in jsPsych.init to get the timeline and image paths
+         * this is my messy solution to working with JATOS batch session data to manage the conditions
         */
 
         /* initialise experiment */
