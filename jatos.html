@@ -7,11 +7,17 @@
         <!-- pull in the jsPsych libraries we need -->
         <script src="jspsych-6.1.0/jspsych.js"></script>
         <script src="jspsych-6.1.0/plugins/jspsych-call-function.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-survey-text.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-survey-multi-choice.js"></script>
         <script src="jspsych-6.1.0/plugins/jspsych-resize.js"></script>
         <script src="jspsych-6.1.0/plugins/jspsych-image-audio-response.js"></script>
         <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
         <!-- pull in the experiment maker function 'make_experiment' -->
         <script src="exp.js"></script>
+        <!-- pull in the preexperiment functions -->
+        <script src="tools/consent.js"></script>
+        <script src="tools/demographics.js"></script>
         <!-- pull in the styling -->
         <link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css"></link>
         <style></style>
@@ -48,7 +54,20 @@
                 },
                 on_finish: function() {
                     var resultJson = jsPsych.data.get().json();
-                    jatos.submitResultData(resultJson, jatos.startNextComponent);
+                    jatos.submitResultData(resultJson)
+                    .then(jatos.endStudyAjax)
+                    .then(() => {
+                        window.location.href = 'https://app.prolific.co/submissions/complete?cc=8D08D474'
+                    });
+                },
+                on_close: function(){ // save data if browser is closed
+                    var time = jsPsych.totalTime();
+                    jsPsych.data.addProperties({
+                        expt_duration: time,
+                    });
+
+                    var resultJson = jsPsych.data.get().json(); 
+                    jatos.submitResultData(resultJson, jatos.endStudy);
                 }
             });
         });
