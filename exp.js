@@ -9,11 +9,12 @@ function make_experiment (id_number,return_what) {
 
         var instructions_on = 1; // you can turn off (0) the first two instructions screens if you want to test (since the participant recording test takes a bit)
 
-        var num_blocks = 2; // will repeat each block of stimuli this number of times (blocked together)
+        var num_blocks = 6; // will repeat each block of stimuli this number of times (blocked together)
         var num_tr_blocks = 1; // number of training blocks (same principle as num_blocks)
         var feedback_time = 800; // ms
-        var fixation_time = 500; // ms
-        var trial_time = 2000; // ms
+        var fixation_time = 300; // ms
+        var trial_time = 1500; // ms
+	var stim_time = 470; //ms
 
         var unique_id = jsPsych.randomization.randomID(15); // generate a unique string for participant ID
         jsPsych.data.addProperties({ // push that to the data object
@@ -23,6 +24,28 @@ function make_experiment (id_number,return_what) {
         });
         console.log("id number: ", id_number);
 
+	// we'll use this to identify recordings and save them
+	var recording_count = 0;
+	function save_file_to_jatos(data) {
+	    return new Promise(function (resolve) {
+		const blob = new Blob(data, { type: 'audio/webm; codecs=opus' });
+		// Create URL from the audio blob, which is used to replay the audio file (when allow_playback is true)
+		var url = URL.createObjectURL(blob);
+		// Create the audio file name with the participant ID and trial number
+		var filename = unique_id + "_" + recording_count.toString() + ".webm";
+		// Save the audio file to the server 
+		// NOTE: if not using JATOS then replace this line with a command to save the file to your server
+		jatos.uploadResultFile(blob, filename);
+		// This function needs to return an object with the URL and data string.
+		// - "url" allows the audio to be replayed if playback is true
+		// - "str" is used to either save the audio data as base64 string or save the filename or other identifier to the jsPsych data.
+		//   In this example function, the audio data has been saved separately to the server, 
+		//   so "str" is used to save the name of the audio file that corresponds to this trial.
+		var trial_data = { url: url, str: filename };
+		resolve(trial_data);
+	    });
+	}
+
         //////////////////////
         /* stimuli creation */
         //////////////////////
@@ -31,8 +54,8 @@ function make_experiment (id_number,return_what) {
 
         var window_height = window.innerHeight; // get the window height in pixels	
         var stim_height = { // stimulus height in pixels - width is auto (i.e. will maintain aspect ratio)
-            short: 100, //window_height*0.1,
-            medium: 200, //window_height*0.3,
+            short: 50, //window_height*0.1,
+            medium: 150, //window_height*0.3,
             tall: 300 //window_height*0.5
         }
 
@@ -260,6 +283,7 @@ function make_experiment (id_number,return_what) {
                     buffer_length: trial_time,
                     wait_for_mic_approval: false,
                     stimulus_height: jsPsych.timelineVariable('stim_size'),
+                    stimulus_duration: stim_time,
                     recording_indicator: 4,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
@@ -272,6 +296,7 @@ function make_experiment (id_number,return_what) {
                     buffer_length: trial_time,
                     wait_for_mic_approval: false,
                     stimulus_height: stim_height.medium,
+                    stimulus_duration: stim_time,
                     recording_indicator: 4,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
@@ -284,10 +309,15 @@ function make_experiment (id_number,return_what) {
                     buffer_length: trial_time,
                     wait_for_mic_approval: false,
                     stimulus_height: jsPsych.timelineVariable('stim_size'),
+                    stimulus_duration: stim_time,
                     recording_indicator: 4,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
-                    }
+                    },
+		    postprocessing: save_file_to_jatos,
+		    on_finish: function() {
+			recording_count++;
+		    }
                 }
             ],
             timeline_variables: stimListFactory(colours, false, Object.keys(stim_height)),
@@ -316,6 +346,7 @@ function make_experiment (id_number,return_what) {
                     buffer_length: trial_time,
                     wait_for_mic_approval: false,
                     stimulus_height: jsPsych.timelineVariable('stim_size'),
+                    stimulus_duration: stim_time,
                     recording_indicator: 4,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
@@ -328,6 +359,7 @@ function make_experiment (id_number,return_what) {
                     buffer_length: trial_time,
                     wait_for_mic_approval: false,
                     stimulus_height: stim_height.medium,
+                    stimulus_duration: stim_time,
                     recording_indicator: 4,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
@@ -340,10 +372,15 @@ function make_experiment (id_number,return_what) {
                     buffer_length: trial_time,
                     wait_for_mic_approval: false,
                     stimulus_height: jsPsych.timelineVariable('stim_size'),
+                    stimulus_duration: stim_time,
                     recording_indicator: 4,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
-                    }
+                    },
+		    postprocessing: save_file_to_jatos,
+		    on_finish: function() {
+			recording_count++;
+		    }
                 }
             ],
             timeline_variables: stimListFactory(colours, true, Object.keys(stim_height)),
@@ -480,14 +517,22 @@ function make_experiment (id_number,return_what) {
            }
         });
         console.log("permutation of procedures: ", thispermutation);
-        jsPsych.data.addProperties({ // push those to the data object
-            procedure: thispermutation
-        });
         var flattened_procedure = thispermutation.flat(); // flatten into one layer
 
         for (i = 0; i < flattened_procedure.length; i++) { // loop through the shuffled and flattened procedure array, and push each jsPsych trial block to the timeline
             timeline.push(flattened_procedure[i]);
         }
+
+        /////////////////////////////////////////////////////////////
+        /* set up a thank you trial and append the procedure to it */
+        /////////////////////////////////////////////////////////////
+        
+        var finish_screen = { 
+            type: 'html-keyboard-response',
+            stimulus: "<p>All done!<br><br>Thanks so much for participating.<br>Feel free to email me if you'd like to know more about what the study was exploring.<br>dorian.minors@mrc-cbu.cam.ac.uk<br><br>Press any key to finish and please wait to be redirected.</p>",
+            data: { procedure: thispermutation }
+        }
+        timeline.push(finish_screen);
 
         //////////////////////////////////////////////////////
         /* grab all the image paths, so we can preload them */
