@@ -24,8 +24,9 @@ function make_experiment (id_number,return_what) {
         });
         console.log("id number: ", id_number);
 
-	// we'll use this to identify recordings and save them
+	// we'll use this to identify recordings and save them as well as trial data
 	var recording_count = 0;
+        var save_data_count = 0;
 	function save_file_to_jatos(data) {
 	    return new Promise(function (resolve) {
 		const blob = new Blob(data, { type: 'audio/webm; codecs=opus' });
@@ -317,6 +318,16 @@ function make_experiment (id_number,return_what) {
 		    postprocessing: save_file_to_jatos,
 		    on_finish: function() {
 			recording_count++;
+                        // save the data every 10 trials
+                        if (recording_count > save_data_count+10) {
+                            save_data_count = recording_count;
+                            var thisSessionData = jatos.studySessionData;
+                            var thisExpData = JSON.parse(jsPsych.data.get().json());
+                            var resultJson = {...thisSessionData, ...thisExpData};
+                            jatos.submitResultData(resultJson)
+                               .then(() => console.log('data submitted, results saved'));
+                            console.log('results saved');
+                        }
 		    }
                 }
             ],
@@ -380,6 +391,16 @@ function make_experiment (id_number,return_what) {
 		    postprocessing: save_file_to_jatos,
 		    on_finish: function() {
 			recording_count++;
+                        // save the data every 10 trials
+                        if (recording_count > save_data_count+10) {
+                            save_data_count = recording_count;
+                            var thisSessionData = jatos.studySessionData;
+                            var thisExpData = JSON.parse(jsPsych.data.get().json());
+                            var resultJson = {...thisSessionData, ...thisExpData};
+                            jatos.submitResultData(resultJson)
+                               .then(() => console.log('data submitted, results saved'));
+                            console.log('results saved');
+                        }
 		    }
                 }
             ],
