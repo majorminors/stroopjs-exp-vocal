@@ -63,9 +63,9 @@ function make_experiment (id_number,return_what) {
         // little stimulus factory we'll use later when constructing the trials
         // produces a complete stimulus object that can be indexed into by a trial variablec as a timeline variable.
         function stimulusFactory(colour, print, size){
-            var stim_path = `stimuli/${print}-${colour}.svg`;
+            var stim_path = `stimuli/${print}-${colour}.png`;
             var stim_size = stim_height[size];
-            var trn_stim = `stimuli/${colour}.svg`;
+            var trn_stim = `stimuli/${colour}.png`;
             var congruency;
             if (print.includes(colour)) {
                 congruency = 'congruent';
@@ -279,7 +279,7 @@ function make_experiment (id_number,return_what) {
                 },
                 { // size only training block
                     type: 'image-audio-response',
-                    stimulus: 'stimuli/line.svg',
+                    stimulus: 'stimuli/line.png',
                     allow_playback: false,
                     buffer_length: trial_time,
                     wait_for_mic_approval: false,
@@ -352,7 +352,7 @@ function make_experiment (id_number,return_what) {
                 },
                 { // size only training block
                     type: 'image-audio-response',
-                    stimulus: 'stimuli/line.svg',
+                    stimulus: 'stimuli/line.png',
                     allow_playback: false,
                     buffer_length: trial_time,
                     wait_for_mic_approval: false,
@@ -568,9 +568,9 @@ function make_experiment (id_number,return_what) {
             falsefont_image_paths[i] = false_font_task.timeline_variables[i].stim_path;
         }
         var oned_image_paths = []; // init the variable
-        oned_image_paths[colours.length] = "stimuli/line.svg";
+        oned_image_paths[colours.length] = "stimuli/line.png";
         for (i = 0; i < colours.length; i++) {
-           oned_image_paths[i] = `stimuli/${colours[i]}.svg`;
+           oned_image_paths[i] = `stimuli/${colours[i]}.png`;
         }
 
         var image_paths = [stroop_image_paths, falsefont_image_paths,oned_image_paths];
