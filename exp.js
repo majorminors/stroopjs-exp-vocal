@@ -7,7 +7,7 @@ function make_experiment (id_number,return_what) {
         /* set up */
         ////////////
 
-        var instructions_on = 0; // you can turn off (0) the first two instructions screens if you want to test (since the participant recording test takes a bit)
+        var instructions_on = 1; // you can turn off (0) the first two instructions screens if you want to test (since the participant recording test takes a bit)
 
         var num_blocks = 6; // will repeat each block of stimuli this number of times (blocked together)
         var num_tr_blocks = 1; // number of training blocks (same principle as num_blocks)
@@ -186,11 +186,11 @@ function make_experiment (id_number,return_what) {
         var participant_test = {
             type: 'image-audio-response',
             stimulus: 'stimuli/tiny-welcome.png', // an invisible img that takes up no space on the screen
-            prompt: "<p>Recording has started. Speak!<br>This trial just lets you test things out.<br>This example trial records for 6 seconds and at the end you can play it back or rerecord as you like.<br>In the experiment itself, you will not be able to playback, or rerecord.</p>",
+            prompt: "<p>Recording has started. Speak!<br>This trial just lets you test things out.<br>This example trial records for 6 seconds and at the end you can play it back or rerecord as you like.<br>If you can hear yourself, we're good to go.<br>If not, please DO NOT CONTINUE---let the researcher know!<br>In the experiment itself, you will not be able to playback, or rerecord.<br>We will just record automatically on every trial.</p>",
             allow_playback: true,
             buffer_length: 6000,
             wait_for_mic_approval: true,
-            recording_indicator: 2
+            recording_indicator: 4
         }
 
         /* push those to the timeline, if instructions are on */
