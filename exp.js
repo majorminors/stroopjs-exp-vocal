@@ -186,7 +186,7 @@ function make_experiment (id_number,return_what) {
         var participant_test = {
             type: 'image-audio-response',
             stimulus: 'stimuli/tiny-welcome.png', // an invisible img that takes up no space on the screen
-            prompt: "<p>Recording has started. Speak!<br>This trial just let's you test things out.<br>This example trial records for 6 seconds and at the end you can play it back or rerecord as you like.<br>In the experiment itself, you will not be able to playback, or rerecord.</p>",
+            prompt: "<p>Recording has started. Speak!<br>This trial just lets you test things out.<br>This example trial records for 6 seconds and at the end you can play it back or rerecord as you like.<br>In the experiment itself, you will not be able to playback, or rerecord.</p>",
             allow_playback: true,
             buffer_length: 6000,
             wait_for_mic_approval: true,
