@@ -123,7 +123,7 @@ function make_experiment (id_number,return_what) {
                     });
                 });
             });
-        
+
             return stimulus_list;
         } 
 
@@ -195,7 +195,7 @@ function make_experiment (id_number,return_what) {
 
         var final_prestructions = {
             type: 'html-keyboard-response',
-            stimulus:"<p>Some last requests.<br>We are recording on every trial, but never when feedback or instructions are shown.<br>Please be aware of your surroundings and keep noise (other than your voice!) to a minimum.<br>Please be as fast and as accurate as possible.<br>Please DO NOT let your screensaver go on! You might be able to prevent this with fullscreen (F11)<br><br>When ready, press SPACE BAR to continue.</p>",
+            stimulus:"<p>Some last requests.<br><br>I am recording on every trial, but never when feedback or instructions are shown.<br>Please be aware of your surroundings and keep noise (other than your voice!) to a minimum.<br>Please, please, please speak LOUD and CLEAR!<br>Otherwise it will be hard for me to hear your answers<br>Please be as fast and as accurate as possible.<br>Lastly, please DO NOT let your screensaver go on! You might be able to prevent this with fullscreen (F11)<br><br>When ready, press SPACE BAR to continue.</p>",
             choices: [' ']
         }
 
