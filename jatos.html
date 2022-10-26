@@ -45,6 +45,13 @@
             initBatchConditions(num_conditions,num_condition_repeats);
             var id_number = getNextCondition();
 
+            // get the prolific ID if there is one
+            if (jatos.urlQueryParameters.hasOwnProperty('PROLIFIC_PID')) {
+                jatos.studySessionData["app_identifier_string"] = jatos.urlQueryParameters.PROLIFIC_PID;
+            } else {
+                jatos.studySessionData["app_identifier_string"] = 'none_set';
+            }
+
             jsPsych.init({
                 timeline: make_experiment(id_number),
                 preload_images: make_experiment(id_number,"images"),
