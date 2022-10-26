@@ -15,6 +15,7 @@ function make_experiment (id_number,return_what) {
         var fixation_time = 300; // ms
         var trial_time = 1500; // ms
 	var stim_time = 470; //ms
+        var max_instruction_time = 60000; //ms
 
         var unique_id = jsPsych.randomization.randomID(15); // generate a unique string for participant ID
         jsPsych.data.addProperties({ // push that to the data object
@@ -179,7 +180,8 @@ function make_experiment (id_number,return_what) {
 
         var instructions_onstart = {
             type: 'html-keyboard-response',
-            stimulus:"<p>In this experiment you'll see images on the screen and respond by speaking aloud.<br>You'll need to allow microphone access in your browser if you haven't already.<br>Be sure to select 'remember the decision' so you don't get prompted every time.<br>There are four different task in this experiment.<br>Each one is slightly different, although all are similar.<br>At the start of each task, you'll get some instructions.<br>Then there will be a short 'training' period during which we'll tell you the correct answer after each trial.<br>Then you'll start the block properly and you won't get any feedback until the next block.<br><br>When ready, press any key continue.</p>"
+            stimulus:"<p>In this experiment you'll see images on the screen and respond by speaking aloud.<br>You'll need to allow microphone access in your browser if you haven't already.<br>Be sure to select 'remember the decision' so you don't get prompted every time.<br>There are four different task in this experiment.<br>Each one is slightly different, although all are similar.<br>At the start of each task, you'll get some instructions.<br>Then there will be a short 'training' period during which we'll tell you the correct answer after each trial.<br>Then you'll start the block properly and you won't get any feedback until the next block.<br><br>When ready, press any key continue.</p>",
+            trial_duration: max_instruction_time*2
         }
 
         /* intro to the recording trial */
@@ -196,6 +198,7 @@ function make_experiment (id_number,return_what) {
         var final_prestructions = {
             type: 'html-keyboard-response',
             stimulus:"<p>Some last requests.<br><br>I am recording on every trial, but never when feedback or instructions are shown.<br>Please be aware of your surroundings and keep noise (other than your voice!) to a minimum.<br>Please, please, please speak LOUD and CLEAR!<br>Otherwise it will be hard for me to hear your answers<br>Please be as fast and as accurate as possible.<br>Lastly, please DO NOT let your screensaver go on! You might be able to prevent this with fullscreen (F11)<br><br>When ready, press SPACE BAR to continue.</p>",
+            trial_duration: max_instruction_time*2,
             choices: [' ']
         }
 
@@ -211,40 +214,48 @@ function make_experiment (id_number,return_what) {
         var size_instructions = {
             type: 'html-keyboard-response',
             stimulus: '<p>In this version of the task, you must report the <em>height</em> of the image by speaking aloud.<br>They will be either short, medium, or tall.<br>Please keep your eyes on the centre of the screen throughout.<br><br>Press any key to continue.</p>',
+            trial_duration: max_instruction_time,
         }
         var size_instruction_reminder = {
             type: 'html-keyboard-response',
             stimulus: '<p>Remember, you must report the <em>height</em> of the image by speaking aloud.<br>It will be either short, medium, or tall.<br>Please keep your eyes on the centre of the screen throughout.<br><br>Press any key to continue.</p>',
+            trial_duration: max_instruction_time,
         }
 
         /* report colour instructions */
         var colour_instructions = {
             type: 'html-keyboard-response',
             stimulus: '<p>In this version of the task, you must report the <em>colour</em> of the image by speaking aloud.<br>It will be either red, blue, or green.<br>Please keep your eyes on the centre of the screen throughout.<br><br>Press any key to continue.</p>',
+            trial_duration: max_instruction_time,
         }
         var colour_instruction_reminder = {
             type: 'html-keyboard-response',
             stimulus: '<p>Remember, you must report the <em>colour</em> of the image by speaking aloud.<br>It will be either red, blue, or green.<br>Please keep your eyes on the centre of the screen throughout.<br><br>Press any key to continue.</p>',
+            trial_duration: max_instruction_time,
         }
 
         /* pre item instructions */
         var pre_1d_training = {
             type: 'html-keyboard-response',
             stimulus: 'We will start with a block of training on an easy stimulus first. We will give you feedback each trial.<br><br> Press any key to continue.</p>',
+            trial_duration: max_instruction_time,
         }
         var pre_training = {
             type: 'html-keyboard-response',
             stimulus: 'Now another block of training with a different stimulus. We will give you feedback each trial.<br><br> Press any key to continue.</p>',
+            trial_duration: max_instruction_time,
         }
         var pre_test = {
             type: 'html-keyboard-response',
             stimulus: 'Now we begin the test. You will no longer recieve feedback.<br>Please answer as fast and as accurately as possible.<br><br> Press any key to continue.</p>',
+            trial_duration: max_instruction_time,
         }
 
         /* finished task instructions */
         var finished_task = {
             type: 'html-keyboard-response',
             stimulus: "You've finished this version of the task. Well done.<br><br>Press any key to continue.</p>",
+            trial_duration: max_instruction_time,
         }
 
         //////////////////
@@ -566,6 +577,7 @@ function make_experiment (id_number,return_what) {
         var finish_screen = { 
             type: 'html-keyboard-response',
             stimulus: "<p>All done!<br><br>Thanks so much for participating.<br>Feel free to email me if you'd like to know more about what the study was exploring.<br>dorian.minors@mrc-cbu.cam.ac.uk<br><br>Press any key to finish and please wait to be redirected.</p>",
+            trial_duration: max_instruction_time,
             data: { procedure: thispermutation }
         }
         timeline.push(finish_screen);
