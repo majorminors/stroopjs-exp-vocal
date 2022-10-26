@@ -193,10 +193,17 @@ function make_experiment (id_number,return_what) {
             recording_indicator: 4
         }
 
+        var final_prestructions = {
+            type: 'html-keyboard-response',
+            stimulus:"<p>Some last requests.<br>We are recording on every trial, but never when feedback or instructions are shown.<br>Please be aware of your surroundings and keep noise (other than your voice!) to a minimum.<br>Please be as fast and as accurate as possible.<br>Please DO NOT let your screensaver go on! You might be able to prevent this with fullscreen (F11)<br><br>When ready, press SPACE BAR to continue.</p>",
+            choices: [' ']
+        }
+
         /* push those to the timeline, if instructions are on */
         if (instructions_on == 1) {
             timeline.push(instructions_onstart);
             timeline.push(participant_test);
+            timeline.push(final_prestructions);
         }
 
 
@@ -243,13 +250,13 @@ function make_experiment (id_number,return_what) {
         //////////////////
         /* trial blocks */
         //////////////////
-    
+        
         /* we need this because for some reason the feedback trial placed directly after an audio-response trial speeds past */
         var spacer_trial = {
             type: 'html-keyboard-response',
             stimulus: '<p> </p>',
             choices: jsPsych.NO_KEYS,
-            trial_duration: 100,
+            trial_duration: 50,
         }
 
         /* feedback objects we can call later when we put together the procedure */
@@ -524,8 +531,8 @@ function make_experiment (id_number,return_what) {
         // now we're going to edit this permutation of the procedures, cutting the training from the second occurrence of each task type
         // create an editor function to edit easy training from procedure
         function proc_editor (x) {
-            x.splice(1,2); // remove 1d stuff
-            x.splice(2,1); // remove instruction reminder (position AFTER previous splice)
+            x.splice(1,2); // delete 2 from position 1 (which should remove 1d stuff)
+            x.splice(2,1); // delete 1 from position 2 AFTER the positions have changed from the previous splice (should remove instruction reminder)
             return x;
         }
         // init counters
