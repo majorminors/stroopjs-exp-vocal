@@ -7,7 +7,7 @@ function make_experiment (id_number,return_what) {
         /* set up */
         ////////////
 
-        var instructions_on = 1; // you can turn off (0) the first two instructions screens if you want to test (since the participant recording test takes a bit)
+        var instructions_on = 0; // you can turn off (0) the first two instructions screens if you want to test (since the participant recording test takes a bit)
 
         var num_blocks = 6; // will repeat each block of stimuli this number of times (blocked together)
         var num_tr_blocks = 1; // number of training blocks (same principle as num_blocks)
@@ -243,12 +243,20 @@ function make_experiment (id_number,return_what) {
         //////////////////
         /* trial blocks */
         //////////////////
+    
+        /* we need this because for some reason the feedback trial placed directly after an audio-response trial speeds past */
+        var spacer_trial = {
+            type: 'html-keyboard-response',
+            stimulus: '<p> </p>',
+            choices: jsPsych.NO_KEYS,
+            trial_duration: 100,
+        }
 
         /* feedback objects we can call later when we put together the procedure */
         var size_feedback = {
             type: 'html-keyboard-response',
             stimulus: function(){
-                var size_string = jsPsych.data.get().last(1).values()[0].stim_data.size;
+                var size_string = jsPsych.data.get().last(2).values()[0].stim_data.size;
                 return '<p>correct answer: <span style="font-size: 40px;">'+JSON.stringify(size_string)+'</span></p>';
             },
             choices: jsPsych.NO_KEYS,
@@ -257,7 +265,7 @@ function make_experiment (id_number,return_what) {
         var colour_feedback = {
             type: 'html-keyboard-response',
             stimulus: function(){
-                var colour_string = jsPsych.data.get().last(1).values()[0].stim_data.colour;
+                var colour_string = jsPsych.data.get().last(2).values()[0].stim_data.colour;
                 return '<p> correct answer: <span style="font-size: 40px;">'+JSON.stringify(colour_string)+'</span></p>';
             },
             choices: jsPsych.NO_KEYS,
@@ -418,11 +426,11 @@ function make_experiment (id_number,return_what) {
             colour_instructions, // precede stroop with colour instructions
             pre_1d_training,
             // now we spread (shallow copy) the block object, and add to the keys inside - we need to be careful here, because it will only shallow copy: editing too deep will permanently alter the block object
-            {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[2], data: {...stroop_task.timeline[2].data, exp_part: "training", test_type: "colour_only"}}, colour_feedback], repetitions: num_tr_blocks}, // append feedback to the stroop and add repetitions
+            {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[2], data: {...stroop_task.timeline[2].data, exp_part: "training", test_type: "colour_only"}}, spacer_trial, colour_feedback], repetitions: num_tr_blocks}, // append feedback to the stroop and add repetitions
             pre_training, // pre task instructions
             colour_instruction_reminder, // precede the task with the reminder of the task
             // same again - spread the block object and add to the keys inside
-            {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[3], data: {...stroop_task.timeline[3].data, exp_part: "training", test_type: "colour"}}, colour_feedback], repetitions: num_tr_blocks},
+            {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[3], data: {...stroop_task.timeline[3].data, exp_part: "training", test_type: "colour"}}, spacer_trial, colour_feedback], repetitions: num_tr_blocks},
             pre_test,
             // same again - spread the block object and add to the keys inside
             {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[3], data: {...stroop_task.timeline[3].data, exp_part: "testing", test_type: "colour"}}], repetitions: num_blocks},
@@ -432,10 +440,10 @@ function make_experiment (id_number,return_what) {
         var stroop_size_proc = [
             size_instructions,
             pre_1d_training,
-            {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[1], data: {...stroop_task.timeline[1].data, exp_part: "training", test_type: "size_only"}}, size_feedback], repetitions: num_tr_blocks},
+            {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[1], data: {...stroop_task.timeline[1].data, exp_part: "training", test_type: "size_only"}}, spacer_trial, size_feedback], repetitions: num_tr_blocks},
             pre_training,
             size_instruction_reminder,
-            {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[3], data: {...stroop_task.timeline[3].data, exp_part: "training", test_type: "size"}}, size_feedback], repetitions: num_tr_blocks},
+            {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[3], data: {...stroop_task.timeline[3].data, exp_part: "training", test_type: "size"}}, spacer_trial, size_feedback], repetitions: num_tr_blocks},
             pre_test,
             {...stroop_task, timeline: [stroop_task.timeline[0], {...stroop_task.timeline[3], data: {...stroop_task.timeline[3].data, exp_part: "testing", test_type: "size"}}], repetitions: num_blocks},
             finished_task
@@ -444,10 +452,10 @@ function make_experiment (id_number,return_what) {
         var falsefont_colour_proc = [
             colour_instructions,
             pre_1d_training,
-            {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[2], data: {...false_font_task.timeline[2].data, exp_part: "training", test_type: "colour_only"}}, colour_feedback], repetitions: num_tr_blocks},
+            {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[2], data: {...false_font_task.timeline[2].data, exp_part: "training", test_type: "colour_only"}}, spacer_trial, colour_feedback], repetitions: num_tr_blocks},
             pre_training,
             colour_instruction_reminder,
-            {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[3], data: {...false_font_task.timeline[3].data, exp_part: "training", test_type: "colour"}}, colour_feedback], repetitions: num_tr_blocks},
+            {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[3], data: {...false_font_task.timeline[3].data, exp_part: "training", test_type: "colour"}}, spacer_trial, colour_feedback], repetitions: num_tr_blocks},
             pre_test,
             {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[3], data: {...false_font_task.timeline[3].data, exp_part: "testing", test_type: "colour"}}], repetitions: num_blocks},
             finished_task
@@ -456,10 +464,10 @@ function make_experiment (id_number,return_what) {
         var falsefont_size_proc = [
             size_instructions,
             pre_1d_training,
-            {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[1], data: {...false_font_task.timeline[1].data, exp_part: "training", test_type: "size_only"}}, size_feedback], repetitions: num_tr_blocks},
+            {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[1], data: {...false_font_task.timeline[1].data, exp_part: "training", test_type: "size_only"}}, spacer_trial, size_feedback], repetitions: num_tr_blocks},
             pre_training,
             size_instruction_reminder,
-            {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[3], data: {...false_font_task.timeline[3].data, exp_part: "training", test_type: "size"}}, size_feedback], repetitions: num_tr_blocks},
+            {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[3], data: {...false_font_task.timeline[3].data, exp_part: "training", test_type: "size"}}, spacer_trial, size_feedback], repetitions: num_tr_blocks},
             pre_test,
             {...false_font_task, timeline: [false_font_task.timeline[0], {...false_font_task.timeline[3], data: {...false_font_task.timeline[3].data, exp_part: "testing", test_type: "size"}}], repetitions: num_blocks},
             finished_task
