@@ -51,6 +51,11 @@ var info = {
     We are keen that volunteers feel informed and well treated when they take part in our research. If you have a complaint about this study please contact the Principle Investigator listed at the end of this information sheet in the first instance. If you are not happy with the response, please contact the Director of the Cognition and Brain Sciences Unit (director@mrc-cbu.cam.ac.uk). Further steps can be taken through the University of Cambridge if necessary.</p>\
     <p>Thank you for considering taking part in this study. Our research depends entirely on the goodwill of potential volunteers such as you.  If you require any further information, we will be pleased to help you in any way we can.</p>\
     <p>If you require more information, please contact:</p>\
+    <p>Dorian Minors<br>\
+    MRC Cognition & Brain Sciences Unit<br>\
+    15 Chaucer Road, Cambridge. CB2 7EF Tel: 01223 767704<br>\
+    Email: Dorian.minors@mrc-cbu.cam.ac.uk<br>\
+    <p>The Principle Investigator is:</p>\
     <p>Dr Alexandra Woolgar<br>\
     MRC Cognition & Brain Sciences Unit<br>\
     15 Chaucer Road, Cambridge. CB2 7EF Tel: 01223 767704<br>\
