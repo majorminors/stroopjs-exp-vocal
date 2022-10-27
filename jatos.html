@@ -47,9 +47,9 @@
 
             // get the prolific ID if there is one
             if (jatos.urlQueryParameters.hasOwnProperty('PROLIFIC_PID')) {
-                jatos.studySessionData["app_identifier_string"] = jatos.urlQueryParameters.PROLIFIC_PID;
+                var app_identifier_string = jatos.urlQueryParameters.PROLIFIC_PID;
             } else {
-                jatos.studySessionData["app_identifier_string"] = 'none_set';
+                var app_identifier_string = 'none_set';
             }
 
             jsPsych.init({
@@ -71,6 +71,7 @@
                     var time = jsPsych.totalTime();
                     jsPsych.data.addProperties({
                         expt_duration: time,
+                        app_id: app_identifier_string,
                     });
 
                     var resultJson = jsPsych.data.get().json(); 
