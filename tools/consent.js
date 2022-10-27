@@ -14,7 +14,7 @@ var info = {
     "<p><strong>What is the purpose of the study?</strong><br>\
     The aim of this study is to better understand how the brain supports us to perceive, pay attention to, and respond to the world around us.</p>\
     <p><strong>Who is organising and sponsoring this research?</strong><br>\
-    Cambridge University is the sponsor for this study based in the United Kingdom.</p>\
+    The University of Cambridge is the sponsor for this study based in the United Kingdom.</p>\
     <p><strong>Has the study been approved?</strong><br>\
     This study has been reviewed and approved by an independent group of people, Cambridge Psychology Research Ethics Committee (CPREC), who have a duty to protect research volunteers’ safety, rights, wellbeing and dignity.</p>",
 
@@ -28,7 +28,8 @@ var info = {
     Taking part requires you to complete a computerised task online from wherever suits you.\
     We will explain the task in detail before you start and you will have the opportunity to practice it.</p>\
     <p> <strong>Will video or audio recordings be made?</strong><br>\
-    The study does not involve video or audio recording.</p>\
+    The study <em>does</em> involve audio recording. There is no video recording.<br>\
+    Your data will be anonymised and kept in accordance with GDPR regulation.</p>\
     <p><strong>Will I be paid for taking part?</strong><br>\
     To thank you for your contribution to this study we will give you £6 for each hour.</p>",
 
