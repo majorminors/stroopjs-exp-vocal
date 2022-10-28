@@ -5,21 +5,21 @@
         <!-- pull in JATOS resources -->
         <script src="/assets/javascripts/jatos.js"></script>
         <!-- pull in the jsPsych libraries we need -->
-        <script src="jspsych-6.1.0/jspsych.js"></script>
-        <script src="jspsych-6.1.0/plugins/jspsych-call-function.js"></script>
-        <script src="jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
-        <script src="jspsych-6.1.0/plugins/jspsych-survey-text.js"></script>
-        <script src="jspsych-6.1.0/plugins/jspsych-survey-multi-choice.js"></script>
-        <script src="jspsych-6.1.0/plugins/jspsych-resize.js"></script>
-        <script src="jspsych-6.1.0/plugins/jspsych-image-audio-response.js"></script>
-        <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
+        <script src="jspsych/jspsych.js"></script>
+        <script src="jspsych/plugin-call-function.js"></script>
+        <script src="jspsych/plugin-instructions.js"></script>
+        <script src="jspsych/plugin-survey-text.js"></script>
+        <script src="jspsych/plugin-survey-multi-choice.js"></script>
+        <script src="jspsych/plugin-resize.js"></script>
+        <script src="jspsych/plugin-html-keyboard-response.js"></script>
+        <script src="jspsych/plugin-html-audio-response.js"></script>
         <!-- pull in the experiment maker function 'make_experiment' -->
         <script src="exp.js"></script>
         <!-- pull in the preexperiment functions -->
         <script src="tools/consent.js"></script>
         <script src="tools/demographics.js"></script>
         <!-- pull in the styling -->
-        <link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css"></link>
+        <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
         <style></style>
     </head>
     <body></body>
@@ -52,9 +52,15 @@
                 var app_identifier_string = 'none_set';
             }
 
-            jsPsych.init({
-                timeline: make_experiment(id_number),
-                preload_images: make_experiment(id_number,"images"),
+
+            //////////////////////
+            // do jsPsych stuff //
+            //////////////////////
+
+            // we init jsPsych here, but counterintuitively also have to predetermine what we want to happen at the end (on_finish/on_close)
+            // we have not actually constructed the experiment yet
+            var jsPsych = initJsPsych({
+                audio: true,
                 exclusions: {
                     min_width: 1500,
                     min_height: 600
@@ -78,6 +84,31 @@
                     jatos.submitResultData(resultJson, jatos.endStudy);
                 }
             });
+
+            // here we construct the experiment, now jsPsych has been initialised and we can use jsPsych.xxx stuff
+            // so everything timeline constructy is happening in make_experiment() which is happening in exp.js
+            var experiment_stuff = make_experiment(id_number,jsPsych);
+            // returns:
+                // experiment_stuff.timeline
+                // experiment_stuff.image_paths
+
+            // now we'll preload the images
+            // this is straightforwardly copied from jsPsych docs,
+            // it first gathers the paths and loads them, and on completion it will start the experiment (the first function)
+            // we do it this way so that the experiment doesn't start while it's loading the images still
+            // second function is what it will do as it's loading
+            // third is what it will do if it errors
+            jsPsych.pluginAPI.preloadImages(experiment_stuff.image_paths, 
+                    function(){ startExperiment(); },
+                    function(file){ console.log('file loaded: ', file); },
+                    function(file){ console.log('error loading file: ', file); }
+                );
+
+            // now we define the function that will run when preloading is complete
+            // not clear to me why I can't just put jsPsych.run() directly in that function, rather than wrapping it in ANOTHER function, but hey-ho, let's just stick with the documented examples
+            function startExperiment(){
+                jsPsych.run(experiment_stuff.timeline);
+            }
         });
 
         function initBatchConditions(num_conditions,conditionCounts) {

@@ -3,7 +3,7 @@ function get_consent(timeline){
 
 //prep instructions
 var info = {
-    type: 'instructions',
+    type: jsPsychInstructions,
     pages: ["<p><strong>Understanding attention in complex tasks</strong></p>\
     <p>Principal Investigator: Alexandra Woolgar<br>\
     Researcher: Dorian Minors<br>\
@@ -85,7 +85,7 @@ var info = {
 timeline.push(info);
 
 var consent = { 
-    type: 'instructions',
+    type: jsPsychInstructions,
 
     pages: ["<p><strong>Agreement to participate in this study</strong></p>\
     <p>I have read and understood the information provided to me.<br>\

@@ -1,8 +1,8 @@
-function make_experiment (id_number,return_what) {
+function make_experiment (condition_num,jsPsych) {
     // in hindsight this is a little dangerous, because we call this function twice
     // in practice one error we have is that the unique_id saved to jatos is OVERWRITTEN the second running, but not in the filename saving function---so we have a different unique_id saved as the filenames. luckily the filenames are also saved each trial so it's not important but let's not do it this way again
 
-    // requires id_number for task permutation
+    // requires condition_num for task permutation
     // if return_what == "images", will return image paths (for preloading)
 
         ////////////
@@ -10,6 +10,7 @@ function make_experiment (id_number,return_what) {
         ////////////
 
         var instructions_on = 1; // you can turn off (0) the first two instructions screens if you want to test (since the participant recording test takes a bit)
+        var consent_on = 0; // turn on or off consent/demographics screens
 
         var num_blocks = 6; // will repeat each block of stimuli this number of times (blocked together)
         var num_tr_blocks = 1; // number of training blocks (same principle as num_blocks)
@@ -21,34 +22,26 @@ function make_experiment (id_number,return_what) {
 
         var unique_id = jsPsych.randomization.randomID(15); // generate a unique string for participant ID
         jsPsych.data.addProperties({ // push that to the data object
-          condition_number: id_number,
+          condition_number: condition_num,
           unique_id: unique_id
           // we'll also add the id bin and permutation of procedures
         });
         console.log("id number: ", unique_id);
 
-	// we'll use this to identify recordings and save them as well as trial data
-	var recording_count = 0;
+	// we'll use this to save trial data occasionally
         var save_data_count = 0;
-	function save_file_to_jatos(data) {
-	    return new Promise(function (resolve) {
-		const blob = new Blob(data, { type: 'audio/webm; codecs=opus' });
-		// Create URL from the audio blob, which is used to replay the audio file (when allow_playback is true)
-		var url = URL.createObjectURL(blob);
-		// Create the audio file name with the participant ID and trial number
-		var filename = unique_id + "_" + recording_count.toString() + ".webm";
-		// Save the audio file to the server 
-		// NOTE: if not using JATOS then replace this line with a command to save the file to your server
-		jatos.uploadResultFile(blob, filename);
-		// This function needs to return an object with the URL and data string.
-		// - "url" allows the audio to be replayed if playback is true
-		// - "str" is used to either save the audio data as base64 string or save the filename or other identifier to the jsPsych data.
-		//   In this example function, the audio data has been saved separately to the server, 
-		//   so "str" is used to save the name of the audio file that corresponds to this trial.
-		var trial_data = { url: url, str: filename };
-		resolve(trial_data);
-	    });
-	}
+        var last_save_data = 0;
+        var save_data_every = 10;
+
+        // little function to produce a stimulus html from image path and height
+        function htmlStimSizer(height, path){
+            html='<img src="';
+            html+= path;
+            html+='" style="height:';
+            html+= height;
+            html+='">';
+            return html;
+        }
 
         //////////////////////
         /* stimuli creation */
@@ -58,9 +51,9 @@ function make_experiment (id_number,return_what) {
 
         var window_height = window.innerHeight; // get the window height in pixels	
         var stim_height = { // stimulus height in pixels - width is auto (i.e. will maintain aspect ratio)
-            short: 50, //window_height*0.1,
-            medium: 150, //window_height*0.3,
-            tall: 300 //window_height*0.5
+            short: '50px', //window_height*0.1,
+            medium: '150px', //window_height*0.3,
+            tall: '300px' //window_height*0.5
         }
 
         // little stimulus factory we'll use later when constructing the trials
@@ -131,15 +124,17 @@ function make_experiment (id_number,return_what) {
         } 
 
         var timeline = []; // initialise timeline
-        get_consent(timeline); // do the consent function
-        get_demographics(timeline); // do the demographics function
+        if (consent_on == 1) {
+            get_consent(timeline); // do the consent function
+            get_demographics(timeline); // do the demographics function
+        }
 
         //////////////////////////////////
         /* do window and viewport stuff */
         //////////////////////////////////
 
         var screen_dimensions = { // get screen and viewport dimensions
-            type: 'call-function',
+            type: jsPsychCallFunction,
             func: function(){
                 var w=window,d=document,e=d.documentElement,g=d.getElementsByTagName('body')[0],viewx=w.innerWidth||e.clientWidth||g.clientWidth,viewy=w.innerHeight||e.clientHeight||g.clientHeight; // lots of shorcuts, but essentially just get some javascript height and width descriptors
                 var dpcm=function(){
@@ -168,7 +163,7 @@ function make_experiment (id_number,return_what) {
 
         // standardise the screen size
         var screen_sizer = {
-            type: 'resize',
+            type: jsPsychResize,
             item_width: 3 + 3/8, // I think this is in inches
             item_height: 2 + 1/8,
             prompt: "<p>Click and drag the lower right corner of the box until the box is the same size as a bank card held up to the screen.</p>",
@@ -181,39 +176,32 @@ function make_experiment (id_number,return_what) {
         //////////////////////
 
         var instructions_onstart = {
-            type: 'html-keyboard-response',
+            type: jsPsychHtmlKeyboardResponse,
             stimulus:"<p>In this experiment you'll see images on the screen and respond by speaking aloud.<br>You'll need to allow microphone access in your browser if you haven't already.<br>I will prompt you for this shortly. Be sure to select 'remember the decision' so you don't get prompted every time.<br>There are four different task in this experiment.<br>Each one is slightly different, although all are similar.<br>At the start of each task, you'll get some instructions.<br>Then there will be a short 'training' period during which we'll tell you the correct answer after each trial.<br>Then you'll start the block properly and you won't get any feedback until the next block.<br><br>When ready, press any key continue.</p>",
             trial_duration: max_instruction_time*2
         }
 
         /* intro to the recording trial */
         var participant_test = {
-            type: 'image-audio-response',
-            stimulus: 'stimuli/tiny-welcome.png', // an invisible img that takes up no space on the screen
-            prompt: "<p>Recording has started. Speak!<br>This trial just lets you test things out.<br>This example trial records for 6 seconds and at the end you can play it back or rerecord as you like.<br>If you can hear yourself well, we're good to go.<br>If not, please DO NOT CONTINUE---let the researcher know!<br>In the experiment itself, you will not be able to playback, or rerecord.<br>We will just record automatically on every trial.</p>",
+            type: jsPsychHtmlAudioResponse,
+            stimulus: '<img src="stimuli/tiny-welcome.png" />', // an invisible img that takes up no space on the screen
+            prompt: "<p>Recording has started. Speak!<br>This trial just lets you test things out.<br>This example trial records for 6 seconds and at the end you can play it back or rerecord as you like.<br>If you can hear yourself well, we're good to go.<br>If not, please DO NOT CONTINUE---I might not be able to accept your data!<br>In the experiment itself, you will not be able to playback, or rerecord.<br>We will just record automatically on every trial.</p>",
             allow_playback: true,
-            buffer_length: 6000,
-            wait_for_mic_approval: true,
-            recording_indicator: 4
+            done_button_label: 'Continue if you hear yourself LOUD and CLEAR',
+            recording_duration: 6000,
         }
 
         var record_background = {
-            type: 'image-audio-response',
-            stimulus: 'stimuli/tiny-welcome.png', // an invisible img that takes up no space on the screen
+            type: jsPsychHtmlAudioResponse,
+            stimulus: '<img src="stimuli/tiny-welcome.png" />', // an invisible img that takes up no space on the screen
             prompt: "<p>I'm now recording 15 seconds of background noise.<br>The idea is to allow me to try and remove this from your recordings so I can hear you better<br>Please try not to make additional noise in this time (e.g. shifting, clearing throat, etc).<br>If some <em>unusual</em> loud sound happens during the recording (e.g. a glass breaking, a car backfiring) then please re-record.</p>",
             allow_playback: true,
-            buffer_length: 15000,
-            wait_for_mic_approval: true,
-            postprocessing: save_file_to_jatos,
-            recording_indicator: 4,
-            on_finish: function() {
-                jsPsych.data.get().addToLast({recording_count: recording_count});
-                recording_count++;
-            }
+            done_button_label: 'Continue if that was 15s of normal background noise',
+            recording_duration: 15000,
         }
 
         var final_prestructions = {
-            type: 'html-keyboard-response',
+            type: jsPsychHtmlKeyboardResponse,
             stimulus:"<p>Some last requests.<br><br>I am recording on every trial, but never when feedback or instructions are shown.<br>Please be aware of your surroundings and keep noise (other than your voice!) to a minimum.<br>Please, please, please speak LOUD and CLEAR!<br>Otherwise it will be hard for me to hear your answers<br>Please be as fast and as accurate as possible.<br>Lastly, please DO NOT let your screensaver go on! You might be able to prevent this with fullscreen (F11)<br><br>When ready, press SPACE BAR to continue.</p>",
             trial_duration: max_instruction_time*2,
             choices: [' ']
@@ -230,48 +218,48 @@ function make_experiment (id_number,return_what) {
 
         /* report size instructions */
         var size_instructions = {
-            type: 'html-keyboard-response',
+            type: jsPsychHtmlKeyboardResponse,
             stimulus: '<p>In this version of the task, you must report the <em>height</em> of the image by speaking aloud.<br>They will be either short, medium, or tall.<br>Please keep your eyes on the centre of the screen throughout.<br><br>Press any key to continue.</p>',
             trial_duration: max_instruction_time,
         }
         var size_instruction_reminder = {
-            type: 'html-keyboard-response',
+            type: jsPsychHtmlKeyboardResponse,
             stimulus: '<p>Remember, you must report the <em>height</em> of the image by speaking aloud.<br>It will be either short, medium, or tall.<br>Please keep your eyes on the centre of the screen throughout.<br><br>Press any key to continue.</p>',
             trial_duration: max_instruction_time,
         }
 
         /* report colour instructions */
         var colour_instructions = {
-            type: 'html-keyboard-response',
+            type: jsPsychHtmlKeyboardResponse,
             stimulus: '<p>In this version of the task, you must report the <em>colour</em> of the image by speaking aloud.<br>It will be either red, blue, or green.<br>Please keep your eyes on the centre of the screen throughout.<br><br>Press any key to continue.</p>',
             trial_duration: max_instruction_time,
         }
         var colour_instruction_reminder = {
-            type: 'html-keyboard-response',
+            type: jsPsychHtmlKeyboardResponse,
             stimulus: '<p>Remember, you must report the <em>colour</em> of the image by speaking aloud.<br>It will be either red, blue, or green.<br>Please keep your eyes on the centre of the screen throughout.<br><br>Press any key to continue.</p>',
             trial_duration: max_instruction_time,
         }
 
         /* pre item instructions */
         var pre_1d_training = {
-            type: 'html-keyboard-response',
+            type: jsPsychHtmlKeyboardResponse,
             stimulus: 'We will start with a block of training on an easy stimulus first. We will give you feedback each trial.<br><br> Press any key to continue.</p>',
             trial_duration: max_instruction_time,
         }
         var pre_training = {
-            type: 'html-keyboard-response',
+            type: jsPsychHtmlKeyboardResponse,
             stimulus: 'Now another block of training with a different stimulus. We will give you feedback each trial.<br><br> Press any key to continue.</p>',
             trial_duration: max_instruction_time,
         }
         var pre_test = {
-            type: 'html-keyboard-response',
+            type: jsPsychHtmlKeyboardResponse,
             stimulus: 'Now we begin the test. You will no longer recieve feedback.<br>Please answer as fast and as accurately as possible.<br><br> Press any key to continue.</p>',
             trial_duration: max_instruction_time,
         }
 
         /* finished task instructions */
         var finished_task = {
-            type: 'html-keyboard-response',
+            type: jsPsychHtmlKeyboardResponse,
             stimulus: "You've finished this version of the task. Well done.<br><br>Press any key to continue.</p>",
             trial_duration: max_instruction_time,
         }
@@ -282,29 +270,29 @@ function make_experiment (id_number,return_what) {
         
         /* we need this because for some reason the feedback trial placed directly after an audio-response trial speeds past */
         var spacer_trial = {
-            type: 'html-keyboard-response',
+            type: jsPsychHtmlKeyboardResponse,
             stimulus: '<p> </p>',
-            choices: jsPsych.NO_KEYS,
+            choices: "NO_KEYS",
             trial_duration: 50,
         }
 
         /* feedback objects we can call later when we put together the procedure */
         var size_feedback = {
-            type: 'html-keyboard-response',
-            stimulus: function(){
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: () => {
                 var size_string = jsPsych.data.get().last(2).values()[0].stim_data.size;
                 return '<p>correct answer: <span style="font-size: 40px;">'+JSON.stringify(size_string)+'</span></p>';
             },
-            choices: jsPsych.NO_KEYS,
+            choices: "NO_KEYS",
             trial_duration: feedback_time,
         }
         var colour_feedback = {
-            type: 'html-keyboard-response',
-            stimulus: function(){
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: () => {
                 var colour_string = jsPsych.data.get().last(2).values()[0].stim_data.colour;
                 return '<p> correct answer: <span style="font-size: 40px;">'+JSON.stringify(colour_string)+'</span></p>';
             },
-            choices: jsPsych.NO_KEYS,
+            choices: "NO_KEYS",
             trial_duration: feedback_time,
         }
 
@@ -312,9 +300,9 @@ function make_experiment (id_number,return_what) {
         var stroop_task = {
             timeline: [
                 {
-                    type: 'html-keyboard-response',
+                    type: jsPsychHtmlKeyboardResponse,
                     stimulus: '<div style="font-size:60px;">+</div>',
-                    choices: jsPsych.NO_KEYS,
+                    choices: "NO_KEYS",
                     trial_duration: fixation_time,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'), // pull this in so we can access it in a subsequent trial
@@ -322,50 +310,42 @@ function make_experiment (id_number,return_what) {
                     }
                 },
                 { // size only training block
-                    type: 'image-audio-response',
-                    stimulus: 'stimuli/line.png',
+                    type: jsPsychHtmlAudioResponse,
+                    stimulus: htmlStimSizer(jsPsych.timelineVariable('stim_size'),'stimuli/line.png'),
                     allow_playback: false,
-                    buffer_length: trial_time,
-                    wait_for_mic_approval: false,
-                    stimulus_height: jsPsych.timelineVariable('stim_size'),
+                    show_done_button: false,
+                    recording_duration: trial_time,
                     stimulus_duration: stim_time,
-                    recording_indicator: 4,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
                     }
                 },
                 { // colour only training block
-                    type: 'image-audio-response',
-                    stimulus: jsPsych.timelineVariable('trn_stim'),
+                    type: jsPsychHtmlAudioResponse,
+                    stimulus: htmlStimSizer(stim_height.medium,jsPsych.timelineVariable('trn_stim')),
                     allow_playback: false,
-                    buffer_length: trial_time,
-                    wait_for_mic_approval: false,
-                    stimulus_height: stim_height.medium,
+                    show_done_button: false,
+                    recording_duration: trial_time,
                     stimulus_duration: stim_time,
-                    recording_indicator: 4,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
                     }
                 },
                 { // stimulus block
-                    type: 'image-audio-response',
-                    stimulus: jsPsych.timelineVariable('stim_path'),
+                    type: jsPsychHtmlAudioResponse,
+                    stimulus: htmlStimSizer(jsPsych.timelineVariable('stim_size'),jsPsych.timelineVariable('stim_path')),
                     allow_playback: false,
-                    buffer_length: trial_time,
-                    wait_for_mic_approval: false,
-                    stimulus_height: jsPsych.timelineVariable('stim_size'),
+                    show_done_button: false,
+                    recording_duration: trial_time,
                     stimulus_duration: stim_time,
-                    recording_indicator: 4,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
                     },
-		    postprocessing: save_file_to_jatos,
-		    on_finish: function() {
-                        jsPsych.data.get().addToLast({recording_count: recording_count});
-			recording_count++;
-                        // save the data every 10 trials
-                        if (recording_count > save_data_count+10) {
-                            save_data_count = recording_count;
+		    on_finish: () => {
+                        // save the data every save_data_every trials
+                        save_data_count++
+                        if (save_data_count > last_save_data+save_data_every) {
+                            last_save_data = save_data_count;
                             var thisSessionData = jatos.studySessionData;
                             var thisExpData = JSON.parse(jsPsych.data.get().json());
                             var resultJson = {...thisSessionData, ...thisExpData};
@@ -386,9 +366,9 @@ function make_experiment (id_number,return_what) {
         var false_font_task = {
             timeline: [
                 {
-                    type: 'html-keyboard-response',
+                    type: jsPsychHtmlKeyboardResponse,
                     stimulus: '<div style="font-size:60px;">+</div>',
-                    choices: jsPsych.NO_KEYS,
+                    choices: "NO_KEYS",
                     trial_duration: fixation_time,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'), // pull this in so we can access it in a subsequent trial
@@ -396,50 +376,42 @@ function make_experiment (id_number,return_what) {
                     }
                 },
                 { // size only training block
-                    type: 'image-audio-response',
-                    stimulus: 'stimuli/line.png',
+                    type: jsPsychHtmlAudioResponse,
+                    stimulus: htmlStimSizer(jsPsych.timelineVariable('stim_size'),'stimuli/line.png'),
                     allow_playback: false,
-                    buffer_length: trial_time,
-                    wait_for_mic_approval: false,
-                    stimulus_height: jsPsych.timelineVariable('stim_size'),
+                    show_done_button: false,
+                    recording_duration: trial_time,
                     stimulus_duration: stim_time,
-                    recording_indicator: 4,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
                     }
                 },
                 { // colour only training block
-                    type: 'image-audio-response',
-                    stimulus: jsPsych.timelineVariable('trn_stim'),
+                    type: jsPsychHtmlAudioResponse,
+                    stimulus: htmlStimSizer(stim_height.medium,jsPsych.timelineVariable('trn_stim')),
                     allow_playback: false,
-                    buffer_length: trial_time,
-                    wait_for_mic_approval: false,
-                    stimulus_height: stim_height.medium,
+                    show_done_button: false,
+                    recording_duration: trial_time,
                     stimulus_duration: stim_time,
-                    recording_indicator: 4,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
                     }
                 },
                 { // stimulus block
-                    type: 'image-audio-response',
-                    stimulus: jsPsych.timelineVariable('stim_path'),
+                    type: jsPsychHtmlAudioResponse,
+                    stimulus: htmlStimSizer(jsPsych.timelineVariable('stim_size'),jsPsych.timelineVariable('stim_path')),
                     allow_playback: false,
-                    buffer_length: trial_time,
-                    wait_for_mic_approval: false,
-                    stimulus_height: jsPsych.timelineVariable('stim_size'),
+                    show_done_button: false,
+                    recording_duration: trial_time,
                     stimulus_duration: stim_time,
-                    recording_indicator: 4,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
                     },
-		    postprocessing: save_file_to_jatos,
-		    on_finish: function() {
-                        jsPsych.data.get().addToLast({recording_count: recording_count});
-			recording_count++;
-                        // save the data every 10 trials
-                        if (recording_count > save_data_count+10) {
-                            save_data_count = recording_count;
+		    on_finish: () => {
+                        // save the data every save_data_every trials
+                        save_data_count++
+                        if (save_data_count > last_save_data+save_data_every) {
+                            last_save_data = save_data_count;
                             var thisSessionData = jatos.studySessionData;
                             var thisExpData = JSON.parse(jsPsych.data.get().json());
                             var resultJson = {...thisSessionData, ...thisExpData};
@@ -540,7 +512,7 @@ function make_experiment (id_number,return_what) {
         // now permute the procedures
         var permutations = permute(unshuffled_procedure);
 
-        // a function to bin id_numbers evenly into permutations (in case we're passing in a participant ID for example)
+        // a function to bin condition_nums evenly into permutations (in case we're passing in a participant ID for example)
         function permutation_selector (id, permutations) {
             length = permutations.length;
             if (id >= length) { // if id is larger than the number of permutations
@@ -550,8 +522,8 @@ function make_experiment (id_number,return_what) {
                 return id;
             }
         }
-        // this is where we'd chose a permutation based on the id_number of the subject
-        condition_bin = permutation_selector(id_number, permutations);
+        // this is where we'd chose a permutation based on the condition_num of the subject
+        condition_bin = permutation_selector(condition_num, permutations);
         thispermutation = permutations[condition_bin];
         console.log("condition bin: ", condition_bin);
         
@@ -595,7 +567,7 @@ function make_experiment (id_number,return_what) {
         /////////////////////////////////////////////////////////////
         
         var finish_screen = { 
-            type: 'html-keyboard-response',
+            type: jsPsychHtmlKeyboardResponse,
             stimulus: "<p>All done!<br><br>Thanks so much for participating.<br>Feel free to email me if you'd like to know more about what the study was exploring.<br>dorian.minors@mrc-cbu.cam.ac.uk<br><br>Press any key to finish and please wait to be redirected.</p>",
             trial_duration: max_instruction_time,
             data: { procedure: thispermutation }
@@ -626,9 +598,8 @@ function make_experiment (id_number,return_what) {
         /* package everything up */
         ///////////////////////////
 
-        if (return_what == "images") {
-            return image_paths;
-        } else {
-            return timeline;
-        }
+        return {
+            timeline: timeline,
+            image_paths: image_paths,
+        };
 }
