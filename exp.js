@@ -175,42 +175,46 @@ function make_experiment (condition_num,jsPsych) {
         /* instruction bits */
         //////////////////////
 
-        var instructions_onstart = {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus:"<p>In this experiment you'll see images on the screen and respond by speaking aloud.<br>You'll need to allow microphone access in your browser if you haven't already.<br>I will prompt you for this shortly. Be sure to select 'remember the decision' so you don't get prompted every time.<br>There are four different task in this experiment.<br>Each one is slightly different, although all are similar.<br>At the start of each task, you'll get some instructions.<br>Then there will be a short 'training' period during which we'll tell you the correct answer after each trial.<br>Then you'll start the block properly and you won't get any feedback until the next block.<br><br>When ready, press any key continue.</p>",
-            trial_duration: max_instruction_time*2
-        }
-
-        /* intro to the recording trial */
-        var participant_test = {
-            type: jsPsychHtmlAudioResponse,
-            stimulus: "<p>Recording has started. Speak!<br>This trial just lets you test things out.<br>This example trial records for 6 seconds and at the end you can play it back or rerecord as you like.<br>If you can hear yourself well, we're good to go.<br>If not, please DO NOT CONTINUE---I might not be able to accept your data!<br>In the experiment itself, you will not be able to playback, or rerecord.<br>We will just record automatically on every trial.</p>",
-            allow_playback: true,
-            done_button_label: 'Continue if you hear yourself LOUD and CLEAR',
-            recording_duration: 6000,
-        }
-
-        var record_background = {
-            type: jsPsychHtmlAudioResponse,
-            stimulus: "<p>I'm now recording 15 seconds of background noise.<br>The idea is to allow me to try and remove this from your recordings so I can hear you better<br>Please try not to make additional noise in this time (e.g. shifting, clearing throat, etc).<br>If some <em>unusual</em> loud sound happens during the recording (e.g. a glass breaking, a car backfiring) then please re-record.</p>",
-            allow_playback: true,
-            done_button_label: 'Continue if that was 15s of normal background noise',
-            recording_duration: 15000,
-        }
-
-        var final_prestructions = {
-            type: jsPsychHtmlKeyboardResponse,
-            stimulus:"<p>Some last requests.<br><br>I am recording on every trial, but never when feedback or instructions are shown.<br>Please be aware of your surroundings and keep noise (other than your voice!) to a minimum.<br>Please, please, please speak LOUD and CLEAR!<br>Otherwise it will be hard for me to hear your answers<br>Please be as fast and as accurate as possible.<br>Lastly, please DO NOT let your screensaver go on! You might be able to prevent this with fullscreen (F11)<br><br>When ready, press SPACE BAR to continue.</p>",
-            trial_duration: max_instruction_time*2,
-            choices: [' ']
-        }
-
+        var instructions_onstart = [
+            {
+                type: jsPsychHtmlKeyboardResponse,
+                stimulus:"<p>In this experiment you'll see images on the screen and respond by speaking aloud.<br>You'll need to allow microphone access in your browser if you haven't already.<br>I will prompt you for this next. If it appears as an option, be sure to select 'remember the decision' so you don't get prompted every time.<br><br>When ready, press any key continue.</p>",
+                trial_duration: max_instruction_time*2
+            },
+            {
+                type: jsPsychInitializeMicrophone,
+            },
+            {
+                type: jsPsychHtmlAudioResponse,
+                stimulus: "<p>Recording has started. Speak!<br>This trial just lets you test things out.<br>This example trial records for 6 seconds and at the end you can play it back or rerecord as you like.<br>If you can hear yourself well, we're good to go.<br>If not, please DO NOT CONTINUE---I might not be able to accept your data!<br>In the experiment itself, you will not be able to playback, or rerecord.<br>We will just record automatically on every trial.</p>",
+                allow_playback: true,
+                done_button_label: 'Check your recording',
+                accept_button_label: 'Continue only if you hear yourself LOUD and CLEAR!',
+                recording_duration: 6000,
+            },
+            {
+                type: jsPsychHtmlAudioResponse,
+                stimulus: "<p>I'm now recording 15 seconds of background noise.<br>The idea is to allow me to try and remove this from your recordings so I can hear you better<br>Please try not to make additional noise in this time (e.g. shifting, clearing throat, etc).<br>If some <em>unusual</em> loud sound happens during the recording (e.g. a glass breaking, a car backfiring) then please re-record.</p>",
+                allow_playback: true,
+                done_button_label: 'Oops, messed up---let me re-record',
+                accept_button_label: 'Continue only if that was 15s of normal background noise',
+                recording_duration: 15000,
+            },
+            {
+                type: jsPsychHtmlKeyboardResponse,
+                stimulus:"<p>Great!<br>There are four different task in this experiment.<br>Each one is slightly different, although all are similar.<br>At the start of each task, you'll get some instructions.<br>Then there will be a short 'training' period during which we'll tell you the correct answer after each trial.<br>Then you'll start the block properly and you won't get any feedback until the next block.<br><br>When ready, press any key continue.</p>",
+                trial_duration: max_instruction_time*2
+            },
+            {
+                type: jsPsychHtmlKeyboardResponse,
+                stimulus:"<p>Some last requests.<br><br>I am recording on every trial, but never when feedback or instructions are shown.<br>Please be aware of your surroundings and keep noise (other than your voice!) to a minimum.<br>Please, please, please speak LOUD and CLEAR!<br>Otherwise it will be hard for me to hear your answers<br>Please be as fast and as accurate as possible.<br>Lastly, please DO NOT let your screensaver go on! You might be able to prevent this with fullscreen (F11)<br><br>When ready, press SPACE BAR to continue.</p>",
+                trial_duration: max_instruction_time*2,
+                choices: [' ']
+            }
+        ];
         /* push those to the timeline, if instructions are on */
         if (instructions_on == 1) {
-            timeline.push(instructions_onstart);
-            timeline.push(participant_test);
-            timeline.push(record_background);
-            timeline.push(final_prestructions);
+            timeline.push(...instructions_onstart);
         }
 
 
