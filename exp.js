@@ -184,8 +184,7 @@ function make_experiment (condition_num,jsPsych) {
         /* intro to the recording trial */
         var participant_test = {
             type: jsPsychHtmlAudioResponse,
-            stimulus: '<img src="stimuli/tiny-welcome.png" />', // an invisible img that takes up no space on the screen
-            prompt: "<p>Recording has started. Speak!<br>This trial just lets you test things out.<br>This example trial records for 6 seconds and at the end you can play it back or rerecord as you like.<br>If you can hear yourself well, we're good to go.<br>If not, please DO NOT CONTINUE---I might not be able to accept your data!<br>In the experiment itself, you will not be able to playback, or rerecord.<br>We will just record automatically on every trial.</p>",
+            stimulus: "<p>Recording has started. Speak!<br>This trial just lets you test things out.<br>This example trial records for 6 seconds and at the end you can play it back or rerecord as you like.<br>If you can hear yourself well, we're good to go.<br>If not, please DO NOT CONTINUE---I might not be able to accept your data!<br>In the experiment itself, you will not be able to playback, or rerecord.<br>We will just record automatically on every trial.</p>",
             allow_playback: true,
             done_button_label: 'Continue if you hear yourself LOUD and CLEAR',
             recording_duration: 6000,
@@ -193,8 +192,7 @@ function make_experiment (condition_num,jsPsych) {
 
         var record_background = {
             type: jsPsychHtmlAudioResponse,
-            stimulus: '<img src="stimuli/tiny-welcome.png" />', // an invisible img that takes up no space on the screen
-            prompt: "<p>I'm now recording 15 seconds of background noise.<br>The idea is to allow me to try and remove this from your recordings so I can hear you better<br>Please try not to make additional noise in this time (e.g. shifting, clearing throat, etc).<br>If some <em>unusual</em> loud sound happens during the recording (e.g. a glass breaking, a car backfiring) then please re-record.</p>",
+            stimulus: "<p>I'm now recording 15 seconds of background noise.<br>The idea is to allow me to try and remove this from your recordings so I can hear you better<br>Please try not to make additional noise in this time (e.g. shifting, clearing throat, etc).<br>If some <em>unusual</em> loud sound happens during the recording (e.g. a glass breaking, a car backfiring) then please re-record.</p>",
             allow_playback: true,
             done_button_label: 'Continue if that was 15s of normal background noise',
             recording_duration: 15000,
