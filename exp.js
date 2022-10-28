@@ -1,4 +1,6 @@
 function make_experiment (id_number,return_what) {
+    // in hindsight this is a little dangerous, because we call this function twice
+    // in practice one error we have is that the unique_id saved to jatos is OVERWRITTEN the second running, but not in the filename saving function---so we have a different unique_id saved as the filenames. luckily the filenames are also saved each trial so it's not important but let's not do it this way again
 
     // requires id_number for task permutation
     // if return_what == "images", will return image paths (for preloading)
@@ -19,11 +21,11 @@ function make_experiment (id_number,return_what) {
 
         var unique_id = jsPsych.randomization.randomID(15); // generate a unique string for participant ID
         jsPsych.data.addProperties({ // push that to the data object
-          id_number: id_number,
+          condition_number: id_number,
           unique_id: unique_id
           // we'll also add the id bin and permutation of procedures
         });
-        console.log("id number: ", id_number);
+        console.log("id number: ", unique_id);
 
 	// we'll use this to identify recordings and save them as well as trial data
 	var recording_count = 0;
@@ -180,7 +182,7 @@ function make_experiment (id_number,return_what) {
 
         var instructions_onstart = {
             type: 'html-keyboard-response',
-            stimulus:"<p>In this experiment you'll see images on the screen and respond by speaking aloud.<br>You'll need to allow microphone access in your browser if you haven't already.<br>Be sure to select 'remember the decision' so you don't get prompted every time.<br>There are four different task in this experiment.<br>Each one is slightly different, although all are similar.<br>At the start of each task, you'll get some instructions.<br>Then there will be a short 'training' period during which we'll tell you the correct answer after each trial.<br>Then you'll start the block properly and you won't get any feedback until the next block.<br><br>When ready, press any key continue.</p>",
+            stimulus:"<p>In this experiment you'll see images on the screen and respond by speaking aloud.<br>You'll need to allow microphone access in your browser if you haven't already.<br>I will prompt you for this shortly. Be sure to select 'remember the decision' so you don't get prompted every time.<br>There are four different task in this experiment.<br>Each one is slightly different, although all are similar.<br>At the start of each task, you'll get some instructions.<br>Then there will be a short 'training' period during which we'll tell you the correct answer after each trial.<br>Then you'll start the block properly and you won't get any feedback until the next block.<br><br>When ready, press any key continue.</p>",
             trial_duration: max_instruction_time*2
         }
 
@@ -188,11 +190,26 @@ function make_experiment (id_number,return_what) {
         var participant_test = {
             type: 'image-audio-response',
             stimulus: 'stimuli/tiny-welcome.png', // an invisible img that takes up no space on the screen
-            prompt: "<p>Recording has started. Speak!<br>This trial just lets you test things out.<br>This example trial records for 6 seconds and at the end you can play it back or rerecord as you like.<br>If you can hear yourself, we're good to go.<br>If not, please DO NOT CONTINUE---let the researcher know!<br>In the experiment itself, you will not be able to playback, or rerecord.<br>We will just record automatically on every trial.</p>",
+            prompt: "<p>Recording has started. Speak!<br>This trial just lets you test things out.<br>This example trial records for 6 seconds and at the end you can play it back or rerecord as you like.<br>If you can hear yourself well, we're good to go.<br>If not, please DO NOT CONTINUE---let the researcher know!<br>In the experiment itself, you will not be able to playback, or rerecord.<br>We will just record automatically on every trial.</p>",
             allow_playback: true,
             buffer_length: 6000,
             wait_for_mic_approval: true,
             recording_indicator: 4
+        }
+
+        var record_background = {
+            type: 'image-audio-response',
+            stimulus: 'stimuli/tiny-welcome.png', // an invisible img that takes up no space on the screen
+            prompt: "<p>I'm now recording 15 seconds of background noise.<br>The idea is to allow me to try and remove this from your recordings so I can hear you better<br>Please try not to make additional noise in this time (e.g. shifting, clearing throat, etc).<br>If some <em>unusual</em> loud sound happens during the recording (e.g. a glass breaking, a car backfiring) then please re-record.</p>",
+            allow_playback: true,
+            buffer_length: 15000,
+            wait_for_mic_approval: true,
+            postprocessing: save_file_to_jatos,
+            recording_indicator: 4,
+            on_finish: function() {
+                jsPsych.data.get().addToLast({recording_count: recording_count});
+                recording_count++;
+            }
         }
 
         var final_prestructions = {
@@ -206,6 +223,7 @@ function make_experiment (id_number,return_what) {
         if (instructions_on == 1) {
             timeline.push(instructions_onstart);
             timeline.push(participant_test);
+            timeline.push(record_background);
             timeline.push(final_prestructions);
         }
 
@@ -343,6 +361,7 @@ function make_experiment (id_number,return_what) {
                     },
 		    postprocessing: save_file_to_jatos,
 		    on_finish: function() {
+                        jsPsych.data.get().addToLast({recording_count: recording_count});
 			recording_count++;
                         // save the data every 10 trials
                         if (recording_count > save_data_count+10) {
@@ -416,6 +435,7 @@ function make_experiment (id_number,return_what) {
                     },
 		    postprocessing: save_file_to_jatos,
 		    on_finish: function() {
+                        jsPsych.data.get().addToLast({recording_count: recording_count});
 			recording_count++;
                         // save the data every 10 trials
                         if (recording_count > save_data_count+10) {
