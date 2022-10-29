@@ -10,7 +10,7 @@ function make_experiment (condition_num,jsPsych) {
         ////////////
 
         var instructions_on = 1; // you can turn off (0) the first two instructions screens if you want to test (since the participant recording test takes a bit)
-        var consent_on = 0; // turn on or off consent/demographics screens
+        var consent_on = 1; // turn on or off consent/demographics screens
 
         var num_blocks = 6; // will repeat each block of stimuli this number of times (blocked together)
         var num_tr_blocks = 1; // number of training blocks (same principle as num_blocks)
@@ -29,6 +29,7 @@ function make_experiment (condition_num,jsPsych) {
         console.log("id number: ", unique_id);
 
 	// we'll use this to save trial data occasionally
+        var recording_count = 0;
         var save_data_count = 0;
         var last_save_data = 0;
         var save_data_every = 10;
@@ -177,11 +178,19 @@ function make_experiment (condition_num,jsPsych) {
                 },
                 {
                     type: jsPsychHtmlAudioResponse,
-                    stimulus: "<p>Recording has started. Say something!<br><br>This trial just lets you test things out.<br>I'm recording for 6 seconds and at the end you can play it back or rerecord as you like.<br>If you can hear yourself well, we're good to go.<br>If not, please DO NOT CONTINUE---I might not be able to accept your data!<br><br>In the experiment itself, you will not be able to playback, or rerecord.<br>We will just record automatically on every trial.</p>",
+                    stimulus: '<p>Recording has started. Say something!<br><br>This trial just lets you test things out.<br>I am recording for 6 seconds and at the end you can play it back or rerecord as you like.<br>If you can hear yourself well, we are good to go.<br><br><span style="color:red">If not, please DO NOT CONTINUE: I might not be able to accept your data!</span><br><br>In the experiment itself, you will not be able to playback, or rerecord.<br>We will just record automatically on every trial.</p>',
                     allow_playback: true,
                     done_button_label: 'Check your recording',
                     accept_button_label: 'Continue only if you hear yourself LOUD and CLEAR!',
                     recording_duration: 6000,
+                    on_finish: function(data){
+                        recording_count++;
+                        var filename = unique_id + "_" + recording_count.toString() + ".txt";
+                        jatos.uploadResultFile(data.response, filename)
+                            .then(() => {
+                                data.response = filename;
+                            }).catch(() => console.log("File upload failed"));
+                    }
                 },
                 {
                     type: jsPsychHtmlAudioResponse,
@@ -190,6 +199,14 @@ function make_experiment (condition_num,jsPsych) {
                     done_button_label: 'Oops, messed up---let me re-record',
                     accept_button_label: 'Continue only if that was 15s of normal background noise',
                     recording_duration: 15000,
+                    on_finish: function(data){
+                        recording_count++;
+                        var filename = unique_id + "_" + recording_count.toString() + ".txt";
+                        jatos.uploadResultFile(data.response, filename)
+                            .then(() => {
+                                data.response = filename;
+                            }).catch(() => console.log("File upload failed"));
+                    }
                 },
                 {
                     type: jsPsychHtmlKeyboardResponse,
@@ -304,6 +321,14 @@ function make_experiment (condition_num,jsPsych) {
                     stimulus_duration: stim_time,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
+                    },
+                    on_finish: function(data){
+                        recording_count++;
+                        var filename = unique_id + "_" + recording_count.toString() + ".txt";
+                        jatos.uploadResultFile(data.response, filename)
+                            .then(() => {
+                                data.response = filename;
+                            }).catch(() => console.log("File upload failed"));
                     }
                 },
                 { // colour only training block
@@ -318,6 +343,14 @@ function make_experiment (condition_num,jsPsych) {
                     stimulus_duration: stim_time,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
+                    },
+                    on_finish: function(data){
+                        recording_count++;
+                        var filename = unique_id + "_" + recording_count.toString() + ".txt";
+                        jatos.uploadResultFile(data.response, filename)
+                            .then(() => {
+                                data.response = filename;
+                            }).catch(() => console.log("File upload failed"));
                     }
                 },
                 { // stimulus block
@@ -333,7 +366,13 @@ function make_experiment (condition_num,jsPsych) {
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
                     },
-		    on_finish: () => {
+                    on_finish: function(data){
+                        recording_count++;
+                        var filename = unique_id + "_" + recording_count.toString() + ".txt";
+                        jatos.uploadResultFile(data.response, filename)
+                            .then(() => {
+                                data.response = filename;
+                            }).catch(() => console.log("File upload failed"));
                         // save the data every save_data_every trials
                         save_data_count++
                         if (save_data_count > last_save_data+save_data_every) {
@@ -379,6 +418,14 @@ function make_experiment (condition_num,jsPsych) {
                     stimulus_duration: stim_time,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
+                    },
+                    on_finish: function(data){
+                        recording_count++;
+                        var filename = unique_id + "_" + recording_count.toString() + ".txt";
+                        jatos.uploadResultFile(data.response, filename)
+                            .then(() => {
+                                data.response = filename;
+                            }).catch(() => console.log("File upload failed"));
                     }
                 },
                 { // colour only training block
@@ -393,6 +440,14 @@ function make_experiment (condition_num,jsPsych) {
                     stimulus_duration: stim_time,
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
+                    },
+                    on_finish: function(data){
+                        recording_count++;
+                        var filename = unique_id + "_" + recording_count.toString() + ".txt";
+                        jatos.uploadResultFile(data.response, filename)
+                            .then(() => {
+                                data.response = filename;
+                            }).catch(() => console.log("File upload failed"));
                     }
                 },
                 { // stimulus block
@@ -408,7 +463,13 @@ function make_experiment (condition_num,jsPsych) {
                     data: {
                         stim_data: jsPsych.timelineVariable('add_data'),
                     },
-		    on_finish: () => {
+                    on_finish: function(data){
+                        recording_count++;
+                        var filename = unique_id + "_" + recording_count.toString() + ".txt";
+                        jatos.uploadResultFile(data.response, filename)
+                            .then(() => {
+                                data.response = filename;
+                            }).catch(() => console.log("File upload failed"));
                         // save the data every save_data_every trials
                         save_data_count++
                         if (save_data_count > last_save_data+save_data_every) {
