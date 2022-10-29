@@ -134,43 +134,30 @@ function make_experiment (condition_num,jsPsych) {
         /* do window and viewport stuff */
         //////////////////////////////////
 
-        var screen_dimensions = { // get screen and viewport dimensions
-            type: jsPsychCallFunction,
-            func: function(){
-                var w=window,d=document,e=d.documentElement,g=d.getElementsByTagName('body')[0],viewx=w.innerWidth||e.clientWidth||g.clientWidth,viewy=w.innerHeight||e.clientHeight||g.clientHeight; // lots of shorcuts, but essentially just get some javascript height and width descriptors
-                var dpcm=function(){
-                    // calc display pixels per cm
-                    const el = document.createElement('div'); // create a div
-                    el.style = 'width: 1cm;' // make it one cm wide
-                    document.body.appendChild(el); // add it as a child of the body
-                    const dpcm = el.offsetWidth; // measure the pixels of the css width and save that
-                    document.body.removeChild(el); // remove it as a child of the body
-                    return dpcm; // return the pixels per cm
+        timeline.push(
+            {
+                // check the browser has all the stuff we need
+                type: jsPsychBrowserCheck,
+                minimum_width: 1440,
+                minimum_height: 600,
+                inclusion_function: (data) => {
+                    return data.microphone === true;
+                },
+                exclusion_message: (data) => {
+                    if(data.microphone){
+                        return '<p>You must have a working microphone to participate in this experiment.</p>';
+                    }
                 }
-                var width_cm = viewx/dpcm;
-                var height_cm = viewy/dpcm;
-                jsPsych.data.getLastTrialData().addToAll({ // add screen and viewport info to the resize trial data. that way, all sz info is together
-                    screen_width_px: screen.width,
-                    screen_height_px: screen.height, 
-                    viewport_width_px: viewx,
-                    viewport_height_px: viewy,
-                    px_per_cm: dpcm,
-                    viewport_width_cm: width_cm,
-                    viewport_height_cm: height_cm,
-                })
             },
-        }
-        timeline.push(screen_dimensions);
-
-        // standardise the screen size
-        var screen_sizer = {
-            type: jsPsychResize,
-            item_width: 3 + 3/8, // I think this is in inches
-            item_height: 2 + 1/8,
-            prompt: "<p>Click and drag the lower right corner of the box until the box is the same size as a bank card held up to the screen.</p>",
-            pixels_per_unit: 150
-        }
-        timeline.push(screen_sizer);
+            {
+                // standardise the screen size
+                type: jsPsychResize,
+                item_width: 3 + 3/8, // I think this is in inches
+                item_height: 2 + 1/8,
+                prompt: "<p>Click and drag the lower right corner of the box until the box is the same size as a bank card held up to the screen.</p>",
+                pixels_per_unit: 150
+            }
+        );
 
         //////////////////////
         /* instruction bits */
