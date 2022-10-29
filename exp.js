@@ -40,6 +40,7 @@ function make_experiment (condition_num,jsPsych) {
             html+='" style="height:';
             html+= height;
             html+='">';
+            //console.log('stimulus should be: ', html)
             return html;
         }
 
@@ -178,15 +179,16 @@ function make_experiment (condition_num,jsPsych) {
         var instructions_onstart = [
             {
                 type: jsPsychHtmlKeyboardResponse,
-                stimulus:"<p>In this experiment you'll see images on the screen and respond by speaking aloud.<br>You'll need to allow microphone access in your browser if you haven't already.<br>I will prompt you for this next. If it appears as an option, be sure to select 'remember the decision' so you don't get prompted every time.<br><br>When ready, press any key continue.</p>",
-                trial_duration: max_instruction_time*2
+                stimulus:"<p>In this experiment you'll see images on the screen and respond by speaking aloud.<br>You'll need to allow microphone access in your browser if you haven't already.<br>I will prompt you for this next. If it appears as an option, be sure to select 'remember the decision' so you don't get prompted every time.<br><br>When ready, press SPACEBAR continue.</p>",
+                trial_duration: max_instruction_time*2,
+                choices: [' ']
             },
             {
                 type: jsPsychInitializeMicrophone,
             },
             {
                 type: jsPsychHtmlAudioResponse,
-                stimulus: "<p>Recording has started. Speak!<br>This trial just lets you test things out.<br>This example trial records for 6 seconds and at the end you can play it back or rerecord as you like.<br>If you can hear yourself well, we're good to go.<br>If not, please DO NOT CONTINUE---I might not be able to accept your data!<br>In the experiment itself, you will not be able to playback, or rerecord.<br>We will just record automatically on every trial.</p>",
+                stimulus: "<p>Recording has started. Say something!<br><br>This trial just lets you test things out.<br>I'm recording for 6 seconds and at the end you can play it back or rerecord as you like.<br>If you can hear yourself well, we're good to go.<br>If not, please DO NOT CONTINUE---I might not be able to accept your data!<br><br>In the experiment itself, you will not be able to playback, or rerecord.<br>We will just record automatically on every trial.</p>",
                 allow_playback: true,
                 done_button_label: 'Check your recording',
                 accept_button_label: 'Continue only if you hear yourself LOUD and CLEAR!',
@@ -194,7 +196,7 @@ function make_experiment (condition_num,jsPsych) {
             },
             {
                 type: jsPsychHtmlAudioResponse,
-                stimulus: "<p>I'm now recording 15 seconds of background noise.<br>The idea is to allow me to try and remove this from your recordings so I can hear you better<br>Please try not to make additional noise in this time (e.g. shifting, clearing throat, etc).<br>If some <em>unusual</em> loud sound happens during the recording (e.g. a glass breaking, a car backfiring) then please re-record.</p>",
+                stimulus: "<p>I'm now recording 15 seconds of background noise.<br>Please try not to make additional noise in this time (e.g. shifting, clearing throat, etc).<br>The idea is to allow me to try and remove normal background noise from your recordings so I can hear you better<br>If some <em>unusual</em> loud sound happens during the recording (e.g. a glass breaking, a car backfiring) then please re-record.</p>",
                 allow_playback: true,
                 done_button_label: 'Oops, messed up---let me re-record',
                 accept_button_label: 'Continue only if that was 15s of normal background noise',
@@ -202,12 +204,13 @@ function make_experiment (condition_num,jsPsych) {
             },
             {
                 type: jsPsychHtmlKeyboardResponse,
-                stimulus:"<p>Great!<br>There are four different task in this experiment.<br>Each one is slightly different, although all are similar.<br>At the start of each task, you'll get some instructions.<br>Then there will be a short 'training' period during which we'll tell you the correct answer after each trial.<br>Then you'll start the block properly and you won't get any feedback until the next block.<br><br>When ready, press any key continue.</p>",
-                trial_duration: max_instruction_time*2
+                stimulus:"<p>Great!<br><br>There are four different task in this experiment.<br>Each one is slightly different, although all are similar.<br>At the start of each task, you'll get some instructions.<br>Then there will be a short 'training' period during which we'll tell you the correct answer after each trial.<br>Then you'll start the block properly and you won't get any feedback until the next block.<br><br>When ready, press SPACEBAR continue.</p>",
+                trial_duration: max_instruction_time*2,
+                choices: [' ']
             },
             {
                 type: jsPsychHtmlKeyboardResponse,
-                stimulus:"<p>Some last requests.<br><br>I am recording on every trial, but never when feedback or instructions are shown.<br>Please be aware of your surroundings and keep noise (other than your voice!) to a minimum.<br>Please, please, please speak LOUD and CLEAR!<br>Otherwise it will be hard for me to hear your answers<br>Please be as fast and as accurate as possible.<br>Lastly, please DO NOT let your screensaver go on! You might be able to prevent this with fullscreen (F11)<br><br>When ready, press SPACE BAR to continue.</p>",
+                stimulus:"<p>Some last requests.<br><br>I am recording on every trial, but never when feedback or instructions are shown.<br>Please be aware of your surroundings and keep noise (other than your voice!) to a minimum.<br>Please, please, please speak LOUD and CLEAR!<br>Otherwise it will be hard for me to hear your answers<br>Please be as fast and as accurate as possible.<br>Lastly, please DO NOT let your screensaver go on! You might be able to prevent this with fullscreen (F11)<br><br>When ready, press SPACEBAR to continue.</p>",
                 trial_duration: max_instruction_time*2,
                 choices: [' ']
             }
@@ -313,7 +316,10 @@ function make_experiment (condition_num,jsPsych) {
                 },
                 { // size only training block
                     type: jsPsychHtmlAudioResponse,
-                    stimulus: htmlStimSizer(jsPsych.timelineVariable('stim_size'),'stimuli/line.png'),
+                    stimulus: function(){
+                        var stim = htmlStimSizer(jsPsych.timelineVariable('stim_size'),'stimuli/line.png');
+                        return stim;
+                    },
                     allow_playback: false,
                     show_done_button: false,
                     recording_duration: trial_time,
@@ -324,7 +330,10 @@ function make_experiment (condition_num,jsPsych) {
                 },
                 { // colour only training block
                     type: jsPsychHtmlAudioResponse,
-                    stimulus: htmlStimSizer(stim_height.medium,jsPsych.timelineVariable('trn_stim')),
+                    stimulus: function(){
+                        var stim = htmlStimSizer(stim_height.medium,jsPsych.timelineVariable('trn_stim'));
+                        return stim;
+                    },
                     allow_playback: false,
                     show_done_button: false,
                     recording_duration: trial_time,
@@ -335,7 +344,10 @@ function make_experiment (condition_num,jsPsych) {
                 },
                 { // stimulus block
                     type: jsPsychHtmlAudioResponse,
-                    stimulus: htmlStimSizer(jsPsych.timelineVariable('stim_size'),jsPsych.timelineVariable('stim_path')),
+                    stimulus: function() {
+                        var stim = htmlStimSizer(jsPsych.timelineVariable('stim_size'),jsPsych.timelineVariable('stim_path'));
+                        return stim;
+                    },
                     allow_playback: false,
                     show_done_button: false,
                     recording_duration: trial_time,
@@ -362,7 +374,7 @@ function make_experiment (condition_num,jsPsych) {
             randomize_order: true,
             // 'repetitions:' would go here, but we will assign this more dynamically later
         }
-        console.log(stroop_task.timeline_variables);
+        //console.log('timeline variables font task: ',stroop_task.timeline_variables);
 
         /* false font task */
         var false_font_task = {
@@ -379,7 +391,10 @@ function make_experiment (condition_num,jsPsych) {
                 },
                 { // size only training block
                     type: jsPsychHtmlAudioResponse,
-                    stimulus: htmlStimSizer(jsPsych.timelineVariable('stim_size'),'stimuli/line.png'),
+                    stimulus: function() {
+                        var stim = htmlStimSizer(jsPsych.timelineVariable('stim_size'),'stimuli/line.png');
+                        return stim;
+                    },
                     allow_playback: false,
                     show_done_button: false,
                     recording_duration: trial_time,
@@ -390,7 +405,10 @@ function make_experiment (condition_num,jsPsych) {
                 },
                 { // colour only training block
                     type: jsPsychHtmlAudioResponse,
-                    stimulus: htmlStimSizer(stim_height.medium,jsPsych.timelineVariable('trn_stim')),
+                    stimulus: function() {
+                        var stim = htmlStimSizer(stim_height.medium,jsPsych.timelineVariable('trn_stim'));
+                        return stim;
+                    },
                     allow_playback: false,
                     show_done_button: false,
                     recording_duration: trial_time,
@@ -401,7 +419,10 @@ function make_experiment (condition_num,jsPsych) {
                 },
                 { // stimulus block
                     type: jsPsychHtmlAudioResponse,
-                    stimulus: htmlStimSizer(jsPsych.timelineVariable('stim_size'),jsPsych.timelineVariable('stim_path')),
+                    stimulus: function() {
+                        var stim = htmlStimSizer(jsPsych.timelineVariable('stim_size'),jsPsych.timelineVariable('stim_path'));
+                        return stim;
+                    },
                     allow_playback: false,
                     show_done_button: false,
                     recording_duration: trial_time,
@@ -428,7 +449,7 @@ function make_experiment (condition_num,jsPsych) {
             randomize_order: true,
             // 'repetitions:' would go here, but we will assign this more dynamically later
         }
-        console.log(false_font_task.timeline_variables);
+        //console.log('timeline variables font task: ', false_font_task.timeline_variables);
 
         ////////////////////////
         /* procedure creation */
