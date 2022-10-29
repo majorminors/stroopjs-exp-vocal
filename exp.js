@@ -185,7 +185,7 @@ function make_experiment (condition_num,jsPsych) {
                     recording_duration: 6000,
                     on_finish: function(data){
                         recording_count++;
-                        var filename = unique_id + "_" + recording_count.toString() + ".txt";
+                        var filename = unique_id + "_" + recording_count.toString() + ".b64";
                         jatos.uploadResultFile(data.response, filename)
                             .then(() => {
                                 data.response = filename;
@@ -201,7 +201,7 @@ function make_experiment (condition_num,jsPsych) {
                     recording_duration: 15000,
                     on_finish: function(data){
                         recording_count++;
-                        var filename = unique_id + "_" + recording_count.toString() + ".txt";
+                        var filename = unique_id + "_" + recording_count.toString() + ".b64";
                         jatos.uploadResultFile(data.response, filename)
                             .then(() => {
                                 data.response = filename;
@@ -324,7 +324,7 @@ function make_experiment (condition_num,jsPsych) {
                     },
                     on_finish: function(data){
                         recording_count++;
-                        var filename = unique_id + "_" + recording_count.toString() + ".txt";
+                        var filename = unique_id + "_" + recording_count.toString() + ".b64";
                         jatos.uploadResultFile(data.response, filename)
                             .then(() => {
                                 data.response = filename;
@@ -346,7 +346,7 @@ function make_experiment (condition_num,jsPsych) {
                     },
                     on_finish: function(data){
                         recording_count++;
-                        var filename = unique_id + "_" + recording_count.toString() + ".txt";
+                        var filename = unique_id + "_" + recording_count.toString() + ".b64";
                         jatos.uploadResultFile(data.response, filename)
                             .then(() => {
                                 data.response = filename;
@@ -368,7 +368,7 @@ function make_experiment (condition_num,jsPsych) {
                     },
                     on_finish: function(data){
                         recording_count++;
-                        var filename = unique_id + "_" + recording_count.toString() + ".txt";
+                        var filename = unique_id + "_" + recording_count.toString() + ".b64";
                         jatos.uploadResultFile(data.response, filename)
                             .then(() => {
                                 data.response = filename;
@@ -421,7 +421,7 @@ function make_experiment (condition_num,jsPsych) {
                     },
                     on_finish: function(data){
                         recording_count++;
-                        var filename = unique_id + "_" + recording_count.toString() + ".txt";
+                        var filename = unique_id + "_" + recording_count.toString() + ".b64";
                         jatos.uploadResultFile(data.response, filename)
                             .then(() => {
                                 data.response = filename;
@@ -443,7 +443,7 @@ function make_experiment (condition_num,jsPsych) {
                     },
                     on_finish: function(data){
                         recording_count++;
-                        var filename = unique_id + "_" + recording_count.toString() + ".txt";
+                        var filename = unique_id + "_" + recording_count.toString() + ".b64";
                         jatos.uploadResultFile(data.response, filename)
                             .then(() => {
                                 data.response = filename;
@@ -465,7 +465,7 @@ function make_experiment (condition_num,jsPsych) {
                     },
                     on_finish: function(data){
                         recording_count++;
-                        var filename = unique_id + "_" + recording_count.toString() + ".txt";
+                        var filename = unique_id + "_" + recording_count.toString() + ".b64";
                         jatos.uploadResultFile(data.response, filename)
                             .then(() => {
                                 data.response = filename;
