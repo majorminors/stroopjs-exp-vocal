@@ -141,10 +141,10 @@ function make_experiment (condition_num,jsPsych) {
                     return data.microphone === true;
                 },
                 exclusion_message: (data) => {
-                    if(data.microphone){
+                    if(!data.microphone){
                         return '<p>You must have a working microphone to participate in this experiment.</p>';
                     } else {
-                        return '<p>Your browser does not meet the requirements to participate in this experiment.<br>You will be returned.<br>If it has you marked as complete, please return your submission. I unfortunately cannot accept it</p>';
+                        return '<p>Your browser does not meet the requirements to participate in this experiment :(.</p>';
                     }
                 },
                 on_finish: function(data){
