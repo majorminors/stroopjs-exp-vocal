@@ -126,10 +126,6 @@ function make_experiment (condition_num,jsPsych) {
         } 
 
         var timeline = []; // initialise timeline
-        if (consent_on == 1) {
-            get_consent(timeline); // do the consent function
-            get_demographics(timeline); // do the demographics function
-        }
 
         ///////////////////////////////////
         /* do browser and viewport stuff */
@@ -177,6 +173,16 @@ function make_experiment (condition_num,jsPsych) {
                 pixels_per_unit: 150
             }
         );
+
+        //////////////////////////////////
+        /* get consent and demographics */
+        //////////////////////////////////
+
+        if (consent_on == 1) {
+            get_consent(timeline); // do the consent function
+            get_demographics(timeline); // do the demographics function
+        }
+
 
         //////////////////////
         /* instruction bits */
