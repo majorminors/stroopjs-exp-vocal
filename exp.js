@@ -147,6 +147,24 @@ function make_experiment (condition_num,jsPsych) {
                 exclusion_message: (data) => {
                     if(data.microphone){
                         return '<p>You must have a working microphone to participate in this experiment.</p>';
+                    } else {
+                        return '<p>Your browser does not meet the requirements to participate in this experiment.<br>You will be returned.<br>If it has you marked as complete, please return your submission. I unfortunately cannot accept it</p>';
+                    }
+                },
+                on_finish: function(data){
+                    if(data.width < 1520) {
+                    var resultJson = jsPsych.data.get().json();
+                        jatos.submitResultData(resultJson)
+                        .then(jatos.endStudyAjax)
+                        .then(() => {
+                            window.location.href = 'https://app.prolific.co/submissions/complete?cc=C1L1WJN4'
+                        });
+                    } else if(!data.microphone) {
+                        jatos.submitResultData(resultJson)
+                        .then(jatos.endStudyAjax)
+                        .then(() => {
+                            window.location.href = 'https://app.prolific.co/submissions/complete?cc=C1L1WJN4'
+                        });
                     }
                 }
             },
