@@ -64,6 +64,11 @@
             var jsPsych = initJsPsych({
                 audio: true,
                 on_finish: function() {
+                    var time = jsPsych.totalTime();
+                    jsPsych.data.addProperties({
+                        expt_duration: time,
+                        app_id: app_identifier_string,
+                    });
                     var resultJson = jsPsych.data.get().json();
                     jatos.submitResultData(resultJson)
                     .then(jatos.endStudyAjax)
