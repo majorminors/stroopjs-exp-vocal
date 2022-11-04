@@ -201,6 +201,13 @@ function make_experiment (condition_num,jsPsych) {
                     type: jsPsychInitializeMicrophone,
                 },
                 {
+                    type: jsPsychAudioKeyboardResponse,
+                    stimulus: 'stimuli/dorian-intro.mp3',
+                    prompt: "<p>A recording of me talking to you is playing!<br>Hopefully you can hear me, but if not:<br>Please make sure you don't make noise (e.g. shifting, scratching, coughing etc) <em>before</em> you respond on a trial. After you respond is fine.<br>Also please try not to make the little smacking noises we make sometimes when opening our mouths to speak!<br>Both will likely be picked up by my reaction time detector, and I'll have to throw the trial out :(.<br>This screen will move on automatically after the recording is finished playing (about 2 mins)!</p>",
+                    choices: "NO_KEYS",
+                    trial_ends_after_audio: true
+                },
+                {
                     type: jsPsychHtmlAudioResponse,
                     stimulus: '<p>Recording has started. Say something!<br><br>This trial just lets you test things out.<br>I am recording for 6 seconds and at the end you can play it back or rerecord as you like.<br>If you can hear yourself well, we are good to go.<br><br><span style="color:red">If not, please DO NOT CONTINUE: I might not be able to accept your data!</span><br><br>In the experiment itself, you will not be able to playback, or rerecord.<br>We will just record automatically on every trial.</p>',
                     allow_playback: true,
